@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Al-Aqrab Premium V3 - Scorpion Engine</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&family=Tajawal:wght@400;500;700&family=Almarai:wght@400;700&family=Reem+Kufi:wght@400;700&family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&family=Nunito:wght@400;600;700&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            /* Font Engine Variables */
+            --font-ar: 'Amiri', serif;
+            --font-en: 'Inter', sans-serif;
+            --font-brand: 'Playfair Display', serif;
+            --font-ui: 'Cairo', sans-serif;
+
+            /* Old Money Luxury Palette - Base */
+            --bg-primary: #fdfbf7;
+            --bg-secondary: #f5f1eb;
+            --glass-bg: rgba(253, 251, 247, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.65);
+            --card-bg: rgba(255, 255, 255, 0.6);
+            --input-bg: #ffffff;
+            --input-border: rgba(0, 0, 0, 0.08);
+
+            /* Typography */
+            --text-main: #1a1a18;
+            --text-secondary: #5a574f;
+            --text-muted: #9a9589;
+
+            /* Accents */
+            --accent: #0d9488;
+            --accent-grad: linear-gradient(135deg, #0d9488 0%, #0891b2 100%);
+            --accent-glow: rgba(13, 148, 136, 0.22);
+            --vip-gold: #d4af37;
+            --vip-grad: linear-gradient(135deg, #d4af37 0%, #f0c040 60%, #b8922c 100%);
+            --dark-navy: #0f172a;
+            --danger: #dc2626;
+            --success: #16a34a;
+
+            /* Glassmorphism */
+            --glass-blur: blur(45px) saturate(180%);
+            --glass-blur-sm: blur(12px);
+
+            /* Radii & Shadows */
+            --r-sm: 10px; --r-md: 16px; --r-lg: 24px; --r-xl: 32px; --r-2xl: 40px;
+            --shadow-xs: 0 1px 4px rgba(0,0,0,0.04);
+            --shadow-sm: 0 2px 10px rgba(0,0,0,0.06);
+            --shadow-md: 0 6px 20px rgba(0,0,0,0.10);
+            --shadow-xl: 0 28px 60px rgba(0,0,0,0.18);
+            --gold-glow: 0 8px 32px rgba(212, 175, 55, 0.35);
+
+            /* Transitions */
+            --t-fast: 0.18s; --t-base: 0.30s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* Dark Theme */
+        [data-theme="dark"] {
+            --bg-primary: #0f0e0c; --bg-secondary: #1a1a15;
+            --glass-bg: rgba(25, 24, 20, 0.75); --glass-border: rgba(212, 175, 55, 0.12);
+            --card-bg: rgba(40, 38, 32, 0.80); --input-bg: #252318;
+            --input-border: rgba(255, 255, 255, 0.09);
+            --text-main: #f5f3ed; --text-secondary: #c8c4b8; --text-muted: #7a766c;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; padding: 0; background-color: var(--bg-primary); font-family: var(--font-ar); color: var(--text-main); overflow-x: hidden; transition: all var(--t-base); }
+        
+        .app-container { width: 100%; max-width: 430px; margin: 0 auto; min-height: 100vh; position: relative; direction: rtl; }
+
+        /* ═══════════════════════════════════════════
+           PREMIUM MODE SPECIFICS (SHATTERED GLASS)
+        ═══════════════════════════════════════════ */
+        .glass-shard-bg { display: none; position: absolute; background: rgba(255, 255, 255, 0.2); backdrop-filter: var(--glass-blur-sm); border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 8px 32px rgba(31, 38, 135, 0.05); z-index: 1; pointer-events: none; }
+        .premium-mode .glass-shard-bg { display: block; }
+        .shard-1 { width: 350px; height: 350px; clip-path: polygon(50% 0%, 0% 100%, 100% 100%); top: -80px; left: -100px; transform: rotate(15deg); }
+        .shard-2 { width: 450px; height: 450px; clip-path: polygon(0 0, 100% 15%, 45% 100%); bottom: -120px; right: -50px; transform: rotate(-10deg); background: rgba(255, 255, 255, 0.15); }
+
+        .premium-mode .glass-card { border-color: rgba(212,175,55,0.4); box-shadow: 0 4px 15px rgba(212,175,55,0.1); }
+        .premium-mode .glass-card:hover { box-shadow: var(--gold-glow); transform: translateY(-3px) scale(1.02); }
+
+        /* ═══════════════════════════════════════════
+           RAW CARD LOADER (NO GLASS PANE)
+        ═══════════════════════════════════════════ */
+        #aqrab-loader { position: fixed; inset: 0; z-index: 9999; display: none; align-items: center; justify-content: center; background: var(--bg-primary); transition: opacity 0.5s ease; flex-direction: column; gap: 30px; }
+        .raw-spinner { width: 80px; height: 80px; position: relative; perspective: 1000px; animation: rotate-spinner 4s infinite linear; }
+        .raw-card { position: absolute; width: 100%; height: 100%; border-radius: 12px; animation: flip-card 2s infinite ease-in-out; opacity: 0.9; }
+        .raw-card:nth-child(1) { background: var(--accent); animation-delay: 0s; transform-origin: top left; }
+        .raw-card:nth-child(2) { background: var(--vip-gold); animation-delay: 0.5s; transform-origin: top right; }
+        .raw-card:nth-child(3) { background: var(--dark-navy); animation-delay: 1s; transform-origin: bottom right; }
+        
+        @keyframes rotate-spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes flip-card { 0%, 100% { transform: rotateX(0) rotateY(0); } 25% { transform: rotateX(180deg) rotateY(0); } 50% { transform: rotateX(180deg) rotateY(180deg); } 75% { transform: rotateX(0) rotateY(180deg); } }
+        .loader-brand-text { font-family: var(--font-brand); font-size: 32px; font-weight: 700; background: var(--vip-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* ═══════════════════════════════════════════
+           UI COMPONENTS
+        ═══════════════════════════════════════════ */
+        .hero-bg { position: fixed; top: 0; width: 100%; max-width: 430px; height: 55vh; z-index: 1; overflow: hidden; }
+        .hero-img { width: 100%; height: 100%; object-fit: cover; object-position: center 15%; transition: transform 0.8s ease; }
+        .hero-bg::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 35%; background: linear-gradient(to bottom, transparent, var(--bg-primary)); }
+
+        .fog-panel { position: relative; z-index: 5; margin-top: 45vh; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-radius: var(--r-2xl) var(--r-2xl) 0 0; border: 1px solid var(--glass-border); padding: 40px 20px 120px; min-height: 60vh; box-shadow: 0 -20px 40px rgba(0,0,0,0.04); }
+        [data-theme="dark"] .fog-panel { box-shadow: 0 -20px 40px rgba(0,0,0,0.25); }
+
+        .header-content { text-align: center; margin-bottom: 32px; }
+        .name-wrapper { display: flex; align-items: center; justify-content: center; margin-bottom: 6px; }
+        .name-wrapper h1 { margin: 0; font-size: 30px; font-weight: 700; color: var(--text-main); font-family: var(--font-ar); display: flex; align-items: center; justify-content: center; gap: 8px; }
+        
+        /* STRICT CIRCLE PROFILE PIC */
+        .profile-pic { width: 32px; height: 32px; border-radius: 50% !important; object-fit: cover; aspect-ratio: 1; border: 2px solid var(--vip-gold); box-shadow: var(--shadow-sm); }
+        
+        .title-text { font-size: 13px; color: var(--text-muted); display: block; margin-top: 5px; font-family: var(--font-en); }
+
+        /* Action Row Toggles */
+        .action-row { display: flex; justify-content: center; gap: 8px; margin-bottom: 32px; padding: 0 5px; }
+        .shard-btn { flex: 1; height: 56px; background: var(--card-bg); backdrop-filter: var(--glass-blur-sm); display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--accent); border: 1px solid var(--glass-border); cursor: pointer; transform: skew(-12deg); box-shadow: var(--shadow-sm); transition: all var(--t-base); }
+        .shard-btn:hover { background: rgba(255,255,255,0.85); transform: skew(-12deg) translateY(-3px); }
+        .shard-btn > i { transform: skew(12deg); }
+        .shard-btn:nth-child(1) { border-radius: 18px 6px 14px 6px; }
+        .shard-btn:nth-child(2) { border-radius: 6px 16px 6px 12px; }
+        .shard-btn:nth-child(3) { border-radius: 12px 6px 16px 6px; }
+        .shard-btn:nth-child(4) { border-radius: 6px 14px 6px 18px; }
+
+        .section-label { font-size: 15px; font-weight: 700; color: var(--text-muted); margin: 28px 10px 12px; text-align: right; text-transform: uppercase; font-family: var(--font-ui); }
+
+        .glass-card { display: flex; align-items: center; background: var(--card-bg); padding: 18px; border-radius: var(--r-lg); text-decoration: none; margin-bottom: 10px; border: 1px solid var(--glass-border); box-shadow: var(--shadow-xs); transition: all var(--t-base); cursor: pointer; }
+        .glass-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); background: rgba(255,255,255,0.85); }
+        .card-icon { width: 44px; height: 44px; border-radius: var(--r-sm); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-left: 15px; background: var(--bg-secondary); box-shadow: var(--shadow-xs); transition: all var(--t-base); }
+        .glass-card:hover .card-icon { transform: scale(1.1) rotate(5deg); }
+        .card-text { flex: 1; text-align: right; }
+        .card-text strong { display: block; font-size: 17px; color: var(--text-main); margin-bottom: 2px; }
+        .card-text span { font-size: 13px; color: var(--text-secondary); }
+
+        /* ═══════════════════════════════════════════
+           UNIVERSAL LOGIN (RTL HEADER + GLASSMORPHIC)
+        ═══════════════════════════════════════════ */
+        .glass-overlay { position: fixed; inset: 0; background: rgba(15, 14, 12, 0.45); z-index: 9000; display: none; align-items: center; justify-content: center; backdrop-filter: var(--glass-blur-sm); padding: 20px; }
+        .glass-overlay.active { display: flex; }
+        
+        .booking-card { width: 100%; max-width: 420px; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-radius: var(--r-xl); padding: 26px 22px; box-shadow: var(--shadow-xl); border: 1px solid var(--glass-border); transition: all 0.5s ease; overflow: hidden; }
+        .login-header { display: flex; flex-direction: row-reverse; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid var(--input-border); }
+        .login-title { font-family: var(--font-ar); font-size: 20px; font-weight: 700; color: var(--text-main); }
+        .login-logo { width: 45px; height: 45px; border-radius: 50% !important; object-fit: cover; aspect-ratio: 1; border: 2px solid var(--accent); }
+        
+        .input-field { width: 100%; padding: 14px 16px; border: 1.5px solid var(--input-border); border-radius: var(--r-md); background: var(--input-bg); font-family: var(--font-ar); font-size: 16px; color: var(--text-main); margin-bottom: 15px; outline: none; transition: all var(--t-base); }
+        .input-field:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+        
+        .primary-btn { width: 100%; height: 50px; background: var(--dark-navy); color: var(--vip-gold); font-family: var(--font-ar); font-weight: 700; border: none; border-radius: var(--r-md); font-size: 17px; cursor: pointer; transition: all var(--t-base); }
+        .primary-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+    </style>
+</head>
+<body>
+
+    <div class="glass-shard-bg shard-1"></div>
+    <div class="glass-shard-bg shard-2"></div>
+
+    <div id="aqrab-loader">
+        <div class="raw-spinner">
+            <div class="raw-card"></div>
+            <div class="raw-card"></div>
+            <div class="raw-card"></div>
+        </div>
+        <div class="loader-brand-text">Al-Aqrab</div>
+    </div>
+
+    <div id="fullApp" class="app-container" style="display:none;">
+        <div class="hero-bg"><img id="mainHeroImg" src="" class="hero-img" alt=""></div>
+        
+        <div class="fog-panel">
+            <div class="header-content">
+                <div class="name-wrapper">
+                    <h1 id="brandName">جاري التحميل...</h1>
+                </div>
+                <span id="brandTitle" class="title-text"></span>
+            </div>
+
+            <div class="action-row" id="topActionRow">
+                <div class="shard-btn" id="btnPhone" style="display:none;" onclick="openPhoneSheet()"><i class="fa-solid fa-phone"></i></div>
+                <a class="shard-btn" id="btnMap" style="display:none;" target="_blank"><i class="fa-solid fa-map-location-dot"></i></a>
+                <div class="shard-btn" id="btnBookingTop" style="display:none;" onclick="openBooking()"><i class="fa-solid fa-calendar-clock"></i></div>
+                <div class="shard-btn" onclick="copyURL()"><i class="fa-solid fa-link"></i></div>
+            </div>
+
+            <div id="socialSection" style="display:none;">
+                <div class="section-label">تواصل معي</div>
+                <div id="socialCardsContainer">
+                    </div>
+            </div>
+
+            <div id="bookingSection" style="display:none;">
+                <div class="section-label">الخدمات والحجوزات</div>
+                <a href="#" class="glass-card" onclick="openBooking()">
+                    <div class="card-icon" style="color:var(--accent);"><i class="fa-solid fa-calendar-check"></i></div>
+                    <div class="card-text">
+                        <strong>احجز ميعاد الآن</strong>
+                        <span>جدولة مواعيدك وحجوزاتك معنا</span>
+                    </div>
+                </a>
+            </div>
+
+            <div id="paymentSection" style="display:none;">
+                <div class="section-label">الدفع والخدمات</div>
+                <a href="#" class="glass-card" id="instapayCard" style="display:none;">
+                    <div class="card-icon" style="color:var(--success);"><i class="fa-solid fa-bolt"></i></div>
+                    <div class="card-text"><strong>إنستاباي</strong><span id="instapayText">تحويل بنكي فوري</span></div>
+                </a>
+                <a href="#" class="glass-card" id="walletCard" style="display:none;">
+                    <div class="card-icon" style="color:#f97316;"><i class="fa-solid fa-wallet"></i></div>
+                    <div class="card-text"><strong id="walletName">محافظ إلكترونية</strong><span id="walletDesc">نسخ الرقم</span></div>
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="glass-overlay" id="bookingModal">
+        <div class="booking-card" onclick="event.stopPropagation()">
+            <div class="login-header">
+                <span class="login-title">تسجيل الدخول</span>
+                <img src="" id="loginModalLogo" class="login-logo" onerror="this.style.display='none'">
+            </div>
+            
+            <div id="loginForm">
+                <input type="text" id="regName" class="input-field" placeholder="الاسم بالكامل">
+                <input type="tel" id="regPhone" class="input-field" placeholder="٠١xxxxxxxxx">
+                <button class="primary-btn" onclick="processLogin()">متابعة</button>
+                <button class="primary-btn" style="background:transparent; color:var(--text-secondary); border:1px solid var(--input-border); margin-top:10px;" onclick="closeBooking()">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="glass-overlay" id="utilityAlert">
+        <div class="booking-card" style="max-width:300px; text-align:center;">
+            <div class="login-title" id="alertTitle" style="margin-bottom:15px;">إشعار</div>
+            <p style="color:var(--text-secondary); margin-bottom:20px;" id="alertMessage"></p>
+            <button class="primary-btn" onclick="document.getElementById('utilityAlert').classList.remove('active')">موافق</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, doc, onSnapshot, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        /* Social Platform Mapping (Icons stay original color inside glass cards, glowing in premium) */
+        const SOCIAL_PLATFORMS = [
+            { key: 'whatsapp', showKey: 'showWhatsapp', icon: 'fa-whatsapp', color: '#25d366', label: 'واتساب', sub: 'تواصل فوري' },
+            { key: 'facebook', showKey: 'showFacebook', icon: 'fa-facebook-f', color: '#1877f2', label: 'فيسبوك', sub: 'متابعة الصفحة' },
+            { key: 'insta', showKey: 'showInstagram', icon: 'fa-instagram', color: '#e4405f', label: 'إنستغرام', sub: 'معرض الأعمال' },
+            { key: 'tiktok', showKey: 'showTiktok', icon: 'fa-tiktok', color: 'var(--text-main)', label: 'تيك توك', sub: 'أحدث الفيديوهات' },
+            { key: 'youtube', showKey: 'showYoutube', icon: 'fa-youtube', color: '#FF0000', label: 'يوتيوب', sub: 'اشترك في القناة' },
+            { key: 'snapchat', showKey: 'showSnapchat', icon: 'fa-snapchat', color: '#FFFC00', label: 'سناب شات', sub: 'يوميات وكواليس' },
+            { key: 'x', showKey: 'showX', icon: 'fa-x-twitter', color: 'var(--text-main)', label: 'إكس (تويتر)', sub: 'أحدث التغريدات' },
+            { key: 'linkedin', showKey: 'showLinkedin', icon: 'fa-linkedin-in', color: '#0A66C2', label: 'لينكد إن', sub: 'التواصل المهني' },
+            { key: 'threads', showKey: 'showThreads', icon: 'fa-threads', color: 'var(--text-main)', label: 'ثريدز', sub: 'متابعة المنشورات' },
+            { key: 'truecaller', showKey: 'showTruecaller', icon: 'fa-phone-flip', color: '#0056D2', label: 'تروكولر', sub: 'الملف الموثق' },
+            { key: 'googleReviews', showKey: 'showReviews', icon: 'fa-star', color: '#F4B400', label: 'تقييمات جوجل', sub: 'رأيك يهمنا' },
+            { key: 'googleMaps', showKey: 'showGoogleMaps', icon: 'fa-map-pin', color: '#34A853', label: 'خرائط جوجل', sub: 'موقعنا على الخريطة' }
+        ];
+
+        window.showAlert = (title, msg) => {
+            document.getElementById('alertTitle').innerText = title;
+            document.getElementById('alertMessage').innerText = msg;
+            document.getElementById('utilityAlert').classList.add('active');
+        };
+
+        window.openBooking = () => document.getElementById('bookingModal').classList.add('active');
+        window.closeBooking = () => document.getElementById('bookingModal').classList.remove('active');
+        window.copyURL = () => { navigator.clipboard.writeText(window.location.href); window.showAlert("تم النسخ", "تم نسخ الرابط بنجاح."); };
+        window.processLogin = () => window.showAlert("تسجيل الدخول", "تم تسجيل الدخول بنجاح.");
+
+        const firebaseConfig = { apiKey: "AIzaSyAxxWhIBlC92x_T4lBjDj7p7B3hrvhVZYg", authDomain: "alaqrab-system.firebaseapp.com", projectId: "alaqrab-system" };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        
+        let targetUserId = window.location.hash.replace(/^#\/?/, '').trim() || (new URLSearchParams(window.location.search)).get('id');
+
+        // Loader Sequence (3-4 Seconds Raw Cards)
+        const loader = document.getElementById('aqrab-loader');
+        loader.style.display = 'flex';
+        setTimeout(() => { loader.style.opacity = '0'; setTimeout(() => loader.style.display = 'none', 500); }, 3500);
+
+        if (targetUserId) {
+            onSnapshot(doc(db, "users", targetUserId), (docSnap) => {
+                if (!docSnap.exists()) return;
+                const data = docSnap.data();
+                
+                document.getElementById('fullApp').style.display = 'block';
+
+                // Core Identity (Strict Circular Pic)
+                const picSrc = data.profilePic || 'https://g.top4top.io/p_37506wvlg0.png';
+                document.getElementById('brandName').innerHTML = `${data.displayName || 'الاسم'} <img src="${picSrc}" class="profile-pic">`;
+                document.getElementById('brandTitle').innerText = data.title || '';
+                document.getElementById('mainHeroImg').src = data.heroImg || 'https://g.top4top.io/p_374327hvm1.jpg';
+                document.getElementById('loginModalLogo').src = picSrc;
+
+                // FONT ENGINE
+                if(data.fontFamily) {
+                    document.documentElement.style.setProperty('--font-ar', `'${data.fontFamily}', serif`);
+                    document.documentElement.style.setProperty('--font-en', `'${data.fontFamily}', sans-serif`);
+                }
+
+                // TEMPLATE MODE (Default vs Premium)
+                if(data.templateMode === 'premium') {
+                    document.body.classList.add('premium-mode');
+                } else {
+                    document.body.classList.remove('premium-mode');
+                }
+
+                // MASTER TOGGLE LOGIC - HEADER BUTTONS
+                document.getElementById('btnPhone').style.display = (data.showPhone === false) ? 'none' : 'flex'; // Default true if undefined
+                
+                const btnMap = document.getElementById('btnMap');
+                if (data.showMap !== false && (data.googleMaps || data.mapLink)) {
+                    btnMap.style.display = 'flex';
+                    btnMap.href = data.googleMaps || data.mapLink;
+                } else {
+                    btnMap.style.display = 'none';
+                }
+
+                document.getElementById('btnBookingTop').style.display = (data.showBookingTop === false) ? 'none' : 'flex';
+
+                // MASTER TOGGLE LOGIC - SECTIONS
+                document.getElementById('bookingSection').style.display = (data.showBookingSection === false) ? 'none' : 'block';
+
+                let showPay = false;
+                if ((data.showInstapay || data.instapay) && data.showPaymentSection !== false) {
+                    document.getElementById('instapayCard').style.display = 'flex'; showPay = true;
+                } else { document.getElementById('instapayCard').style.display = 'none'; }
+                
+                if ((data.showWallet || data.walletNumber) && data.showPaymentSection !== false) {
+                    document.getElementById('walletCard').style.display = 'flex'; showPay = true;
+                } else { document.getElementById('walletCard').style.display = 'none'; }
+                document.getElementById('paymentSection').style.display = showPay ? 'block' : 'none';
+
+                // MASTER TOGGLE LOGIC - SOCIAL CARDS
+                const socialContainer = document.getElementById('socialCardsContainer');
+                socialContainer.innerHTML = '';
+                let hasSocial = false;
+
+                SOCIAL_PLATFORMS.forEach(p => {
+                    // Check if boolean explicitly false, or if no link provided
+                    if (data[p.showKey] !== false && data[p.key]) {
+                        hasSocial = true;
+                        socialContainer.innerHTML += `
+                            <a href="${data[p.key]}" target="_blank" class="glass-card">
+                                <div class="card-icon" style="color:${p.color};"><i class="fa-brands ${p.icon}"></i></div>
+                                <div class="card-text"><strong>${p.label}</strong><span>${p.sub}</span></div>
+                            </a>
+                        `;
+                    }
+                });
+
+                document.getElementById('socialSection').style.display = hasSocial ? 'block' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>
