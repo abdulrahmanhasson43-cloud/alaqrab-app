@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Al-Aqrab Premium — Updated</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700&family=Noto+Naskh+Arabic:wght@400;700&family=Almarai:wght@400;700&family=Lateef&family=Scheherazade+New&family=Reem+Kufi:wght@400;700&family=Markazi+Text:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,600&family=DM+Serif+Display:ital@0;1&family=Libre+Baskerville:wght@400;700&family=Nunito:wght@400;600;700&family=Raleway:wght@400;500;700&family=Josefin+Sans:wght@400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* ═══════════════════════════════════════════
+           CLOUD-READY ROOT VARIABLES
+        ═══════════════════════════════════════════ */
+        :root {
+            /* ── Brand Identity ── */
+            --brand-name: "Al-Aqrab";
+
+            /* ── Font Engine ── */
+            --font-ar: 'Amiri', serif;
+            --font-en: 'Inter', sans-serif;
+            --font-brand: 'Playfair Display', serif;
+            --font-ui: 'Cairo', sans-serif;
+
+            /* ── Old Money Luxury Palette ── */
+            --bg-primary:     #fdfbf7;
+            --bg-secondary:   #f5f1eb;
+            --glass-bg:       rgba(253, 251, 247, 0.7);
+            --glass-border:   rgba(255, 255, 255, 0.65);
+            --card-bg:        rgba(255, 255, 255, 0.6);
+            --input-bg:       #ffffff;
+            --input-border:   rgba(0, 0, 0, 0.08);
+
+            /* ── Typography ── */
+            --text-main:      #1a1a18;
+            --text-secondary: #5a574f;
+            --text-muted:     #9a9589;
+
+            /* ── Accent Colors ── */
+            --accent:         #0d9488;
+            --accent-grad:    linear-gradient(135deg, #0d9488 0%, #0891b2 100%);
+            --accent-glow:    rgba(13, 148, 136, 0.22);
+            
+            /* ── PLATINUM VIP — REMOVED GOLD ── */
+            --vip-platinum:   #a0a09e; /* Platinum-Silver */
+            --vip-new-grad:   linear-gradient(135deg, #1c1c1a 0%, #3a3a37 100%); /* Dark VIP Gradient */
+            --vip-new-accent: #f2f2f0; /* Ghostly White Accent */
+
+            --dark-navy:      #0f172a;
+            --success:        #16a34a;
+            --danger:         #dc2626;
+
+            /* ── Glassmorphism ── */
+            --glass-blur:     blur(45px) saturate(180%);
+            --glass-blur-md:  blur(24px) saturate(160%);
+            --glass-blur-sm:  blur(12px);
+            --glass-glow:     0 8px 32px rgba(255, 255, 255, 0.15); /* Glass-Refraction Glow */
+
+            /* ── Shadows ── */
+            --shadow-xs:  0 1px 4px rgba(0,0,0,0.04);
+            --shadow-sm:  0 2px 10px rgba(0,0,0,0.06);
+            --shadow-md:  0 6px 20px rgba(0,0,0,0.10);
+            --shadow-lg:  0 16px 40px rgba(0,0,0,0.14);
+            --shadow-xl:  0 28px 60px rgba(0,0,0,0.18);
+
+            /* ── Motion ── */
+            --ease-spring: cubic-bezier(0.2, 1.2, 0.4, 1);
+            --ease-out:    cubic-bezier(0.25, 1, 0.5, 1);
+            --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+            --t-fast:   0.18s;
+            --t-base:   0.30s var(--ease-out);
+            --t-slow:   0.50s var(--ease-smooth);
+
+            /* ── Border Radius ── */
+            --r-sm:  10px;
+            --r-md:  16px;
+            --r-lg:  24px;
+            --r-xl:  32px;
+            --r-2xl: 40px;
+        }
+
+        /* ── Dark Theme (Cloud-driven) ── */
+        [data-theme="dark"] {
+            --bg-primary:    #0f0e0c;
+            --bg-secondary:  #1a1a15;
+            --glass-bg:      rgba(25, 24, 20, 0.75);
+            --glass-border:  rgba(255, 255, 255, 0.08);
+            --card-bg:       rgba(40, 38, 32, 0.80);
+            --input-bg:      #252318;
+            --input-border:  rgba(255, 255, 255, 0.09);
+            --text-main:     #f5f3ed;
+            --text-secondary:#c8c4b8;
+            --text-muted:    #7a766c;
+        }
+
+        /* ═══════════════════════════════════════════
+           GLOBAL RESET & BASE STYLES
+        ═══════════════════════════════════════════ */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-primary);
+            font-family: var(--font-ar);
+            color: var(--text-main);
+            overflow-x: hidden;
+            transition: background-color var(--t-slow), color var(--t-slow);
+            scrollbar-width: thin;
+            scrollbar-color: var(--vip-platinum) var(--bg-secondary);
+        }
+
+        body::-webkit-scrollbar { width: 7px; }
+        body::-webkit-scrollbar-track { background: var(--bg-secondary); }
+        body::-webkit-scrollbar-thumb { background: var(--vip-platinum); border-radius: 4px; }
+
+        /* ═══════════════════════════════════════════
+           REIMAGINED LOADER — COLOR CARDS (No Gold)
+        ═══════════════════════════════════════════ */
+        #aqrab-loader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-primary);
+            transition: opacity 0.6s var(--ease-smooth), transform 0.6s var(--ease-smooth);
+            overflow: hidden;
+        }
+
+        .loader-ambient {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+        .loader-ambient::before {
+            content: '';
+            position: absolute;
+            width: 600px; height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+            top: 50%; left: 50%;
+            transform: translate(-50%,-55%);
+            animation: ambientPulse 4s ease-in-out infinite;
+        }
+        @keyframes ambientPulse {
+            0%, 100% { transform: translate(-50%,-50%) scale(1); opacity: 0.6; }
+            50%       { transform: translate(-50%,-50%) scale(1.15); opacity: 1; }
+        }
+
+        /* Centered Glass Panel */
+        .loader-main-glass {
+            position: relative;
+            z-index: 2;
+            width: min(380px, 90vw);
+            padding: 50px 40px 44px;
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--r-2xl);
+            box-shadow: var(--shadow-xl), var(--glass-glow),
+                        inset 0 1px 0 rgba(255,255,255,0.7),
+                        inset 0 -1px 0 rgba(0,0,0,0.03);
+            text-align: center;
+            animation: loaderCardIn 0.8s var(--ease-spring) both;
+        }
+        @keyframes loaderCardIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.92); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Color Cards Loading Area — NO GOLD */
+        .color-cards-loading {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 32px;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            border: 1px solid var(--glass-border);
+            display: flex; align-items: center; justify-content: center;
+        }
+        
+        .card-rotator {
+            position: absolute;
+            inset: 0;
+            animation: cardRotate 3s linear infinite;
+        }
+        
+        .card {
+            position: absolute;
+            width: 30px; height: 40px;
+            background: var(--card-bg);
+            border-radius: 6px;
+            top: 5px; left: 50%;
+            transform: translateX(-50%) rotate(0deg);
+            transform-origin: 50% 55px;
+            opacity: 0.6;
+            transition: all var(--t-fast);
+        }
+        
+        .card-1 { background: #f94144; transform: translateX(-50%) rotate(0deg); animation-delay: -0.0s; }
+        .card-2 { background: #f3722c; transform: translateX(-50%) rotate(40deg); animation-delay: -0.3s; }
+        .card-3 { background: #f9c74f; transform: translateX(-50%) rotate(80deg); animation-delay: -0.6s; }
+        .card-4 { background: #90be6d; transform: translateX(-50%) rotate(120deg); animation-delay: -0.9s; }
+        .card-5 { background: #43aa8b; transform: translateX(-50%) rotate(160deg); animation-delay: -1.2s; }
+        .card-6 { background: #277da1; transform: translateX(-50%) rotate(200deg); animation-delay: -1.5s; }
+        .card-7 { background: #f3722c; transform: translateX(-50%) rotate(240deg); animation-delay: -1.8s; }
+        .card-8 { background: #9a8c98; transform: translateX(-50%) rotate(280deg); animation-delay: -2.1s; }
+        
+        @keyframes cardRotate {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+        
+        .card-rotator .card { opacity: 1; } /* Active color effect */
+        
+        .loader-center-icon {
+            font-size: 28px;
+            color: var(--vip-platinum);
+            z-index: 3;
+        }
+
+        /* Loader Brand & Text — NO GOLD */
+        .loader-brand-text {
+            font-family: var(--font-brand);
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+        .loader-subtitle {
+            font-family: var(--font-ui);
+            font-size: 13px;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+            margin-bottom: 28px;
+        }
+
+        /* Progress Bar */
+        .loader-progress-track {
+            width: 100%;
+            height: 3px;
+            background: rgba(0,0,0,0.06);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        [data-theme="dark"] .loader-progress-track {
+            background: rgba(255,255,255,0.08);
+        }
+        .loader-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--accent-grad);
+            border-radius: 2px;
+            animation: progressFill 5s linear forwards;
+        }
+        @keyframes progressFill {
+            from { width: 0%; }
+            to   { width: 100%; }
+        }
+
+        /* ═══════════════════════════════════════════
+           MAIN APP CONTAINER
+        ═══════════════════════════════════════════ */
+        .app-container {
+            width: 100%;
+            max-width: 430px;
+            margin: 0 auto;
+            min-height: 100vh;
+            position: relative;
+            direction: rtl;
+        }
+
+        .hero-bg {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            max-width: 430px;
+            height: 55vh;
+            z-index: 1;
+            overflow: hidden;
+        }
+        .hero-img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            object-position: center 15%;
+            transition: transform 0.8s var(--ease-out);
+        }
+        .hero-bg::after {
+            content: '';
+            position: absolute; bottom: 0; left: 0;
+            width: 100%; height: 35%;
+            background: linear-gradient(to bottom, transparent, var(--bg-primary));
+            transition: background var(--t-slow);
+        }
+
+        /* Main Glassmorphism Panel */
+        .fog-panel {
+            position: relative;
+            z-index: 5;
+            margin-top: 45vh;
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border-radius: var(--r-2xl) var(--r-2xl) 0 0;
+            border: 1px solid var(--glass-border);
+            border-bottom: none;
+            padding: 40px 20px 120px;
+            min-height: 60vh;
+            box-shadow: 0 -20px 40px rgba(0,0,0,0.04),
+                        inset 0 1px 0 rgba(255,255,255,0.8);
+            animation: panelUp 0.9s var(--ease-spring) both;
+            transition: all var(--t-slow);
+        }
+        @keyframes panelUp {
+            from { transform: translateY(80px); opacity: 0; }
+            to   { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Header */
+        .header-content { text-align: center; margin-bottom: 32px; }
+        .name-wrapper {
+            display: flex; align-items: center;
+            justify-content: center; margin-bottom: 6px;
+        }
+        .name-wrapper h1 {
+            margin: 0;
+            font-size: 30px; font-weight: 700;
+            color: var(--text-main);
+            font-family: var(--font-ar);
+            display: flex; align-items: center;
+            justify-content: center; gap: 8px;
+            transition: color var(--t-slow);
+        }
+        .title-text {
+            font-size: 13px; color: var(--text-muted);
+            letter-spacing: 1.2px; display: block;
+            margin-top: 5px; font-family: var(--font-en);
+            transition: color var(--t-slow);
+        }
+
+        /* Shard Action Buttons — NO GOLD */
+        .action-row {
+            display: flex; justify-content: center;
+            gap: 8px; margin-bottom: 32px; padding: 0 5px;
+        }
+        .shard-btn {
+            flex: 1; height: 56px;
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur-sm);
+            -webkit-backdrop-filter: var(--glass-blur-sm);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; color: var(--accent);
+            text-decoration: none;
+            border: 1px solid var(--glass-border);
+            transition: all var(--t-base);
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            transform: skew(-12deg);
+        }
+        .shard-btn:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--vip-platinum);
+            background: rgba(255,255,255,0.85);
+            color: var(--text-main);
+            transform: skew(-12deg) translateY(-3px);
+        }
+        .shard-btn > i { transform: skew(12deg); }
+        .shard-btn:nth-child(1) { border-radius: 18px 6px 14px 6px; flex: 1.1; }
+        .shard-btn:nth-child(2) { border-radius: 6px 16px 6px 12px; flex: 0.9; }
+        .shard-btn:nth-child(3) { border-radius: 12px 6px 16px 6px; flex: 1; }
+        .shard-btn:nth-child(4) { border-radius: 6px 14px 6px 18px; flex: 1.1; }
+
+        /* Save Contact Button */
+        .save-btn {
+            width: 100%; height: 56px;
+            background: var(--accent-grad);
+            color: #fff;
+            border-radius: var(--r-md);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 18px;
+            margin-bottom: 40px; cursor: pointer;
+            transition: all var(--t-base);
+            box-shadow: 0 10px 24px var(--accent-glow);
+            border: none;
+            font-family: var(--font-ar);
+        }
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 32px var(--accent-glow);
+        }
+
+        /* Section Labels */
+        .section-label {
+            font-size: 15px; font-weight: 700;
+            color: var(--text-muted);
+            margin: 28px 10px 12px;
+            text-align: right; direction: rtl;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: var(--font-ui);
+            transition: color var(--t-slow);
+        }
+
+        /* Glass Cards */
+        .glass-card {
+            display: flex; align-items: center;
+            background: var(--card-bg);
+            padding: 18px 18px;
+            border-radius: var(--r-lg);
+            text-decoration: none;
+            margin-bottom: 10px;
+            border: 1px solid var(--glass-border);
+            transition: all var(--t-base);
+            cursor: pointer;
+            direction: rtl; text-align: right;
+            box-shadow: var(--shadow-xs);
+        }
+        .glass-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--vip-platinum);
+            background: rgba(255,255,255,0.85);
+        }
+        .glass-card:active { transform: scale(0.98); }
+        .card-icon {
+            width: 44px; height: 44px;
+            border-radius: var(--r-sm);
+            display: flex; align-items: center;
+            justify-content: center; font-size: 22px;
+            margin-left: 15px;
+            background: var(--bg-secondary);
+            box-shadow: var(--shadow-xs);
+            transition: all var(--t-base);
+        }
+        .glass-card:hover .card-icon { transform: scale(1.1) rotate(5deg); }
+        .card-text { flex: 1; }
+        .card-text strong {
+            display: block; font-size: 17px;
+            color: var(--text-main); margin-bottom: 2px;
+            transition: color var(--t-slow);
+        }
+        .card-text span {
+            font-size: 13px; color: var(--text-secondary);
+            transition: color var(--t-slow);
+        }
+
+        /* About Box */
+        .about-box {
+            background: var(--card-bg);
+            border-radius: var(--r-xl);
+            padding: 36px 22px;
+            margin-top: 36px;
+            border: 1px solid var(--glass-border);
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: all var(--t-slow);
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 22px 0;
+            padding-bottom: 22px;
+            border-bottom: 1px dashed var(--input-border);
+        }
+        .stat-item b {
+            display: block; font-size: 22px;
+            color: var(--text-main);
+            transition: color var(--t-slow);
+        }
+        .stat-item span {
+            font-size: 12px; color: var(--text-muted);
+            font-family: var(--font-ui);
+        }
+        .about-p {
+            font-size: 16px; color: var(--text-secondary);
+            line-height: 1.8; margin-bottom: 18px;
+            direction: rtl; transition: color var(--t-slow);
+        }
+        .footer-rights {
+            font-size: 12px; color: var(--text-muted);
+            padding-top: 12px; font-family: var(--font-en);
+        }
+
+        /* ═══════════════════════════════════════════
+           CENTERED GLASS CARD — OVERLAY PATTERN
+        ═══════════════════════════════════════════ */
+        .glass-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 14, 12, 0.45);
+            z-index: 9000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: var(--glass-blur-sm);
+            -webkit-backdrop-filter: var(--glass-blur-sm);
+            padding: 20px;
+        }
+        .glass-overlay.active { display: flex; }
+
+        .glass-popup {
+            background: var(--input-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--r-xl);
+            box-shadow: var(--shadow-xl),
+                        inset 0 1px 0 rgba(255,255,255,0.8);
+            width: 100%;
+            max-width: 360px;
+            overflow: hidden;
+            animation: popupIn 0.35s var(--ease-spring) both;
+        }
+        @keyframes popupIn {
+            from { transform: scale(0.88) translateY(16px); opacity: 0; }
+            to   { transform: scale(1) translateY(0); opacity: 1; }
+        }
+        .popup-header {
+            padding: 18px 20px 14px;
+            text-align: center;
+            border-bottom: 1px solid var(--input-border);
+            background: var(--card-bg);
+        }
+        .popup-header-title {
+            font-family: var(--font-ui);
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+        .popup-options {
+            max-height: 44vh;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+        .popup-options::-webkit-scrollbar { width: 4px; }
+        .popup-options::-webkit-scrollbar-thumb { background: var(--vip-platinum); border-radius: 2px; }
+        .popup-option {
+            padding: 16px 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--input-border);
+            color: var(--accent);
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: var(--font-ar);
+            transition: all var(--t-fast);
+        }
+        .popup-option:hover { background: var(--card-bg); color: var(--dark-navy); }
+        .popup-option:last-child { border-bottom: none; }
+        .popup-cancel-bar {
+            padding: 16px 20px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--danger);
+            cursor: pointer;
+            font-family: var(--font-ar);
+            border-top: 1px solid var(--input-border);
+            transition: all var(--t-fast);
+        }
+        .popup-cancel-bar:hover { background: rgba(220, 38, 38, 0.05); }
+
+        /* ═══════════════════════════════════════════
+           CENTERED LUXURY CALENDAR
+        ═══════════════════════════════════════════ */
+        .calendar-glass {
+            background: var(--input-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--r-xl);
+            box-shadow: var(--shadow-xl);
+            width: 100%;
+            max-width: 380px;
+            padding: 0;
+            overflow: hidden;
+            animation: popupIn 0.35s var(--ease-spring) both;
+        }
+        .cal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 20px 14px;
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--input-border);
+        }
+        .cal-month-label {
+            font-family: var(--font-ui);
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        .cal-nav-btn {
+            width: 36px; height: 36px;
+            border: 1px solid var(--input-border);
+            background: var(--input-bg);
+            border-radius: var(--r-sm);
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+            transition: all var(--t-fast);
+        }
+        .cal-nav-btn:hover { border-color: var(--vip-platinum); color: var(--vip-platinum); }
+        .cal-grid-area { padding: 16px 16px 12px; }
+        .cal-day-names {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+        .cal-day-name {
+            text-align: center; font-size: 11px;
+            font-weight: 700; color: var(--text-muted);
+            font-family: var(--font-ui);
+            padding: 4px 0;
+        }
+        .cal-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+        .cal-day {
+            aspect-ratio: 1;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px; font-weight: 500;
+            cursor: pointer;
+            color: var(--text-main);
+            transition: all var(--t-fast);
+        }
+        .cal-day:hover { background: var(--bg-secondary); transform: scale(1.12); }
+        .cal-day.disabled {
+            color: var(--text-muted); pointer-events: none; opacity: 0.4;
+        }
+        .cal-day.today {
+            border: 1.5px solid var(--accent);
+            color: var(--accent); font-weight: 700;
+        }
+        .cal-day.selected {
+            background: var(--accent-grad);
+            color: #fff;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(13,148,136,0.3);
+            transform: scale(1.1);
+        }
+        .cal-footer {
+            padding: 14px 16px;
+            border-top: 1px solid var(--input-border);
+        }
+
+        /* ═══════════════════════════════════════════
+           GLASS ALERT (CENTERED)
+        ═══════════════════════════════════════════ */
+        .alert-glass {
+            background: var(--input-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--r-lg);
+            box-shadow: var(--shadow-xl);
+            width: 300px;
+            overflow: hidden;
+            text-align: center;
+            animation: popupIn 0.3s var(--ease-spring) both;
+        }
+        .alert-body { padding: 24px 20px 18px; }
+        .alert-icon {
+            font-size: 28px; margin-bottom: 12px;
+            display: block;
+        }
+        .alert-title {
+            font-weight: 700; font-size: 18px;
+            color: var(--text-main);
+            margin-bottom: 6px;
+            font-family: var(--font-ar);
+        }
+        .alert-message {
+            font-size: 14px; color: var(--text-secondary);
+            line-height: 1.6; font-family: var(--font-ar);
+        }
+        .alert-btn {
+            width: 100%; height: 46px;
+            background: none;
+            border: none;
+            border-top: 1px solid var(--input-border);
+            color: var(--accent);
+            font-size: 17px; font-weight: 700;
+            cursor: pointer;
+            font-family: var(--font-ar);
+            transition: all var(--t-fast);
+        }
+        .alert-btn:hover { background: var(--card-bg); }
+
+        /* ═══════════════════════════════════════════
+           PHONE SHEET (CENTERED)
+        ═══════════════════════════════════════════ */
+        .phone-popup {
+            background: var(--input-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--r-xl);
+            box-shadow: var(--shadow-xl);
+            width: 100%; max-width: 320px;
+            overflow: hidden;
+            animation: popupIn 0.35s var(--ease-spring) both;
+        }
+        .phone-popup-header {
+            padding: 18px;
+            text-align: center;
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--input-border);
+        }
+        .phone-popup-title {
+            font-family: var(--font-ui);
+            font-size: 13px; font-weight: 700;
+            color: var(--text-muted); letter-spacing: 0.8px;
+        }
+        .phone-number-btn {
+            width: 100%; height: 58px;
+            background: none; border: none;
+            border-bottom: 1px solid var(--input-border);
+            color: var(--accent);
+            font-size: 22px; font-weight: 600;
+            cursor: pointer;
+            font-family: var(--font-en);
+            transition: all var(--t-fast);
+            direction: ltr;
+        }
+        .phone-number-btn:hover { background: var(--card-bg); }
+        .phone-number-btn:last-of-type { border-bottom: none; }
+
+        /* ═══════════════════════════════════════════
+           BOOKING MODAL
+        ═══════════════════════════════════════════ */
+        .booking-overlay {
+            position: fixed; inset: 0;
+            background: rgba(10, 10, 8, 0.55);
+            backdrop-filter: var(--glass-blur-sm);
+            -webkit-backdrop-filter: var(--glass-blur-sm);
+            z-index: 1500;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .booking-card {
+            width: 100%; max-width: 420px;
+            background: var(--input-bg);
+            border-radius: var(--r-xl);
+            padding: 26px 22px;
+            box-shadow: var(--shadow-xl);
+            text-align: right; direction: rtl;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid var(--glass-border);
+            font-family: var(--font-ar);
+            transition: all 0.5s ease;
+            animation: popupIn 0.35s var(--ease-spring) both;
+        }
+        .booking-card::-webkit-scrollbar { width: 4px; }
+        .booking-card::-webkit-scrollbar-thumb { background: var(--vip-platinum); border-radius: 2px; }
+
+        /* VIP Active State — FULL PLATINUM TAKE OVER — NO GOLD */
+        .booking-card.vip-active {
+            background: var(--vip-new-grad);
+            border: 1.5px solid var(--vip-platinum);
+            box-shadow: var(--shadow-xl), var(--glass-glow);
+        }
+        .booking-card.vip-active .tab-btn.active {
+            background: var(--glass-border);
+            color: var(--vip-new-accent);
+        }
+        .booking-card.vip-active .tab-btn { color: rgba(255,255,255,0.55); }
+        .booking-card.vip-active .switch-tabs { background: rgba(255,255,255,0.07); }
+        .booking-card.vip-active label,
+        .booking-card.vip-active h3 { color: #fff !important; }
+        .booking-card.vip-active .input-field,
+        .booking-card.vip-active .custom-select-trigger {
+            background: rgba(255,255,255,0.08) !important;
+            color: #fff !important;
+            border-color: rgba(255,255,255,0.15) !important;
+        }
+        .booking-card.vip-active .input-field::placeholder { color: rgba(255,255,255,0.4); }
+        .booking-card.vip-active .price-box {
+            background: rgba(255,255,255,0.05) !important;
+            border-color: var(--vip-platinum) !important;
+        }
+        .booking-card.vip-active .price-box .price-amount { color: var(--vip-new-accent) !important; }
+
+        /* Booking Tabs */
+        .switch-tabs {
+            display: flex;
+            background: var(--bg-secondary);
+            border-radius: var(--r-sm);
+            padding: 4px; margin-bottom: 22px;
+            transition: all var(--t-slow);
+        }
+        .tab-btn {
+            flex: 1; padding: 10px;
+            text-align: center; font-size: 15px;
+            font-weight: 700; cursor: pointer;
+            border-radius: 7px;
+            transition: all var(--t-base);
+            color: var(--text-secondary);
+            font-family: var(--font-ui);
+        }
+        .tab-btn.active {
+            background: var(--input-bg);
+            box-shadow: var(--shadow-sm);
+            color: var(--accent);
+        }
+
+        /* Form Controls */
+        .form-label {
+            display: block;
+            font-size: 13px; font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 7px;
+            font-family: var(--font-ui);
+            letter-spacing: 0.4px;
+        }
+        .input-field {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1.5px solid var(--input-border);
+            border-radius: var(--r-md);
+            background: var(--bg-secondary);
+            font-family: var(--font-ar);
+            font-size: 16px;
+            color: var(--text-main);
+            box-shadow: var(--shadow-xs);
+            transition: all var(--t-base);
+            outline: none;
+        }
+        .input-field:focus {
+            border-color: var(--accent);
+            background: var(--input-bg);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+        .input-field::placeholder { color: var(--text-muted); }
+
+        /* Custom Select Trigger */
+        .custom-select-trigger {
+            position: relative; cursor: pointer;
+            user-select: none; display: flex;
+            align-items: center; width: 100%;
+            padding: 14px 16px;
+            border: 1.5px solid var(--input-border);
+            border-radius: var(--r-md);
+            background: var(--bg-secondary);
+            font-family: var(--font-ar);
+            font-size: 16px; color: var(--text-main);
+            box-shadow: var(--shadow-xs);
+            transition: all var(--t-base);
+            text-align: right; direction: rtl;
+        }
+        .custom-select-trigger:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent-glow);
+        }
+        .custom-select-trigger::after {
+            content: '\f107';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute; left: 16px;
+            color: var(--text-muted); font-size: 13px;
+            transition: transform var(--t-base);
+            pointer-events: none;
+        }
+
+        /* Appointment Cards */
+        .appointment-card {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            padding: 16px; border-radius: var(--r-md);
+            margin-bottom: 10px; text-align: right;
+            position: relative;
+            transition: all var(--t-base);
+            box-shadow: var(--shadow-xs);
+        }
+        .cancel-btn {
+            background: var(--danger); color: #fff;
+            border: none; padding: 8px 16px;
+            border-radius: var(--r-sm);
+            font-family: var(--font-ar);
+            cursor: pointer; font-size: 14px;
+            font-weight: bold; margin-top: 10px;
+            transition: all var(--t-base);
+            box-shadow: 0 4px 12px rgba(220,38,38,0.28);
+        }
+        .cancel-btn:hover { transform: translateY(-2px); opacity: 0.9; }
+
+        /* VIP Message Block — NO GOLD */
+        .vip-priority-block {
+            display: none;
+            text-align: center;
+            margin-bottom: 16px;
+            padding: 24px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--r-lg);
+            animation: popupIn 0.4s var(--ease-spring) both;
+        }
+        .vip-crown-icon {
+            font-size: 36px; display: block;
+            margin-bottom: 12px;
+            color: var(--vip-platinum);
+            animation: crownFloat 2s ease-in-out infinite;
+        }
+        @keyframes crownFloat {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(-6px); }
+        }
+        .vip-priority-title {
+            font-size: 20px; font-weight: 800;
+            color: #fff;
+            margin-bottom: 6px;
+            font-family: var(--font-ar);
+        }
+        .vip-priority-sub {
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+            font-family: var(--font-ui);
+            line-height: 1.5;
+        }
+        .vip-badge {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 4px 16px;
+            background: var(--glass-border);
+            border-radius: 20px;
+            font-size: 12px; font-weight: 700;
+            color: var(--vip-new-accent);
+            font-family: var(--font-ui);
+            letter-spacing: 1px;
+        }
+
+        /* Price Display */
+        .price-box {
+            text-align: center;
+            background: var(--bg-secondary);
+            padding: 14px;
+            border-radius: var(--r-md);
+            border: 1.5px dashed var(--input-border);
+            margin-bottom: 20px;
+        }
+        .price-label {
+            font-size: 14px; font-weight: 600;
+            color: var(--text-secondary);
+            font-family: var(--font-ui);
+        }
+        .price-amount {
+            font-size: 22px; font-weight: 800;
+            color: var(--text-main);
+        }
+
+        /* Booking Spinner */
+        .spinner-layer {
+            position: absolute; inset: 0;
+            background: rgba(253, 251, 247, 0.88);
+            z-index: 10; display: none;
+            align-items: center; justify-content: center;
+            flex-direction: column;
+            border-radius: var(--r-xl);
+            color: var(--dark-navy); font-weight: bold;
+            backdrop-filter: blur(4px);
+        }
+
+        /* ═══════════════════════════════════════════
+           LANDING PAGE
+        ═══════════════════════════════════════════ */
+        #landingPage {
+            display: none;
+            position: relative;
+            min-height: 100vh;
+            font-family: var(--font-ar);
+            flex-direction: column;
+            direction: rtl;
+            overflow-x: hidden;
+            background: linear-gradient(150deg, #f8f6f0 0%, #f0ede5 40%, #ece8f5 100%);
+            transition: background var(--t-slow);
+        }
+        [data-theme="dark"] #landingPage {
+            background: linear-gradient(150deg, #1a1a14 0%, #16140e 40%, #0f0f20 100%);
+        }
+        .lp-blob {
+            position: absolute; border-radius: 50%;
+            filter: blur(70px); opacity: 0.3;
+            pointer-events: none; z-index: 0;
+        }
+        .lp-blob-1 {
+            width: 450px; height: 450px;
+            background: radial-gradient(circle, rgba(13,148,136,0.1) 0%, transparent 70%);
+            top: -100px; left: -130px;
+        }
+        .lp-blob-2 {
+            width: 380px; height: 380px;
+            background: radial-gradient(circle, rgba(180,120,200,0.15), transparent);
+            top: 40%; left: 50%;
+        }
+        
+        .lp-nav {
+            position: relative; z-index: 10;
+            display: flex; align-items: center;
+            justify-content: space-between;
+            padding: 36px 6% 10px;
+        }
+        .lp-nav-logo {
+            display: flex; align-items: center; gap: 12px;
+        }
+        .lp-nav-brand {
+            font-size: 28px; font-weight: 700;
+            color: var(--dark-navy);
+            font-family: var(--font-brand);
+            transition: color var(--t-slow);
+        }
+        [data-theme="dark"] .lp-nav-brand { color: #f5f3ed; }
+        .lp-nav-brand span { color: var(--accent); }
+        
+        /* Centered Log-in Button Style from Reference — image_7.png */
+        .lp-nav-login {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            color: var(--text-main);
+            font-size: 14px; font-weight: 700;
+            font-family: var(--font-ui);
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            transition: all var(--t-base);
+            box-shadow: var(--shadow-sm);
+        }
+        .lp-nav-login:hover {
+            border-color: var(--vip-platinum);
+            background: #fff;
+            transform: translateY(-2px);
+        }
+
+        .lp-hero {
+            position: relative; z-index: 5;
+            flex: 1; display: flex;
+            flex-direction: column;
+            align-items: center; justify-content: center;
+            text-align: center;
+            padding: 40px 6%;
+            min-height: calc(100vh - 120px);
+        }
+        .lp-badge {
+            display: inline-flex; align-items: center;
+            gap: 8px;
+            background: rgba(13,148,136,0.06);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 7px 20px;
+            font-size: 13px; color: var(--text-secondary);
+            font-weight: 700; margin-bottom: 28px;
+            font-family: var(--font-ui);
+        }
+        .lp-badge > i { color: var(--vip-platinum); }
+        
+        .lp-hero-title {
+            font-size: clamp(38px, 8vw, 64px);
+            font-weight: 800;
+            color: var(--dark-navy);
+            line-height: 1.15; margin: 0 0 20px;
+            font-family: var(--font-ar);
+            transition: color var(--t-slow);
+        }
+        [data-theme="dark"] .lp-hero-title { color: #f5f3ed; }
+        .lp-hero-title span { color: var(--accent); }
+        .lp-hero-sub {
+            font-size: clamp(15px, 3vw, 18px);
+            color: var(--text-secondary);
+            max-width: 560px; line-height: 1.9;
+            margin: 0 auto 42px; font-weight: 500;
+            transition: color var(--t-slow);
+        }
+        .lp-hero-ctas {
+            display: flex; align-items: center;
+            justify-content: center; gap: 14px;
+            flex-wrap: wrap;
+        }
+        .lp-cta-primary {
+            display: inline-flex; align-items: center;
+            gap: 10px; padding: 16px 38px;
+            font-size: 18px; font-family: var(--font-ar);
+            font-weight: 700; color: #fff;
+            background: var(--accent-grad);
+            border-radius: 50px; border: none;
+            cursor: pointer;
+            box-shadow: 0 12px 32px var(--accent-glow);
+            transition: all var(--t-base);
+        }
+        .lp-cta-primary:hover { transform: translateY(-3px); box-shadow: 0 20px 42px var(--accent-glow); }
+        .lp-cta-secondary {
+            display: inline-flex; align-items: center;
+            gap: 10px; padding: 14px 32px;
+            font-size: 17px; font-family: var(--font-ar);
+            font-weight: 700; color: var(--dark-navy);
+            background: rgba(255,255,255,0.75);
+            border-radius: 50px;
+            border: 1.5px solid rgba(0,0,0,0.08);
+            cursor: pointer; backdrop-filter: blur(10px);
+            transition: all var(--t-base);
+            box-shadow: var(--shadow-sm);
+        }
+        .lp-cta-secondary:hover { background: #fff; transform: translateY(-2px); }
+        [data-theme="dark"] .lp-cta-secondary {
+            color: #f5f3ed;
+            background: rgba(30,28,22,0.7);
+            border-color: rgba(255,255,255,0.1);
+        }
+        
+        .lp-features {
+            position: relative; z-index: 5;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px; padding: 0 6% 70px;
+            max-width: 960px; margin: 0 auto;
+            width: 100%;
+        }
+        .lp-feat-card {
+            background: rgba(255,255,255,0.65);
+            backdrop-filter: var(--glass-blur-md);
+            -webkit-backdrop-filter: var(--glass-blur-md);
+            border: 1px solid rgba(255,255,255,0.8);
+            border-radius: var(--r-xl);
+            padding: 28px 22px; text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: all var(--t-base);
+        }
+        .lp-feat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--vip-platinum);
+        }
+        [data-theme="dark"] .lp-feat-card {
+            background: rgba(40,38,30,0.65);
+            border-color: rgba(255,255,255,0.08);
+        }
+        .lp-feat-icon {
+            width: 52px; height: 52px; border-radius: var(--r-md);
+            background: rgba(13,148,136,0.08);
+            display: flex; align-items: center;
+            justify-content: center; font-size: 22px;
+            color: var(--accent); margin: 0 auto 16px;
+        }
+        .lp-feat-title {
+            font-size: 17px; font-weight: 700;
+            color: var(--dark-navy); margin-bottom: 8px;
+            font-family: var(--font-ui);
+            transition: color var(--t-slow);
+        }
+        [data-theme="dark"] .lp-feat-title { color: #f5f3ed; }
+        .lp-feat-desc {
+            font-size: 14px; color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        .lp-footer {
+            position: relative; z-index: 5;
+            text-align: center; padding: 20px;
+            font-size: 12px; color: var(--text-muted);
+            border-top: 1px solid rgba(0,0,0,0.06);
+            font-family: var(--font-en);
+        }
+
+        /* ═══════════════════════════════════════════
+           RESPONSIVE
+        ═══════════════════════════════════════════ */
+        @media (max-width: 480px) {
+            .booking-card { border-radius: var(--r-lg); }
+            .lp-hero-title { font-size: 40px; }
+            .loader-main-glass { padding: 40px 28px 36px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="aqrab-loader">
+        <div class="loader-ambient"></div>
+        <div class="loader-main-glass">
+
+            <div class="color-cards-loading">
+                <div class="card-rotator">
+                    <div class="card card-1"></div>
+                    <div class="card card-2"></div>
+                    <div class="card card-3"></div>
+                    <div class="card card-4"></div>
+                    <div class="card card-5"></div>
+                    <div class="card card-6"></div>
+                    <div class="card card-7"></div>
+                    <div class="card card-8"></div>
+                </div>
+                <div class="loader-center-icon">
+                    <i class="fa-solid fa-crown"></i>
+                </div>
+            </div>
+
+            <div class="loader-brand-text">Al-Aqrab</div>
+            <div class="loader-subtitle">
+                <span style="font-family: var(--font-ar);">جاري تهيئة المنصة...</span>
+            </div>
+
+            <div class="loader-progress-track">
+                <div class="loader-progress-bar" id="loaderProgressBar"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="landingPage">
+        <div class="lp-blob lp-blob-1"></div>
+        <div class="lp-blob lp-blob-2"></div>
+        <nav class="lp-nav">
+            <div class="lp-nav-logo">
+                <div class="lp-nav-brand">Al-<span>Aqrab</span></div>
+            </div>
+            <button class="lp-nav-login" onclick="window.startNowAction()">
+                تسجيل الدخول
+            </button>
+        </nav>
+        <section class="lp-hero">
+            <div class="lp-badge">
+                <i class="fa-solid fa-crown"></i>
+                منصة Al-Aqrab الاحترافية
+            </div>
+            <h1 class="lp-hero-title">
+                بوابتك الذكية<br>
+                <span>لكل احتياجاتك</span>
+            </h1>
+            <p class="lp-hero-sub">
+                اجمع روابطك وأرقامك وحساباتك في مكان واحد — استقبل المدفوعات، وأدِر حجوزاتك باحترافية وسهولة تامة.
+            </p>
+            <div class="lp-hero-ctas">
+                <button class="lp-cta-primary" onclick="window.startNowAction()">
+                    ابدأ تجربتك الآن <i class="fa-solid fa-arrow-left"></i>
+                </button>
+            </div>
+        </section>
+        <div class="lp-features">
+            <div class="lp-feat-card">
+                <div class="lp-feat-icon"><i class="fa-solid fa-link"></i></div>
+                <div class="lp-feat-title">رابط موحّد</div>
+                <div class="lp-feat-desc">جمّع كل حساباتك ومعلوماتك في رابط واحد أنيق وسهل الوصول.</div>
+            </div>
+            <div class="lp-feat-card">
+                <div class="lp-feat-icon"><i class="fa-solid fa-calendar-check"></i></div>
+                <div class="lp-feat-title">إدارة الحجوزات</div>
+                <div class="lp-feat-desc">دع عملاءك يحجزون مواعيدهم بكل سهولة مع نظام ذكي لمنع التعارض.</div>
+            </div>
+            <div class="lp-feat-card">
+                <div class="lp-feat-icon"><i class="fa-solid fa-bolt"></i></div>
+                <div class="lp-feat-title">استقبال المدفوعات</div>
+                <div class="lp-feat-desc">إنستاباي والمحافظ الإلكترونية جاهزة في صفحتك مباشرةً.</div>
+            </div>
+            <div class="lp-feat-card">
+                <div class="lp-feat-icon"><i class="fa-solid fa-crown"></i></div>
+                <div class="lp-feat-title">تجربة VIP</div>
+                <div class="lp-feat-desc">منح عملائك المميزين أولوية مطلقة بدون انتظار.</div>
+            </div>
+        </div>
+        <div class="lp-footer">
+            All Rights Reserved © <span class="dynamic-year"></span> — Al-Aqrab Premium
+        </div>
+    </div>
+
+    <div id="fullApp" class="app-container" style="display:none;">
+        <div class="hero-bg">
+            <img id="mainHeroImg" src="" class="hero-img" alt="">
+        </div>
+        <div class="fog-panel">
+            <div class="header-content">
+                <div class="name-wrapper">
+                    <h1 id="brandName">جاري التحميل...</h1>
+                </div>
+                <span id="brandTitle" class="title-text" style="direction:ltr;"></span>
+            </div>
+
+            <div class="action-row">
+                <div class="shard-btn" onclick="openPhoneSheet()">
+                    <i class="fa-solid fa-phone"></i>
+                </div>
+                <a id="topMapLink" href="#" class="shard-btn" target="_blank">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                </a>
+                <div class="shard-btn" onclick="openBooking()">
+                    <i class="fa-solid fa-calendar-alt"></i>
+                </div>
+                <div class="shard-btn" onclick="copyURL()">
+                    <i class="fa-solid fa-link"></i>
+                </div>
+            </div>
+
+            <div id="saveContactBtn" class="save-btn" onclick="triggerSaveContact()">
+                <i class="fa-solid fa-address-card" style="margin-left:10px;"></i>
+                حفظ جهة الاتصال
+            </div>
+
+            <div id="socialSection" style="display:none;">
+                <div class="section-label">تواصل معي</div>
+                <div id="socialLinksContainer"></div>
+            </div>
+
+            <div class="about-box">
+                <h2 style="margin:0 0 5px; color:var(--text-main); font-family:var(--font-ar);">نظرة عامة</h2>
+                <div class="stats-grid">
+                    <div class="stat-item"><b id="userCounter">0</b><span>المستخدمين</span></div>
+                    <div class="stat-item"><b id="foundedYear">0</b><span>التأسيس</span></div>
+                    <div class="stat-item"><b id="ratingScore">A+</b><span>التقييم</span></div>
+                </div>
+                <p id="aboutText" class="about-p"></p>
+                <div class="footer-rights" style="direction:ltr;">
+                    All Rights Reserved © <span class="dynamic-year"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="booking-overlay" id="bookingModal">
+        <div class="booking-card" id="mainBookingCard" style="position:relative;">
+
+            <div class="spinner-layer" id="bookingSpinner">
+                <i class="fa-solid fa-spinner fa-spin" style="font-size:32px; margin-bottom:12px;"></i>
+                <span style="font-family:var(--font-ar);">جاري المعالجة...</span>
+            </div>
+
+            <div class="switch-tabs">
+                <div class="tab-btn active" id="tabNew" onclick="switchTab('new')">حجز ميعاد</div>
+                <div class="tab-btn" id="tabMy" onclick="switchTab('my')">مواعيدي</div>
+            </div>
+
+            <div id="newBookingArea">
+                <div style="display:flex; gap:10px; margin-bottom:14px;">
+                    <div style="flex:1;"><label class="form-label">الاسم الكريم</label><input type="text" id="visitorName" class="input-field" placeholder="اسمك"></div>
+                    <div style="flex:1;"><label class="form-label">رقم الهاتف</label><input type="tel" id="visitorPhone" class="input-field" placeholder="٠١xxxxxxxxx"></div>
+                </div>
+                
+                <div style="margin-bottom:14px;">
+                    <label class="form-label">التاريخ</label>
+                    <input type="date" id="bookingDate" style="display:none;" onchange="checkAvailability()">
+                    <div id="bookingDateTrigger" class="custom-select-trigger" onclick="openGlassCalendar()">اختر التاريخ...</div>
+                </div>
+
+                <div class="price-box">
+                    <span class="price-label">تكلفة الحجز — </span>
+                    <span id="priceDisplay" class="price-amount">٠ ج.م</span>
+                </div>
+
+                <div style="display:flex; gap:10px;">
+                    <button onclick="closeBooking()" style="flex:1; height:50px; border-radius:var(--r-md); border:1.5px solid var(--input-border); background:transparent; color:var(--text-secondary); font-family:var(--font-ar); font-weight:700; cursor:pointer;">إغلاق</button>
+                    <button id="confirmBtn" onclick="submitBooking()" style="flex:2; height:50px; border-radius:var(--r-md); border:none; background:var(--dark-navy); color:var(--vip-platinum); font-weight:700; font-family:var(--font-ar); cursor:pointer; font-size:17px;">تأكيد الحجز</button>
+                </div>
+            </div>
+
+            <div id="myBookingsArea" style="display:none;">
+                <div id="myAppointmentsList"></div>
+                <button onclick="closeBooking()" style="width:100%; height:50px; border-radius:var(--r-md); border:1.5px solid var(--input-border); background:transparent; color:var(--text-secondary); font-weight:700; margin-top:14px; font-family:var(--font-ar); cursor:pointer;">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="glass-overlay" id="glassCalendarOverlay" onclick="closeGlassCalendar()">
+        <div class="calendar-glass" onclick="event.stopPropagation()">
+            <div class="cal-header">
+                <button class="cal-nav-btn" onclick="changeCalMonth(-1)"><i class="fa-solid fa-chevron-right"></i></button>
+                <span class="cal-month-label" id="calMonthYearText">أبريل ٢٠٢٦</span>
+                <button class="cal-nav-btn" onclick="changeCalMonth(1)"><i class="fa-solid fa-chevron-left"></i></button>
+            </div>
+            <div class="cal-grid-area">
+                <div class="cal-day-names" id="calDayNamesRow"></div>
+                <div class="cal-days" id="calDaysGrid"></div>
+            </div>
+            <div class="cal-footer"><div class="popup-cancel-bar" style="border-top:none; padding:8px 0;" onclick="closeGlassCalendar()">إلغاء</div></div>
+        </div>
+    </div>
+
+    <div class="glass-overlay" id="glassAlertOverlay">
+        <div class="alert-glass" onclick="event.stopPropagation()">
+            <div class="alert-body">
+                <span class="alert-icon" id="glassAlertIcon">ℹ️</span>
+                <div class="alert-title" id="glassAlertTitle">إشعار</div>
+                <div class="alert-message" id="glassAlertMessage"></div>
+            </div>
+            <button class="alert-btn" onclick="document.getElementById('glassAlertOverlay').classList.remove('active')">موافق</button>
+        </div>
+    </div>
+
+    <div class="glass-overlay" id="phoneOverlay" onclick="closePhoneSheet()">
+        <div class="phone-popup" onclick="event.stopPropagation()">
+            <div class="phone-popup-header"><div class="phone-popup-title">اختر الرقم للاتصال</div></div>
+            <div id="phoneNumbersGroup"></div>
+            <div class="popup-cancel-bar" onclick="closePhoneSheet()">إلغاء</div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, doc, onSnapshot, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey:            "AIzaSyAxxWhIBlC92x_T4lBjDj7p7B3hrvhVZYg",
+            authDomain:        "alaqrab-system.firebaseapp.com",
+            projectId:         "alaqrab-system",
+            storageBucket:     "alaqrab-system.firebasestorage.app",
+            messagingSenderId: "660494503813",
+            appId:             "1:660494503813:web:3f45fc069b3506f8657eec"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db  = getFirestore(app);
+
+        /* ════════════════════════════════════════
+           GLOBAL STATE & UTILS
+        ════════════════════════════════════════ */
+        const _loader       = document.getElementById('aqrab-loader');
+        const LOADER_DURATION_MS = 5000;
+        let   targetUserId  = window.location.hash.replace(/^#\/?/, '').trim() || null;
+        let   currentDomainUrl = window.location.origin;
+        let   dynamicAdminLink = "admin.html";
+        let   userData = {}; // Store user data globally after fetching
+
+        window.toArabicDigits = (str) => str.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+
+        /* ════════════════════════════════════════
+           UI CONTROLS (ALERTS, SHEET)
+        ════════════════════════════════════════ */
+        window.showGlassAlert = (title, msg, icon = 'ℹ️') => {
+            document.getElementById('glassAlertIcon').textContent  = icon;
+            document.getElementById('glassAlertTitle').textContent = title;
+            document.getElementById('glassAlertMessage').textContent = msg;
+            document.getElementById('glassAlertOverlay').classList.add('active');
+        };
+
+        window.openPhoneSheet = () => document.getElementById('phoneOverlay').classList.add('active');
+        window.closePhoneSheet = () => document.getElementById('phoneOverlay').classList.remove('active');
+        window.makeCall = (n) => { window.location.href = 'tel:' + n; closePhoneSheet(); };
+
+        window.openBooking = () => document.getElementById('bookingModal').style.display = 'flex';
+        window.closeBooking = () => document.getElementById('bookingModal').style.display = 'none';
+
+        window.startNowAction = () => { window.location.href = dynamicAdminLink; };
+
+        /* ════════════════════════════════════════
+           FUNCTIONAL MECHANISM: Save Contact (vCard)
+        ════════════════════════════════════════ */
+        window.triggerSaveContact = () => {
+            if (!userData || !userData.displayName || !userData.phone1) {
+                return window.showGlassAlert("تنبيه", "جاري تحميل البيانات، يرجى المحاولة مرة أخرى.", '⚠️');
+            }
+            
+            const name  = userData.displayName;
+            const phone = userData.phone1;
+            
+            // Create vCard string
+            const vcard = `BEGIN:VCARD
+VERSION:3.0
+FN:${name}
+TEL;TYPE=CELL:${phone}
+ORG:${userData.title || 'Al-Aqrab Premium'}
+END:VCARD`;
+
+            const blob = new Blob([vcard], { type: 'text/vcard' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.download = `${name.replace(/\s+/g, '_')}.vcf`;
+            a.href = url;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            window.showGlassAlert("تم النسخ ✓", "سيتم تنزيل ملف جهة الاتصال للبلاتين المعتمد.", '📇');
+        };
+
+        /* ════════════════════════════════════════
+           ROUTING & FIREBASE INIT
+        ════════════════════════════════════════ */
+        document.querySelectorAll('.dynamic-year').forEach(el => el.innerText = new Date().getFullYear());
+
+        if (!targetUserId) {
+            // Landing Mode
+            setDoc(doc(db, "system_settings", "active_users_domain"), { currentUrl: currentDomainUrl }, { merge: true }).catch(()=>{});
+            getDoc(doc(db, "system_settings", "admin_portal_link")).then(s => { if(s.exists() && s.data().url) dynamicAdminLink = s.data().url; });
+            document.getElementById('landingPage').style.display = 'flex';
+        } else {
+            // App Mode
+            _loader.style.display = 'flex';
+            
+            // Record domain
+            try { setDoc(doc(db, "users", targetUserId), { currentDomain: window.location.origin }, { merge: true }); } catch(e){}
+
+            // Listen to User Data
+            onSnapshot(doc(db, "users", targetUserId), (docSnap) => {
+                if (!docSnap.exists() || docSnap.data().isActive === false) {
+                    window.location.href = "/"; // Redirect if inactive/missing
+                    return;
+                }
+                
+                userData = docSnap.data();
+                document.getElementById('fullApp').style.display = 'block';
+
+                // App Styling
+                if (userData.fontAr) document.documentElement.style.setProperty('--font-ar', `'${userData.fontAr}', serif`);
+                if (userData.fontEn) document.documentElement.style.setProperty('--font-en', `'${userData.fontEn}', sans-serif`);
+                
+                // Brand NO GOLD
+                document.getElementById('brandName').innerHTML = userData.displayName || 'الاسم';
+                document.getElementById('brandTitle').innerText = userData.title || '';
+                document.getElementById('mainHeroImg').src = userData.heroImg || 'https://g.top4top.io/p_374327hvm1.jpg';
+                document.getElementById('aboutText').innerText = userData.about || '';
+
+                // Stats
+                document.getElementById('userCounter').innerText  = userData.customersCount || 0;
+                document.getElementById('foundedYear').innerText  = window.toArabicDigits(userData.foundedYear || 2026);
+                
+                // Phone Sheet
+                const pg = document.getElementById('phoneNumbersGroup'); pg.innerHTML = '';
+                if (userData.phone1) pg.innerHTML += `<button class="phone-number-btn" onclick="makeCall('${userData.phone1}')">${window.toArabicDigits(userData.phone1)}</button>`;
+                if (userData.phone2) pg.innerHTML += `<button class="phone-number-btn" onclick="makeCall('${userData.phone2}')">${window.toArabicDigits(userData.phone2)}</button>`;
+
+                // Map Link
+                const topMap = document.getElementById('topMapLink');
+                if (userData.googleMaps || userData.mapLink) { topMap.href = userData.googleMaps || userData.mapLink; topMap.style.display = 'flex'; }
+                else { topMap.style.display = 'none'; }
+
+                // Social Links NO GOLD
+                const socialContainer = document.getElementById('socialLinksContainer');
+                const platforms = [
+                    { dbKey:'whatsapp', title:'واتساب', icon:'whatsapp', color:'#25d366' },
+                    { dbKey:'facebook', title:'فيسبوك', icon:'facebook-f', color:'#1877f2' },
+                    { dbKey:'insta', title:'إنستغرام', icon:'instagram', color:'#e4405f' },
+                    { dbKey:'tiktok', title:'تيك توك', icon:'tiktok', color:'var(--text-main)' }
+                ];
+                let hasSocial = false;
+                platforms.forEach(p => {
+                    if (userData[p.dbKey]) {
+                        hasSocial = true;
+                        socialContainer.innerHTML += `
+                            <a href="${userData[p.dbKey]}" class="glass-card" target="_blank">
+                                <div class="card-icon" style="color:${p.color};"><i class="fa-brands fa-${p.icon}"></i></div>
+                                <div class="card-text"><strong>${p.title}</strong><span>تواصل فوري</span></div>
+                            </a>`;
+                    }
+                });
+                document.getElementById('socialSection').style.display = hasSocial ? 'block' : 'none';
+
+                // Price display for booking
+                const priceNew = Number(userData?.prices?.new ?? userData?.priceNew) || 0;
+                document.getElementById('priceDisplay').innerText = window.toArabicDigits(priceNew) + ' ج.م';
+
+                // Loader Exit
+                setTimeout(() => {
+                    _loader.style.opacity = '0'; _loader.style.transform = 'scale(1.04)';
+                    setTimeout(() => { _loader.style.display = 'none'; }, 600);
+                }, LOADER_DURATION_MS);
+
+            });
+        }
+        
+    </script>
+</body>
+</html>
