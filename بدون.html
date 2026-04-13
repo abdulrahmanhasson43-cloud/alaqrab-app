@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Project Scorpion - Premium</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* ═══════════════════════════════════════════
+           GLOBAL VARIABLES & RESET
+        ═══════════════════════════════════════════ */
+        :root {
+            --landing-bg: #02201b;
+            --landing-btn-green: #14f068;
+            --loader-bg: #6333a3; /* Matched from video */
+            --glass-blur: blur(40px) saturate(200%);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --text-light: #ffffff;
+            --text-dark: #000000;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            background: var(--landing-bg);
+            color: var(--text-light);
+        }
+
+        /* ═══════════════════════════════════════════
+           1. VIDEO-MATCH LOADER (Fixed Stacking)
+        ═══════════════════════════════════════════ */
+        #loader-section {
+            position: fixed;
+            inset: 0;
+            background-color: var(--loader-bg);
+            z-index: 9999;
+            display: none; /* Controlled by JS based on URL Hash */
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s ease;
+        }
+
+        .loader-scene {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Fixed: Glass is correctly positioned in front (z-index: 10) */
+        .loader-glass-pane {
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 35px;
+            z-index: 10;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2), inset 0 0 20px rgba(255,255,255,0.2);
+        }
+
+        /* Fixed: Cards fan out strictly from behind the glass (z-index: 5) */
+        .loader-cards-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0; height: 0;
+            z-index: 5;
+        }
+
+        .l-card {
+            position: absolute;
+            width: 70px;
+            height: 110px;
+            border-radius: 12px;
+            bottom: 0;
+            left: -35px; /* Center horizontally relative to origin */
+            transform-origin: bottom center;
+            box-shadow: -2px 5px 15px rgba(0,0,0,0.2);
+            animation: fanOutCards 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+        }
+
+        .l-card:nth-child(1) { background: linear-gradient(135deg, #ff3b3b, #cc0000); animation-delay: 0.0s; --target-rot: -60deg; --target-x: -90px; --target-y: -40px; }
+        .l-card:nth-child(2) { background: linear-gradient(135deg, #ff7b00, #d94800); animation-delay: 0.1s; --target-rot: -35deg; --target-x: -60px; --target-y: -60px; }
+        .l-card:nth-child(3) { background: linear-gradient(135deg, #facc15, #dca000); animation-delay: 0.2s; --target-rot: -10deg; --target-x: -20px; --target-y: -70px; }
+        .l-card:nth-child(4) { background: linear-gradient(135deg, #10b981, #008f51); animation-delay: 0.3s; --target-rot: 15deg;  --target-x: 20px;  --target-y: -70px; }
+        .l-card:nth-child(5) { background: linear-gradient(135deg, #06b6d4, #0088aa); animation-delay: 0.4s; --target-rot: 40deg;  --target-x: 60px;  --target-y: -50px; }
+        .l-card:nth-child(6) { background: linear-gradient(135deg, #3b82f6, #0044ff); animation-delay: 0.5s; --target-rot: 65deg;  --target-x: 90px;  --target-y: -20px; }
+
+        @keyframes fanOutCards {
+            0%, 20% { transform: translate(0, 40px) rotate(0deg); opacity: 0; }
+            30% { opacity: 1; }
+            80%, 100% { transform: translate(var(--target-x), var(--target-y)) rotate(var(--target-rot)); opacity: 1; }
+        }
+
+        /* ═══════════════════════════════════════════
+           2. LINCK-STYLE LANDING PAGE
+        ═══════════════════════════════════════════ */
+        #landing-section {
+            display: none; /* Controlled by JS */
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: var(--landing-bg);
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .landing-header {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+            z-index: 10;
+        }
+
+        .login-btn {
+            background: #ffffff;
+            color: var(--text-dark);
+            border: none;
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .login-btn:hover { transform: scale(1.05); }
+
+        .landing-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .avatar-cluster {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .main-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            z-index: 5;
+        }
+
+        .floating-shard {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #fff;
+            animation: floatShard 4s infinite ease-in-out alternate;
+        }
+
+        .shard-1 { top: 10%; left: 0%; animation-delay: 0s; color: #ffeb3b; }
+        .shard-2 { top: 5%; right: 5%; animation-delay: 1s; color: #ff0000; }
+        .shard-3 { bottom: 10%; left: 10%; animation-delay: 2s; color: #00e676; }
+        .shard-4 { bottom: 5%; right: 0%; animation-delay: 0.5s; color: #00b0ff; }
+
+        @keyframes floatShard {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-15px) rotate(10deg); }
+        }
+
+        .landing-title {
+            font-size: 42px;
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -1px;
+            max-width: 350px;
+            margin-bottom: 50px;
+        }
+
+        .get-started-btn {
+            background: var(--landing-btn-green);
+            color: var(--text-dark);
+            border: none;
+            padding: 20px 50px;
+            border-radius: 40px;
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(20, 240, 104, 0.3);
+            transition: all 0.3s;
+        }
+        .get-started-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(20, 240, 104, 0.5);
+        }
+
+        /* ═══════════════════════════════════════════
+           3. SHATTERED GLASS PROFILE UI
+        ═══════════════════════════════════════════ */
+        #profile-section {
+            display: none; /* Controlled by JS */
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            padding: 40px 20px;
+            position: relative;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .profile-container {
+            max-width: 480px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 5;
+        }
+
+        /* Platinum/Silver Shattered Glass Concept */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            padding: 30px 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.5);
+            transform: skew(-2deg); /* Shattered/Angled feel */
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Inner reflection for premium look */
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-20deg);
+            animation: shimmer 6s infinite;
+        }
+        @keyframes shimmer {
+            0% { left: -100%; }
+            20%, 100% { left: 200%; }
+        }
+
+        .glass-panel > * { transform: skew(2deg); } /* Correct inner content */
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 25px;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            margin-bottom: 15px;
+            transform: rotate(-3deg);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .profile-name { font-size: 26px; font-weight: 700; margin-bottom: 8px; color: #f8fafc; }
+        .profile-bio { font-size: 15px; color: #cbd5e1; line-height: 1.6; }
+
+        /* Dynamic Booking Top Button */
+        #btn-booking-action {
+            width: 100%;
+            padding: 18px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 25px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            cursor: pointer;
+            backdrop-filter: blur(20px);
+            transform: skew(-2deg);
+            transition: all 0.3s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        #btn-booking-action > * { transform: skew(2deg); }
+        #btn-booking-action:hover { background: rgba(255, 255, 255, 0.2); transform: skew(-2deg) translateY(-3px); }
+
+        /* Booking Section Card */
+        #card-booking-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 12px;
+        }
+        .booking-icon-wrapper {
+            width: 55px; height: 55px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.15);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px; color: #fff;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        /* 12 Social Links Grid */
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 10px;
+        }
+
+        .social-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 22px;
+            padding: 18px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #fff;
+            transform: skew(-2deg);
+            transition: all 0.3s;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+        .social-card > * { transform: skew(2deg); }
+        .social-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.8);
+            transform: skew(-2deg) translateY(-4px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+        }
+        .social-icon { font-size: 30px; }
+        .social-label { font-size: 13px; font-weight: 600; letter-spacing: 0.5px; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <section id="loader-section">
+        <div class="loader-scene">
+            <div class="loader-cards-container">
+                <div class="l-card"></div>
+                <div class="l-card"></div>
+                <div class="l-card"></div>
+                <div class="l-card"></div>
+                <div class="l-card"></div>
+                <div class="l-card"></div>
+            </div>
+            <div class="loader-glass-pane"></div>
+        </div>
+    </section>
+
+    <section id="landing-section">
+        <header class="landing-header">
+            <button class="login-btn">Log in</button>
+        </header>
+
+        <div class="landing-content">
+            <div class="avatar-cluster">
+                <div class="floating-shard shard-1"><i class="fa-brands fa-tiktok"></i></div>
+                <div class="floating-shard shard-2"><i class="fa-brands fa-snapchat"></i></div>
+                <div class="floating-shard shard-3"><i class="fa-brands fa-instagram"></i></div>
+                <div class="floating-shard shard-4"><i class="fa-brands fa-youtube"></i></div>
+                <img src="https://i.pravatar.cc/300?img=68" alt="Profile Avatar" class="main-avatar">
+            </div>
+            <h1 class="landing-title">one unique link for everything at once</h1>
+            <button class="get-started-btn" onclick="window.location.hash='#demo_user'; window.location.reload();">Get started</button>
+        </div>
+    </section>
+
+    <section id="profile-section">
+        <div class="profile-container">
+            
+            <button id="btn-booking-action" style="display: none;">
+                <i class="fa-regular fa-calendar-check" style="font-size: 20px;"></i> 
+                <span>Book an Appointment</span>
+            </button>
+
+            <div class="glass-panel">
+                <div class="profile-header">
+                    <img src="https://i.pravatar.cc/300?img=68" alt="Profile" class="profile-img">
+                    <h2 class="profile-name" id="display-name">Loading...</h2>
+                    <p class="profile-bio" id="user-bio">...</p>
+                </div>
+            </div>
+
+            <div class="glass-panel" id="card-booking-section" style="display: none;">
+                <div class="booking-icon-wrapper"><i class="fa-solid fa-calendar-days"></i></div>
+                <h3 style="color: #fff; font-size: 18px;">Schedule a Consultation</h3>
+                <p style="font-size: 14px; color: #cbd5e1; margin-bottom: 10px;">Select an available time slot</p>
+                <button style="padding: 12px 24px; border-radius: 25px; border:none; background: #fff; color: #0f172a; font-weight:700; cursor:pointer; width: 100%; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">View Calendar</button>
+            </div>
+
+            <div class="links-grid" id="social-links-container">
+                </div>
+
+        </div>
+    </section>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // Firebase Configuration (Placeholder for Project Scorpion)
+        const firebaseConfig = {
+            apiKey: "AIzaSyDummyKeyForScorpionProject123",
+            authDomain: "project-scorpion.firebaseapp.com",
+            projectId: "project-scorpion",
+            storageBucket: "project-scorpion.appspot.com"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // --- Sections ---
+        const loaderSection  = document.getElementById('loader-section');
+        const landingSection = document.getElementById('landing-section');
+        const profileSection = document.getElementById('profile-section');
+
+        // --- Routing Logic Based on URL Hash ---
+        function getHashUserId() {
+            return window.location.hash.replace(/^#\/?/, '').trim() || null;
+        }
+
+        const targetUserId = getHashUserId();
+
+        if (!targetUserId) {
+            /* 1. NO USER ID -> Show Landing Page immediately */
+            loaderSection.style.display  = 'none';
+            profileSection.style.display = 'none';
+            landingSection.style.display = 'flex';
+        } else {
+            /* 2. HAS USER ID -> Show Loader to the user, then Profile */
+            landingSection.style.display = 'none';
+            loaderSection.style.display  = 'flex';
+
+            // Wait 3 seconds for the 3D animation, then switch to Profile
+            setTimeout(() => {
+                loaderSection.style.opacity = '0';
+                setTimeout(() => {
+                    loaderSection.style.display  = 'none';
+                    profileSection.style.display = 'block';
+                    initFirebaseListener(targetUserId);
+                }, 600); // Wait for fade out transition
+            }, 3000); // 3 seconds Loader
+        }
+
+        // --- Firebase Dynamic Fetching & Admin Toggle ---
+        const displayNameEl = document.getElementById('display-name');
+        const userBioEl = document.getElementById('user-bio');
+        const btnBookingAction = document.getElementById('btn-booking-action');
+        const cardBookingSection = document.getElementById('card-booking-section');
+        const socialLinksContainer = document.getElementById('social-links-container');
+
+        // The 12 Restored Platforms List
+        const platforms = [
+            { id: 'whatsapp', icon: 'fa-whatsapp', name: 'WhatsApp', color: '#25D366' },
+            { id: 'facebook', icon: 'fa-facebook-f', name: 'Facebook', color: '#1877F2' },
+            { id: 'instagram', icon: 'fa-instagram', name: 'Instagram', color: '#E4405F' },
+            { id: 'tiktok', icon: 'fa-tiktok', name: 'TikTok', color: '#ffffff' },
+            { id: 'youtube', icon: 'fa-youtube', name: 'YouTube', color: '#FF0000' },
+            { id: 'snapchat', icon: 'fa-snapchat', name: 'Snapchat', color: '#FFFC00' },
+            { id: 'x', icon: 'fa-x-twitter', name: 'X', color: '#ffffff' },
+            { id: 'linkedin', icon: 'fa-linkedin-in', name: 'LinkedIn', color: '#0A66C2' },
+            { id: 'threads', icon: 'fa-threads', name: 'Threads', color: '#ffffff' },
+            { id: 'truecaller', icon: 'fa-phone', name: 'Truecaller', color: '#0055FF' },
+            { id: 'googlereviews', icon: 'fa-google', name: 'Reviews', color: '#DB4437' },
+            { id: 'googlemaps', icon: 'fa-map-location-dot', name: 'Maps', color: '#34A853' }
+        ];
+
+        function renderSocialLinks(activeLinksData) {
+            socialLinksContainer.innerHTML = '';
+            platforms.forEach(plat => {
+                // If live DB data exists, check it. Otherwise show all for demo purposes.
+                const url = activeLinksData ? activeLinksData[plat.id] : `https://${plat.id}.com`;
+                
+                if(url) {
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.target = "_blank";
+                    a.className = "social-card";
+                    
+                    // Fallbacks for non-brand icons
+                    if(plat.id === 'truecaller' || plat.id === 'googlemaps' || plat.id === 'googlereviews') {
+                        a.innerHTML = `
+                            <i class="fa-solid ${plat.icon} social-icon" style="color: ${plat.color}; text-shadow: 0 0 10px rgba(255,255,255,0.2);"></i>
+                            <span class="social-label">${plat.name}</span>
+                        `;
+                    } else {
+                        a.innerHTML = `
+                            <i class="fa-brands ${plat.icon} social-icon" style="color: ${plat.color}; text-shadow: 0 0 10px rgba(255,255,255,0.2);"></i>
+                            <span class="social-label">${plat.name}</span>
+                        `;
+                    }
+                    socialLinksContainer.appendChild(a);
+                }
+            });
+        }
+
+        function initFirebaseListener(userId) {
+            const userRef = doc(db, "users", userId);
+            
+            try {
+                onSnapshot(userRef, (snapshot) => {
+                    if (snapshot.exists()) {
+                        const data = snapshot.data();
+                        
+                        // 1. Text Update
+                        displayNameEl.textContent = data.displayName || "Alexander Pierce";
+                        userBioEl.textContent = data.bio || "Digital Creator & Consultant. Welcome to my space.";
+
+                        // 2. Admin Toggle Check (CRUCIAL REQUIREMENT)
+                        if (data.enableBooking === true) {
+                            btnBookingAction.style.display = 'flex';
+                            cardBookingSection.style.display = 'flex';
+                        } else {
+                            btnBookingAction.style.display = 'none';
+                            cardBookingSection.style.display = 'none';
+                        }
+
+                        // 3. Render Links
+                        renderSocialLinks(data.socials);
+                    } else {
+                        // Demo State (If DB is empty/mock)
+                        loadDemoState();
+                    }
+                }, (error) => {
+                    console.error("Firestore Listen Error:", error);
+                    loadDemoState();
+                });
+            } catch (err) {
+                console.warn("Running in local UI mode without live DB.");
+                loadDemoState();
+            }
+        }
+
+        function loadDemoState() {
+            displayNameEl.textContent = "Alexander Pierce";
+            userBioEl.textContent = "Digital Creator & Consultant. Welcome to my space.";
+            
+            // Testing the toggle: set to true to show booking sections
+            btnBookingAction.style.display = 'flex'; 
+            cardBookingSection.style.display = 'flex'; 
+            
+            renderSocialLinks(null); // Renders all 12 as a demo
+        }
+    </script>
+</body>
+</html>
