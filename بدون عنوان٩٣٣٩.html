@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Al-Aqrab V3 - Dual Template System</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700&family=Noto+Naskh+Arabic:wght@400;700&family=Almarai:wght@400;700&family=Lateef&family=Scheherazade+New&family=Reem+Kufi:wght@400;700&family=Markazi+Text:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,600&family=DM+Serif+Display:ital@0;1&family=Libre+Baskerville:wght@400;700&family=Nunito:wght@400;600;700&family=Raleway:wght@400;500;700&family=Josefin+Sans:wght@400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* ═══════════════════════════════════════════
+           GLOBAL VARIABLES & RESET (Standard Theme)
+        ═══════════════════════════════════════════ */
+        :root {
+            --brand-name: "Al-Aqrab";
+            --font-ar: 'Amiri', serif;
+            --font-en: 'Inter', sans-serif;
+            --font-brand: 'Playfair Display', serif;
+            --font-ui: 'Cairo', sans-serif;
+
+            /* Luxury Palette */
+            --bg-primary:     #fdfbf7;
+            --bg-secondary:   #f5f1eb;
+            --glass-bg:       rgba(253, 251, 247, 0.7);
+            --glass-border:   rgba(255, 255, 255, 0.65);
+            --card-bg:        rgba(255, 255, 255, 0.6);
+            --input-bg:       #ffffff;
+            --input-border:   rgba(0, 0, 0, 0.08);
+
+            --text-main:      #1a1a18;
+            --text-secondary: #5a574f;
+            --text-muted:     #9a9589;
+
+            --accent:         #0d9488;
+            --accent-grad:    linear-gradient(135deg, #0d9488 0%, #0891b2 100%);
+            --accent-glow:    rgba(13, 148, 136, 0.22);
+            --vip-gold:       #d4af37;
+            --vip-gold-light: #f0d060;
+            --vip-grad:       linear-gradient(135deg, #d4af37 0%, #f0c040 60%, #b8922c 100%);
+            --vip-dark-bg:    linear-gradient(135deg, #1e2330 0%, #0f172a 100%);
+            --dark-navy:      #0f172a;
+            --success:        #16a34a;
+            --danger:         #dc2626;
+
+            --glass-blur:     blur(45px) saturate(180%);
+            --glass-blur-md:  blur(24px) saturate(160%);
+            --glass-blur-sm:  blur(12px);
+
+            --shadow-xs:  0 1px 4px rgba(0,0,0,0.04);
+            --shadow-sm:  0 2px 10px rgba(0,0,0,0.06);
+            --shadow-md:  0 6px 20px rgba(0,0,0,0.10);
+            --shadow-lg:  0 16px 40px rgba(0,0,0,0.14);
+            --shadow-xl:  0 28px 60px rgba(0,0,0,0.18);
+            --gold-glow:  0 8px 32px rgba(212, 175, 55, 0.35);
+
+            --ease-spring: cubic-bezier(0.2, 1.2, 0.4, 1);
+            --ease-out:    cubic-bezier(0.25, 1, 0.5, 1);
+            --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+            --t-fast:   0.18s;
+            --t-base:   0.30s var(--ease-out);
+            --t-slow:   0.50s var(--ease-smooth);
+
+            --r-sm:  10px; --r-md:  16px; --r-lg:  24px; --r-xl:  32px; --r-2xl: 40px;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary:    #0f0e0c;
+            --bg-secondary:  #1a1a15;
+            --glass-bg:      rgba(25, 24, 20, 0.75);
+            --glass-border:  rgba(212, 175, 55, 0.12);
+            --card-bg:       rgba(40, 38, 32, 0.80);
+            --input-bg:      #252318;
+            --input-border:  rgba(255, 255, 255, 0.09);
+            --text-main:     #f5f3ed;
+            --text-secondary:#c8c4b8;
+            --text-muted:    #7a766c;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html, body {
+            margin: 0; padding: 0;
+            background-color: var(--bg-primary);
+            font-family: var(--font-ar);
+            color: var(--text-main);
+            overflow-x: hidden;
+            transition: background-color var(--t-slow), color var(--t-slow);
+            scrollbar-width: thin; scrollbar-color: var(--vip-gold) var(--bg-secondary);
+        }
+        body::-webkit-scrollbar { width: 7px; }
+        body::-webkit-scrollbar-track { background: var(--bg-secondary); }
+        body::-webkit-scrollbar-thumb { background: var(--vip-gold); border-radius: 4px; }
+
+        /* ═══════════════════════════════════════════
+           1. 3D GLASS LOADER (Restricted Bounds)
+        ═══════════════════════════════════════════ */
+        #loader-section {
+            position: fixed; inset: 0;
+            background-color: #0f172a;
+            z-index: 9999;
+            display: none; 
+            align-items: center; justify-content: center;
+            transition: opacity 0.6s ease;
+        }
+        .loader-scene {
+            position: relative; width: 300px; height: 300px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        /* Fixed constraint: Content inside glass pane */
+        .loader-glass-pane {
+            position: relative;
+            width: 220px; height: 220px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 35px;
+            z-index: 10;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3), inset 0 0 20px rgba(255,255,255,0.1);
+            overflow: hidden; /* CRITICAL: Contains cards */
+            display: flex; align-items: flex-end; justify-content: center;
+            padding-bottom: 20px;
+        }
+        .loader-cards-container { position: relative; width: 0; height: 0; z-index: 5; }
+        .l-card {
+            position: absolute; width: 60px; height: 95px;
+            border-radius: 12px; bottom: 0; left: -30px;
+            transform-origin: bottom center;
+            box-shadow: -2px 5px 15px rgba(0,0,0,0.2);
+            animation: fanOutCards 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+        }
+        .l-card:nth-child(1) { background: linear-gradient(135deg, #ff3b3b, #cc0000); animation-delay: 0.0s; --target-rot: -50deg; --target-x: -70px; --target-y: -20px; }
+        .l-card:nth-child(2) { background: linear-gradient(135deg, #ff7b00, #d94800); animation-delay: 0.1s; --target-rot: -30deg; --target-x: -45px; --target-y: -40px; }
+        .l-card:nth-child(3) { background: linear-gradient(135deg, #facc15, #dca000); animation-delay: 0.2s; --target-rot: -10deg; --target-x: -15px; --target-y: -50px; }
+        .l-card:nth-child(4) { background: linear-gradient(135deg, #10b981, #008f51); animation-delay: 0.3s; --target-rot: 10deg;  --target-x: 15px;  --target-y: -50px; }
+        .l-card:nth-child(5) { background: linear-gradient(135deg, #06b6d4, #0088aa); animation-delay: 0.4s; --target-rot: 30deg;  --target-x: 45px;  --target-y: -40px; }
+        .l-card:nth-child(6) { background: linear-gradient(135deg, #3b82f6, #0044ff); animation-delay: 0.5s; --target-rot: 50deg;  --target-x: 70px;  --target-y: -20px; }
+
+        @keyframes fanOutCards {
+            0%, 20% { transform: translate(0, 40px) rotate(0deg); opacity: 0; }
+            30% { opacity: 1; }
+            80%, 100% { transform: translate(var(--target-x), var(--target-y)) rotate(var(--target-rot)); opacity: 1; }
+        }
+
+        /* ═══════════════════════════════════════════
+           2. REDESIGNED ADMIN GATEWAY HEADER & LANDING
+        ═══════════════════════════════════════════ */
+        #landingPage {
+            display: none; position: relative; min-height: 100vh;
+            font-family: var(--font-ar); flex-direction: column; direction: rtl;
+            overflow-x: hidden;
+            background: linear-gradient(150deg, #f8f6f0 0%, #f0ede5 40%, #ece8f5 100%);
+            transition: background var(--t-slow);
+        }
+        [data-theme="dark"] #landingPage { background: linear-gradient(150deg, #1a1a14 0%, #16140e 40%, #0f0f20 100%); }
+        .lp-blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: 0.3; pointer-events: none; z-index: 0; }
+        .lp-blob-1 { width: 450px; height: 450px; background: radial-gradient(circle, rgba(212,175,55,0.25), transparent); top: -100px; left: -130px; }
+        .lp-blob-2 { width: 380px; height: 380px; background: radial-gradient(circle, rgba(13,148,136,0.18), transparent); bottom: 60px; right: -90px; }
+        
+        .lp-nav {
+            position: relative; z-index: 10; display: flex; align-items: center;
+            justify-content: space-between; padding: 24px 6% 10px;
+            direction: rtl; /* Enforce RTL layout */
+        }
+        .lp-nav-logo { display: flex; align-items: center; gap: 12px; margin-right: auto; margin-left: 0; }
+        .lp-nav-logo img { height: 48px; max-width: 130px; object-fit: contain; display: none; }
+        .lp-nav-brand { font-size: 28px; font-weight: 700; color: var(--dark-navy); font-family: var(--font-brand); }
+        [data-theme="dark"] .lp-nav-brand { color: #f5f3ed; }
+        .lp-nav-brand span { color: var(--accent); }
+        
+        /* Glassmorphic Login Button (Right Side) */
+        .lp-login-btn {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: var(--dark-navy);
+            padding: 12px 24px; border-radius: 30px;
+            font-weight: 700; font-size: 15px; font-family: var(--font-ar);
+            cursor: pointer; transition: all 0.3s; display: flex; gap: 8px; align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        [data-theme="dark"] .lp-login-btn { color: #f5f3ed; border-color: rgba(255,255,255,0.1); background: rgba(30,28,22,0.4); }
+        .lp-login-btn:hover { background: rgba(255, 255, 255, 0.4); transform: translateY(-2px); }
+
+        .lp-hero {
+            position: relative; z-index: 5; flex: 1; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; text-align: center;
+            padding: 40px 6%; min-height: calc(100vh - 120px);
+        }
+        .lp-hero-title { font-size: clamp(38px, 8vw, 64px); font-weight: 800; color: var(--dark-navy); line-height: 1.15; margin: 0 0 20px; }
+        [data-theme="dark"] .lp-hero-title { color: #f5f3ed; }
+        .lp-hero-title span { color: var(--accent); }
+        .lp-hero-sub { font-size: clamp(15px, 3vw, 18px); color: var(--text-secondary); max-width: 560px; line-height: 1.9; margin: 0 auto 42px; font-weight: 500; }
+        
+        .lp-cta-primary {
+            display: inline-flex; align-items: center; gap: 10px; padding: 16px 38px;
+            font-size: 18px; font-family: var(--font-ar); font-weight: 700; color: #fff;
+            background: var(--accent-grad); border-radius: 50px; border: none; cursor: pointer;
+            box-shadow: 0 12px 32px var(--accent-glow); transition: all var(--t-base);
+        }
+        .lp-cta-primary:hover { transform: translateY(-3px); box-shadow: 0 20px 42px var(--accent-glow); }
+        
+        /* ═══════════════════════════════════════════
+           3. STANDARD APP (Al-Aqrab Original)
+        ═══════════════════════════════════════════ */
+        .app-container { width: 100%; max-width: 430px; margin: 0 auto; min-height: 100vh; position: relative; direction: rtl; }
+        .hero-bg { position: fixed; top: 0; width: 100%; max-width: 430px; height: 55vh; z-index: 1; overflow: hidden; }
+        .hero-img { width: 100%; height: 100%; object-fit: cover; object-position: center 15%; }
+        .hero-bg::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 35%; background: linear-gradient(to bottom, transparent, var(--bg-primary)); }
+        
+        .fog-panel {
+            position: relative; z-index: 5; margin-top: 45vh;
+            background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+            border-radius: var(--r-2xl) var(--r-2xl) 0 0; border: 1px solid var(--glass-border); border-bottom: none;
+            padding: 40px 20px 120px; min-height: 60vh;
+            box-shadow: 0 -20px 40px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8);
+            animation: panelUp 0.9s var(--ease-spring) both;
+        }
+        [data-theme="dark"] .fog-panel { box-shadow: 0 -20px 40px rgba(0,0,0,0.25), inset 0 1px 0 rgba(212,175,55,0.08); }
+        
+        .header-content { text-align: center; margin-bottom: 32px; }
+        .name-wrapper h1 { font-size: 30px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; margin: 0; }
+        .title-text { font-size: 13px; color: var(--text-muted); display: block; margin-top: 5px; font-family: var(--font-en); }
+        
+        .action-row { display: flex; justify-content: center; gap: 8px; margin-bottom: 32px; padding: 0 5px; }
+        .shard-btn {
+            flex: 1; height: 56px; background: var(--card-bg); backdrop-filter: var(--glass-blur-sm);
+            display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--accent);
+            border: 1px solid var(--glass-border); cursor: pointer; box-shadow: var(--shadow-sm); transform: skew(-12deg); text-decoration: none;
+        }
+        .shard-btn > i { transform: skew(12deg); }
+        .shard-btn:hover { border-color: var(--vip-gold); background: rgba(255,255,255,0.85); transform: skew(-12deg) translateY(-3px); }
+        .shard-btn:nth-child(1) { border-radius: 18px 6px 14px 6px; flex: 1.1; }
+        .shard-btn:nth-child(2) { border-radius: 6px 16px 6px 12px; margin-top: -3px; flex: 0.9; }
+        .shard-btn:nth-child(3) { border-radius: 12px 6px 16px 6px; margin-top: 3px; flex: 1; }
+        .shard-btn:nth-child(4) { border-radius: 6px 14px 6px 18px; flex: 1.1; }
+
+        .save-btn {
+            width: 100%; height: 56px; background: var(--accent-grad); color: #fff; border-radius: var(--r-md);
+            display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px;
+            margin-bottom: 40px; cursor: pointer; box-shadow: 0 10px 24px var(--accent-glow); border: none; font-family: var(--font-ar);
+        }
+
+        .section-label { font-size: 15px; font-weight: 700; color: var(--text-muted); margin: 28px 10px 12px; text-align: right; text-transform: uppercase; font-family: var(--font-ui); }
+        .glass-card {
+            display: flex; align-items: center; background: var(--card-bg); padding: 18px; border-radius: var(--r-lg); text-decoration: none;
+            margin-bottom: 10px; border: 1px solid var(--glass-border); cursor: pointer; text-align: right; box-shadow: var(--shadow-xs);
+        }
+        .glass-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: rgba(212,175,55,0.35); background: rgba(255,255,255,0.85); }
+        .card-icon { width: 44px; height: 44px; border-radius: var(--r-sm); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-left: 15px; background: var(--bg-secondary); box-shadow: var(--shadow-xs); transition: all var(--t-base); }
+        .card-text { flex: 1; }
+        .card-text strong { display: block; font-size: 17px; color: var(--text-main); margin-bottom: 2px; }
+        .card-text span { font-size: 13px; color: var(--text-secondary); }
+
+        .about-box { background: var(--card-bg); border-radius: var(--r-xl); padding: 36px 22px; margin-top: 36px; border: 1px solid var(--glass-border); text-align: center; box-shadow: var(--shadow-sm); }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 22px 0; padding-bottom: 22px; border-bottom: 1px dashed var(--input-border); }
+        .stat-item b { display: block; font-size: 22px; color: var(--text-main); }
+        .stat-item span { font-size: 12px; color: var(--text-muted); font-family: var(--font-ui); }
+
+        /* ═══════════════════════════════════════════
+           4. PREMIUM APP (Shattered Glass Mode)
+           Scoped to avoid bleeding into Standard App
+        ═══════════════════════════════════════════ */
+        #premiumApp {
+            display: none; min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            padding: 40px 20px; position: relative;
+            animation: panelUp 0.6s ease; direction: ltr; /* specific to this layout */
+            color: #ffffff; font-family: var(--font-en);
+        }
+        #premiumApp .profile-container { max-width: 480px; margin: 0 auto; position: relative; z-index: 5; }
+        
+        #premiumApp .glass-panel {
+            background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(40px) saturate(200%); -webkit-backdrop-filter: blur(40px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 28px; padding: 30px 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.5);
+            transform: skew(-2deg); margin-bottom: 20px; position: relative; overflow: hidden;
+        }
+        #premiumApp .glass-panel::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-20deg); animation: shimmer 6s infinite;
+        }
+        @keyframes shimmer { 0% { left: -100%; } 20%, 100% { left: 200%; } }
+        #premiumApp .glass-panel > * { transform: skew(2deg); }
+        
+        #premiumApp .profile-header { text-align: center; margin-bottom: 20px; }
+        /* Premium Target: Rectangular profile image, 30px radius */
+        #premiumApp .premium-profile-img {
+            width: 120px; height: 140px; border-radius: 30px; object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.8); margin-bottom: 15px;
+            transform: rotate(-3deg); box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        #premiumApp .profile-name { font-size: 26px; font-weight: 700; margin-bottom: 8px; color: #f8fafc; }
+        #premiumApp .profile-bio { font-size: 15px; color: #cbd5e1; line-height: 1.6; }
+
+        #premiumApp #btn-booking-action {
+            width: 100%; padding: 18px; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 25px; color: #fff; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+            gap: 10px; margin-bottom: 25px; cursor: pointer; backdrop-filter: blur(20px); transform: skew(-2deg); transition: all 0.3s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        #premiumApp #btn-booking-action > * { transform: skew(2deg); }
+        #premiumApp #btn-booking-action:hover { background: rgba(255, 255, 255, 0.2); transform: skew(-2deg) translateY(-3px); }
+
+        #premiumApp .links-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 10px; }
+        #premiumApp .social-card {
+            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 22px; padding: 18px 10px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+            text-decoration: none; color: #fff; transform: skew(-2deg); transition: all 0.3s;
+        }
+        #premiumApp .social-card > * { transform: skew(2deg); }
+        
+        /* Functional Grid Brand Glow Logic */
+        #premiumApp .social-card[data-brand="whatsapp"]:hover { border-color: #25D366; background: rgba(37,211,102,0.1); box-shadow: 0 12px 25px rgba(37,211,102,0.3); }
+        #premiumApp .social-card[data-brand="facebook"]:hover { border-color: #1877F2; background: rgba(24,119,242,0.1); box-shadow: 0 12px 25px rgba(24,119,242,0.3); }
+        #premiumApp .social-card[data-brand="instagram"]:hover { border-color: #E4405F; background: rgba(228,64,95,0.1); box-shadow: 0 12px 25px rgba(228,64,95,0.3); }
+        #premiumApp .social-card[data-brand="tiktok"]:hover { border-color: #ffffff; background: rgba(255,255,255,0.1); box-shadow: 0 12px 25px rgba(255,255,255,0.3); }
+        #premiumApp .social-card[data-brand="youtube"]:hover { border-color: #FF0000; background: rgba(255,0,0,0.1); box-shadow: 0 12px 25px rgba(255,0,0,0.3); }
+        #premiumApp .social-card[data-brand="snapchat"]:hover { border-color: #FFFC00; background: rgba(255,252,0,0.1); box-shadow: 0 12px 25px rgba(255,252,0,0.3); }
+        #premiumApp .social-card[data-brand="x"]:hover { border-color: #ffffff; background: rgba(255,255,255,0.1); box-shadow: 0 12px 25px rgba(255,255,255,0.3); }
+        #premiumApp .social-card[data-brand="linkedin"]:hover { border-color: #0A66C2; background: rgba(10,102,194,0.1); box-shadow: 0 12px 25px rgba(10,102,194,0.3); }
+        #premiumApp .social-card[data-brand="threads"]:hover { border-color: #ffffff; background: rgba(255,255,255,0.1); box-shadow: 0 12px 25px rgba(255,255,255,0.3); }
+        #premiumApp .social-card[data-brand="truecaller"]:hover { border-color: #0055FF; background: rgba(0,85,255,0.1); box-shadow: 0 12px 25px rgba(0,85,255,0.3); }
+        #premiumApp .social-card[data-brand="googlereviews"]:hover { border-color: #DB4437; background: rgba(219,68,55,0.1); box-shadow: 0 12px 25px rgba(219,68,55,0.3); }
+        #premiumApp .social-card[data-brand="googlemaps"]:hover { border-color: #34A853; background: rgba(52,168,83,0.1); box-shadow: 0 12px 25px rgba(52,168,83,0.3); }
+
+        #premiumApp .social-icon { font-size: 30px; }
+        #premiumApp .social-label { font-size: 13px; font-weight: 600; letter-spacing: 0.5px; }
+
+        /* ═══════════════════════════════════════════
+           5. CENTERED MODALS (No Bottom Sheets allowed)
+        ═══════════════════════════════════════════ */
+        .glass-overlay {
+            position: fixed; inset: 0; background: rgba(15, 14, 12, 0.45); z-index: 9000;
+            display: none; align-items: center; justify-content: center;
+            backdrop-filter: var(--glass-blur-sm); -webkit-backdrop-filter: var(--glass-blur-sm); padding: 20px;
+        }
+        .glass-overlay.active { display: flex; }
+        .glass-popup {
+            background: var(--input-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border); border-radius: var(--r-xl);
+            box-shadow: var(--shadow-xl), inset 0 1px 0 rgba(255,255,255,0.8);
+            width: 100%; max-width: 360px; overflow: hidden; animation: popupIn 0.35s var(--ease-spring) both;
+            color: var(--text-main); font-family: var(--font-ar); direction: rtl;
+        }
+        @keyframes popupIn { from { transform: scale(0.88) translateY(16px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+        
+        .popup-header { padding: 18px 20px 14px; text-align: center; border-bottom: 1px solid var(--input-border); background: var(--card-bg); }
+        .popup-header-title { font-family: var(--font-ui); font-size: 13px; font-weight: 700; color: var(--text-muted); }
+        .popup-options { max-height: 44vh; overflow-y: auto; scroll-behavior: smooth; }
+        .popup-option { padding: 16px 20px; text-align: center; border-bottom: 1px solid var(--input-border); color: var(--accent); font-size: 18px; font-weight: 500; cursor: pointer; transition: all var(--t-fast); }
+        .popup-option:hover { background: var(--card-bg); color: var(--dark-navy); }
+        .popup-cancel-bar { padding: 16px 20px; text-align: center; font-size: 16px; font-weight: 700; color: var(--danger); cursor: pointer; border-top: 1px solid var(--input-border); transition: all var(--t-fast); }
+
+        .alert-glass {
+            background: var(--input-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border); border-radius: var(--r-lg); box-shadow: var(--shadow-xl);
+            width: 300px; overflow: hidden; text-align: center; animation: popupIn 0.3s var(--ease-spring) both; direction: rtl;
+        }
+        .alert-body { padding: 24px 20px 18px; color: var(--text-main); }
+        .alert-icon { font-size: 32px; margin-bottom: 12px; display: block; color: var(--accent); }
+        .alert-title { font-weight: 700; font-size: 18px; margin-bottom: 6px; font-family: var(--font-ar); }
+        .alert-message { font-size: 14px; color: var(--text-secondary); line-height: 1.6; font-family: var(--font-ar); }
+        .alert-btn {
+            width: 100%; height: 46px; background: none; border: none; border-top: 1px solid var(--input-border);
+            color: var(--accent); font-size: 17px; font-weight: 700; cursor: pointer; font-family: var(--font-ar); transition: all var(--t-fast);
+        }
+
+        /* Shared Phone Sheet (Centered Constraint Maintained) */
+        .phone-popup {
+            background: var(--input-bg); backdrop-filter: var(--glass-blur); border: 1px solid var(--glass-border);
+            border-radius: var(--r-xl); box-shadow: var(--shadow-xl); width: 100%; max-width: 320px; overflow: hidden;
+            animation: popupIn 0.35s var(--ease-spring) both; direction: rtl; color: var(--text-main);
+        }
+        .phone-number-btn {
+            width: 100%; height: 58px; background: none; border: none; border-bottom: 1px solid var(--input-border);
+            color: var(--accent); font-size: 22px; font-weight: 600; cursor: pointer; font-family: var(--font-en); transition: all var(--t-fast); direction: ltr;
+        }
+        
+        @keyframes panelUp { from { transform: translateY(80px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <section id="loader-section">
+        <div class="loader-scene">
+            <div class="loader-glass-pane">
+                <div class="loader-cards-container">
+                    <div class="l-card"></div><div class="l-card"></div><div class="l-card"></div>
+                    <div class="l-card"></div><div class="l-card"></div><div class="l-card"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="landingPage">
+        <div class="lp-blob lp-blob-1"></div>
+        <div class="lp-blob lp-blob-2"></div>
+        <nav class="lp-nav">
+            <button class="lp-login-btn" onclick="window.location.href='admin.html'">
+                تسجيل الدخول <i class="fa-solid fa-user-lock"></i>
+            </button>
+            <div class="lp-nav-logo">
+                <img id="lpLogoImg" src="" alt="Logo">
+                <div class="lp-nav-brand">Al-<span>Aqrab</span></div>
+            </div>
+        </nav>
+        <section class="lp-hero">
+            <h1 class="lp-hero-title">
+                بوابتك الذكية<br><span>لكل احتياجاتك</span>
+            </h1>
+            <p class="lp-hero-sub">اجمع روابطك وأرقامك وحساباتك في مكان واحد — استقبل المدفوعات، وأدِر حجوزاتك باحترافية وسهولة تامة.</p>
+            <button class="lp-cta-primary" onclick="window.location.href='admin.html'">
+                ابدأ تجربتك الآن <i class="fa-solid fa-arrow-left"></i>
+            </button>
+        </section>
+    </div>
+
+    <div id="fullApp" class="app-container" style="display:none;">
+        <div class="hero-bg">
+            <img id="mainHeroImg" src="" class="hero-img" alt="">
+        </div>
+        <div class="fog-panel">
+            <div class="header-content">
+                <div class="name-wrapper"><h1 id="brandName">جاري التحميل...</h1></div>
+                <span id="brandTitle" class="title-text" style="direction:ltr;"></span>
+            </div>
+
+            <div class="action-row">
+                <div class="shard-btn" onclick="openPhoneSheet()"><i class="fa-solid fa-phone"></i></div>
+                <a id="topMapLink" href="#" class="shard-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i></a>
+                <div class="shard-btn" onclick="openBookingAlert()"><i class="fa-solid fa-calendar-check"></i></div>
+                <div class="shard-btn" onclick="copyURL()"><i class="fa-solid fa-link"></i></div>
+            </div>
+
+            <div class="save-btn" onclick="showGlassAlert('حفظ جهة الاتصال', 'سيتم تنزيل ملف جهة الاتصال قريباً.', '<i class=\'fa-solid fa-address-card\'></i>')">
+                <i class="fa-solid fa-address-card" style="margin-left:10px;"></i> حفظ جهة الاتصال
+            </div>
+
+            <div id="socialSection" style="display:none;">
+                <div class="section-label">تواصل معي</div>
+                <div id="standardSocialLinks"></div>
+            </div>
+
+            <div class="about-box">
+                <h2 style="margin:0 0 5px; color:var(--text-main); font-family:var(--font-ar);">نظرة عامة</h2>
+                <div class="stats-grid">
+                    <div class="stat-item"><b id="userCounter">0</b><span>المستخدمين</span></div>
+                    <div class="stat-item"><b id="foundedYear">0</b><span>التأسيس</span></div>
+                    <div class="stat-item"><b id="ratingScore">A+</b><span>التقييم</span></div>
+                </div>
+                <p id="aboutText" class="about-p"></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="premiumApp">
+        <div class="profile-container">
+            <button id="btn-booking-action" onclick="openBookingAlert()">
+                <i class="fa-regular fa-calendar-check" style="font-size: 20px;"></i> 
+                <span>Book an Appointment</span>
+            </button>
+
+            <div class="glass-panel">
+                <div class="profile-header">
+                    <img id="premiumProfileImg" src="" alt="Profile" class="premium-profile-img">
+                    <h2 class="profile-name" id="premiumDisplayName">Loading...</h2>
+                    <p class="profile-bio" id="premiumUserBio">...</p>
+                </div>
+            </div>
+
+            <div class="links-grid" id="premiumSocialLinks">
+                </div>
+        </div>
+    </div>
+
+    <div id="suspendedMessage" style="display:none; text-align:center; padding-top:40vh; font-family:var(--font-ar);">
+        <p style="font-size:60px; margin:0;"><i class="fa-solid fa-lock" style="color: var(--text-muted);"></i></p>
+        <p style="font-size:22px; font-weight:700; color:var(--text-main);">هذا الحساب موقوف مؤقتاً</p>
+    </div>
+
+    <div class="glass-overlay" id="glassAlertOverlay">
+        <div class="alert-glass" onclick="event.stopPropagation()">
+            <div class="alert-body">
+                <span class="alert-icon" id="glassAlertIcon"><i class="fa-solid fa-circle-info"></i></span>
+                <div class="alert-title" id="glassAlertTitle">إشعار</div>
+                <div class="alert-message" id="glassAlertMessage"></div>
+            </div>
+            <button class="alert-btn" onclick="document.getElementById('glassAlertOverlay').classList.remove('active')">موافق</button>
+        </div>
+    </div>
+
+    <div class="glass-overlay" id="phoneOverlay" onclick="closePhoneSheet()">
+        <div class="phone-popup" onclick="event.stopPropagation()">
+            <div class="popup-header"><div class="popup-header-title">اختر الرقم للاتصال</div></div>
+            <div id="phoneNumbersGroup"></div>
+            <div class="popup-cancel-bar" onclick="closePhoneSheet()">إلغاء</div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAxxWhIBlC92x_T4lBjDj7p7B3hrvhVZYg",
+            authDomain: "alaqrab-system.firebaseapp.com",
+            projectId: "alaqrab-system"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db  = getFirestore(app);
+
+        // Utilities & Shared Modal Functions
+        window.toArabicDigits = (str) => str.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+        window.showGlassAlert = (title, msg, iconHtml = '<i class="fa-solid fa-circle-info"></i>') => {
+            document.getElementById('glassAlertIcon').innerHTML = iconHtml;
+            document.getElementById('glassAlertTitle').textContent = title;
+            document.getElementById('glassAlertMessage').textContent = msg;
+            document.getElementById('glassAlertOverlay').classList.add('active');
+        };
+        window.openPhoneSheet = () => document.getElementById('phoneOverlay').classList.add('active');
+        window.closePhoneSheet = () => document.getElementById('phoneOverlay').classList.remove('active');
+        window.makeCall = (n) => { window.location.href = 'tel:' + n; closePhoneSheet(); };
+        window.openBookingAlert = () => window.showGlassAlert('الحجوزات', 'تم توجيه نظام الحجوزات للعرض فقط في هذه النسخة المدمجة.', '<i class="fa-solid fa-calendar-check"></i>');
+        window.copyURL = () => window.showGlassAlert("تم النسخ", "تم نسخ الرابط بنجاح.", '<i class="fa-solid fa-link"></i>');
+
+        function applyCloudFonts(fontAr, fontEn) {
+            if (fontAr) document.documentElement.style.setProperty('--font-ar', `'${fontAr}', serif`);
+            if (fontEn) document.documentElement.style.setProperty('--font-en', `'${fontEn}', sans-serif`);
+        }
+
+        const platforms = [
+            { id: 'whatsapp', icon: 'fa-whatsapp', name: 'WhatsApp', nameAr: 'واتساب', color: '#25D366' },
+            { id: 'facebook', icon: 'fa-facebook-f', name: 'Facebook', nameAr: 'فيسبوك', color: '#1877F2' },
+            { id: 'instagram', icon: 'fa-instagram', name: 'Instagram', nameAr: 'إنستغرام', color: '#E4405F' },
+            { id: 'tiktok', icon: 'fa-tiktok', name: 'TikTok', nameAr: 'تيك توك', color: '#ffffff' },
+            { id: 'youtube', icon: 'fa-youtube', name: 'YouTube', nameAr: 'يوتيوب', color: '#FF0000' },
+            { id: 'snapchat', icon: 'fa-snapchat', name: 'Snapchat', nameAr: 'سناب شات', color: '#FFFC00' },
+            { id: 'x', icon: 'fa-x-twitter', name: 'X', nameAr: 'إكس', color: '#ffffff' },
+            { id: 'linkedin', icon: 'fa-linkedin-in', name: 'LinkedIn', nameAr: 'لينكد إن', color: '#0A66C2' },
+            { id: 'threads', icon: 'fa-threads', name: 'Threads', nameAr: 'ثريدز', color: '#ffffff' },
+            { id: 'truecaller', icon: 'fa-phone-flip', isSolid: true, name: 'Truecaller', nameAr: 'تروكولر', color: '#0056D2' },
+            { id: 'googlereviews', icon: 'fa-star', isSolid: true, name: 'Reviews', nameAr: 'تقييمات جوجل', color: '#F4B400' },
+            { id: 'googlemaps', icon: 'fa-map-pin', isSolid: true, name: 'Maps', nameAr: 'خرائط جوجل', color: '#34A853' }
+        ];
+
+        function renderDualSocialLinks(data, templateMode) {
+            const stdContainer = document.getElementById('standardSocialLinks');
+            const premContainer = document.getElementById('premiumSocialLinks');
+            stdContainer.innerHTML = ''; premContainer.innerHTML = '';
+            let hasLinks = false;
+
+            platforms.forEach(plat => {
+                const url = data[plat.id] || data[plat.id === 'instagram' ? 'insta' : plat.id];
+                if (url) {
+                    hasLinks = true;
+                    // Standard Render
+                    if(templateMode !== 'premium') {
+                        const iconClass = plat.isSolid ? `fa-solid ${plat.icon}` : `fa-brands ${plat.icon}`;
+                        stdContainer.innerHTML += `
+                            <a href="${url}" class="glass-card" target="_blank">
+                                <div class="card-icon" style="color:${plat.color};"><i class="${iconClass}"></i></div>
+                                <div class="card-text"><strong>${plat.nameAr}</strong><span>تواصل معنا</span></div>
+                            </a>`;
+                    }
+                    // Premium Render
+                    if(templateMode === 'premium') {
+                        const iconClass = plat.isSolid ? `fa-solid ${plat.icon}` : `fa-brands ${plat.icon}`;
+                        premContainer.innerHTML += `
+                            <a href="${url}" target="_blank" class="social-card" data-brand="${plat.id}">
+                                <i class="${iconClass} social-icon" style="color: ${plat.color}; text-shadow: 0 0 10px rgba(255,255,255,0.2);"></i>
+                                <span class="social-label">${plat.name}</span>
+                            </a>`;
+                    }
+                }
+            });
+            document.getElementById('socialSection').style.display = hasLinks && templateMode !== 'premium' ? 'block' : 'none';
+        }
+
+        // Routing Logic
+        const targetUserId = window.location.hash.replace(/^#\/?/, '').trim() || null;
+        const loader = document.getElementById('loader-section');
+
+        if (!targetUserId) {
+            document.getElementById('landingPage').style.display = 'flex';
+        } else {
+            loader.style.display = 'flex';
+            
+            onSnapshot(doc(db, "users", targetUserId), (docSnap) => {
+                setTimeout(() => {
+                    loader.style.opacity = '0';
+                    setTimeout(() => { loader.style.display = 'none'; }, 600);
+                }, 2000); // Wait for loader animation
+
+                if (!docSnap.exists() || docSnap.data().isActive === false) {
+                    document.getElementById('suspendedMessage').style.display = 'block';
+                    return;
+                }
+
+                const data = docSnap.data();
+                applyCloudFonts(data.fontAr || null, data.fontEn || null);
+                if (data.theme) document.documentElement.setAttribute('data-theme', data.theme);
+
+                // Phone Binding
+                const pg = document.getElementById('phoneNumbersGroup');
+                pg.innerHTML = '';
+                if (data.phone1) pg.innerHTML += `<button class="phone-number-btn" onclick="makeCall('${data.phone1}')">${window.toArabicDigits(data.phone1)}</button>`;
+                if (data.phone2) pg.innerHTML += `<button class="phone-number-btn" onclick="makeCall('${data.phone2}')">${window.toArabicDigits(data.phone2)}</button>`;
+
+                // The King Rule: Dual Template Routing
+                if (data.templateMode === "premium") {
+                    // Activate Shattered Glass Premium
+                    document.getElementById('premiumApp').style.display = 'block';
+                    document.getElementById('fullApp').style.display = 'none';
+
+                    document.getElementById('premiumDisplayName').textContent = data.displayName || 'الاسم';
+                    document.getElementById('premiumUserBio').textContent = data.title || data.about || 'مرحباً بك في صفحتي.';
+                    document.getElementById('premiumProfileImg').src = data.heroImg || 'https://g.top4top.io/p_374327hvm1.jpg';
+                    
+                    renderDualSocialLinks(data, 'premium');
+                } else {
+                    // Default Standard App
+                    document.getElementById('fullApp').style.display = 'block';
+                    document.getElementById('premiumApp').style.display = 'none';
+
+                    document.getElementById('brandName').innerHTML = (data.displayName || 'الاسم');
+                    document.getElementById('brandTitle').innerText = data.title || '';
+                    document.getElementById('mainHeroImg').src = data.heroImg || 'https://g.top4top.io/p_374327hvm1.jpg';
+                    document.getElementById('aboutText').innerText = data.about || '';
+                    
+                    document.getElementById('userCounter').innerText = data.customersCount || 0;
+                    document.getElementById('foundedYear').innerText = window.toArabicDigits(data.foundedYear || 2026);
+                    document.getElementById('ratingScore').innerText = data.rating || 'A+';
+
+                    renderDualSocialLinks(data, 'standard');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
