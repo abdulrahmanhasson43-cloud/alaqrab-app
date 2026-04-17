@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>لوحة إدارة العقرب | النسخة الشاملة</title>
+    
+    <!-- الخطوط والأيقونات -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- مكتبة PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <style>
+        /* --- متغيرات وتنسيقات عامة --- */
+        :root {
+            --bg-color: #f4f5f7;
+            --white: #ffffff;
+            --text-dark: #1d1d1d;
+            --text-gray: #8e8e93;
+            --lime: #ccff00;
+            --ios-blue: #007aff;
+            --danger-color: #ff3b30;
+            --success-color: #34c759;
+            --border-radius: 24px;
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; outline: none; }
+        
+        body, html { width: 100%; height: 100%; background-color: #2c2c2c; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+
+        .app-container {
+            width: 100%; max-width: 450px; height: 100%; max-height: 900px;
+            background-color: var(--bg-color); position: relative; overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+        @media (min-width: 451px) { .app-container { height: 95vh; border-radius: 40px; border: 8px solid #111; } }
+
+        .screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; background-color: var(--bg-color); transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); z-index: 1; opacity: 0; pointer-events: none; }
+        .screen.active { transform: translateX(0); opacity: 1; pointer-events: auto; z-index: 2; }
+        
+        .auth-screen { justify-content: center; align-items: center; padding: 30px; text-align: center; }
+        .auth-icon { font-size: 70px; color: var(--text-dark); margin-bottom: 20px; }
+        .btn-google { width: 100%; padding: 18px; background: var(--white); color: var(--text-dark); border: 2px solid #eee; border-radius: 20px; font-size: 16px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .btn-google:active { transform: scale(0.95); }
+
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 30px 25px 15px; font-size: 1.2rem; font-weight: 700; background: var(--bg-color); z-index: 10; }
+        .icon-btn { width: 45px; height: 45px; border-radius: 50%; background: var(--white); border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.05); cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; transition: 0.2s; }
+        
+        .content { flex: 1; padding: 10px 25px 100px; overflow-y: auto; scrollbar-width: none; }
+        .content::-webkit-scrollbar { display: none; }
+        
+        .card { background: var(--white); border-radius: var(--border-radius); padding: 25px; margin-bottom: 20px; box-shadow: var(--card-shadow); }
+        
+        .profile { text-align: center; }
+        .profile-img-box { width: 100px; height: 100px; border-radius: 50%; background: #eee; margin: 0 auto 15px; display: flex; justify-content: center; align-items: center; font-size: 30px; color: #ccc; cursor: pointer; position: relative; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .profile-img-box img { width: 100%; height: 100%; object-fit: cover; display: none; position: absolute; top: 0; left: 0; }
+        .profile h2 { font-size: 1.5rem; margin-bottom: 5px; }
+        
+        .stats-grid { display: flex; justify-content: space-around; border-top: 1px solid #f0f0f0; padding-top: 20px; margin-top: 20px; }
+        .stat-item h3 { font-size: 1.4rem; color: var(--text-dark); }
+        .stat-item p { font-size: 0.8rem; color: var(--text-gray); }
+
+        .section-title { font-size: 1.1rem; font-weight: bold; margin-bottom: 15px; color: var(--text-dark); display: flex; align-items: center; gap: 8px; }
+        .input-group { width: 100%; margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 0.85rem; color: var(--text-gray); margin-bottom: 5px; font-weight: 600; }
+        .input-group input, .input-group textarea, .input-group select { width: 100%; padding: 15px; border: 1px solid #eee; border-radius: 15px; background: #fafafa; font-size: 1rem; outline: none; transition: 0.3s; font-family: 'Cairo', sans-serif; color: var(--text-dark); }
+        .input-group input:focus, .input-group textarea:focus, .input-group select:focus { border-color: var(--text-dark); background: var(--white); }
+        textarea { resize: vertical; min-height: 80px; }
+
+        /* قائمة الروابط */
+        .social-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #f0f0f0; cursor: pointer; }
+        .social-item:last-child { border-bottom: none; }
+        .social-info { display: flex; align-items: center; gap: 15px; font-weight: 600; font-size: 1.1rem; }
+        .social-icon-box { width: 45px; height: 45px; border-radius: 14px; display: flex; justify-content: center; align-items: center; font-size: 1.4rem; color: white; }
+        .social-status { font-size: 0.8rem; padding: 4px 10px; border-radius: 10px; background: #eee; color: var(--text-gray); }
+        .social-status.active { background: var(--lime); color: var(--text-dark); font-weight: bold; }
+
+        /* النافذة المنبثقة */
+        .modal-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: 0.3s; z-index: 100; backdrop-filter: blur(5px); }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-content { width: 100%; background: var(--white); border-radius: 40px 40px 0 0; padding: 30px 25px 40px; transform: translateY(100%); transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; align-items: center; }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+        .modal-drag { width: 50px; height: 5px; background: #ddd; border-radius: 10px; margin-bottom: 25px; }
+        .modal-icon { width: 70px; height: 70px; border-radius: 20px; display: flex; justify-content: center; align-items: center; font-size: 2.5rem; color: white; margin-bottom: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
+        
+        .btn-main { width: 100%; padding: 18px; background: var(--text-dark); color: white; border: none; border-radius: 18px; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .btn-main:active { transform: scale(0.95); }
+        .btn-main.saved { background: var(--lime); color: var(--text-dark); }
+        .public-link-btn { background: #f0f0f0; color: var(--text-dark); border: 1px dashed var(--text-gray); width: 100%; padding: 15px; border-radius: 15px; font-weight: bold; cursor: pointer; margin-bottom: 15px; direction: ltr; }
+
+        /* الشريط السفلي */
+        .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; background: var(--white); padding: 12px 15px 20px; display: flex; justify-content: space-between; align-items: center; border-radius: 30px 30px 0 0; box-shadow: 0 -10px 30px rgba(0,0,0,0.05); z-index: 50; }
+        .nav-item { color: var(--text-gray); font-size: 1.2rem; cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; align-items: center; gap: 5px; flex: 1; }
+        .nav-item span { font-size: 0.65rem; font-weight: bold; }
+        .nav-item.active { color: var(--text-dark); }
+        .nav-save { width: 55px; height: 55px; background: var(--lime); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.4rem; margin-top: -35px; box-shadow: 0 10px 20px rgba(204,255,0,0.3); cursor: pointer; color: var(--text-dark); transition: 0.3s; border: 4px solid var(--bg-color); z-index: 10;}
+        .nav-save:active { transform: scale(0.9); }
+
+        /* --- أقسام الحجوزات --- */
+        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 24px; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2);}
+        input:checked + .slider { background-color: var(--text-dark); }
+        input:checked + .slider:before { transform: translateX(20px); }
+
+        .search-wrapper { position: relative; margin-bottom: 15px; }
+        .search-input { width: 100%; padding: 14px 45px 14px 15px; border-radius: 18px; border: 1px solid #eee; background: var(--white); font-size: 14px; box-shadow: var(--card-shadow); transition: 0.3s; }
+        .search-input:focus { border-color: var(--text-dark); }
+        .search-icon { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--text-gray); font-size: 16px; }
+
+        .booking-tabs { display: flex; background: #eef0f3; border-radius: 14px; padding: 4px; margin-bottom: 15px; }
+        .b-tab { flex: 1; text-align: center; font-size: 0.8rem; font-weight: bold; padding: 10px 5px; cursor: pointer; border-radius: 10px; transition: 0.3s; color: var(--text-gray); }
+        .b-tab.active { background: var(--white); color: var(--text-dark); box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+
+        .booking-card { background: var(--white); margin-bottom: 15px; padding: 20px; border-radius: 20px; box-shadow: var(--card-shadow); display: flex; justify-content: space-between; align-items: center; position: relative; border: 1px solid #f9f9f9;}
+        .card-details b { font-size: 16px; display: block; margin-bottom: 6px; color: var(--text-dark); }
+        .card-details p { margin: 0 0 4px 0; font-size: 12px; color: var(--text-gray); }
+        .type-badge { display: inline-block; padding: 5px 12px; border-radius: 8px; font-size: 10px; font-weight: bold; margin-bottom: 8px; }
+        .vip { background: #1d1d1d; color: #ccff00; }
+        .new { background: #f0f0f0; color: var(--text-dark); }
+        .follow { background: #e8f5e9; color: #15803d; }
+        
+        .status-tag { position: absolute; top: 20px; left: 20px; font-size: 10px; font-weight: bold; padding: 4px 10px; border-radius: 8px; }
+        .tag-done { background: #e8f5e9; color: var(--success-color); }
+        .tag-canceled { background: #ffebee; color: var(--danger-color); text-decoration: line-through;}
+
+        .btn-circle { width: 40px; height: 40px; border-radius: 50%; border: none; display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer; transition: 0.2s; margin-bottom: 8px; }
+        .btn-circle:active { transform: scale(0.92); }
+        .wa-btn { background: #25d366; color: #fff; box-shadow: 0 4px 10px rgba(37,211,102,0.2); }
+        .check-btn { background: #e8f5e9; color: var(--success-color); }
+        .cancel-btn { background: #ffebee; color: var(--danger-color); }
+
+        .holiday-tag { background: #f4f5f7; border: 1px solid #eee; padding: 8px 14px; border-radius: 12px; font-size: 12px; display: inline-flex; align-items: center; gap: 10px; margin: 4px; color: var(--text-dark); font-weight: bold; }
+        .holiday-tag i { color: var(--danger-color); cursor: pointer; }
+        .icon-add-btn { width: 45px; height: 45px; flex-shrink: 0; border-radius: 15px; background: var(--text-dark); color: var(--lime); border: none; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;}
+        
+        .schedule-card { background: #fafafa; padding: 12px 15px; border-radius: 15px; border: 1px solid #eee; margin-bottom: 10px; }
+        .schedule-header { display: flex; justify-content: space-between; align-items: center; }
+        .schedule-header .day-name { font-weight: bold; font-size: 13px; display: flex; align-items: center; gap: 10px; color: var(--text-dark); }
+        .status-badge { padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: bold; }
+        .badge-open { background: #e8f5e9; color: #1b5e20; }
+        .badge-closed { background: #ffebee; color: #b71c1c; }
+        .schedule-inputs { display: none; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #ddd; }
+        .schedule-inputs .time-block, .schedule-inputs .cap-block { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+        .schedule-inputs .lbl { font-size: 10px; color: var(--text-gray); text-align: center; }
+        .schedule-inputs input { padding: 8px 4px; font-size: 12px; border-radius: 8px; text-align: center; border: 1px solid #ddd; background: #fff; width: 100%; }
+
+        #printArea { padding: 20px; background: #fff; border-radius: 20px; margin-top: 15px; display: none; border: 1px solid #eee; }
+        .print-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .print-item { background: #f9f9f9; padding: 12px; border-radius: 10px; text-align: center; border: 1px solid #eee; }
+        .print-item.full { grid-column: span 2; background: #1d1d1d; color: white; border: none; }
+        .print-item.full b { color: var(--lime); }
+        .print-item span { display: block; font-size: 11px; margin-bottom: 5px; color: var(--text-gray); }
+        .print-item b { font-size: 18px; font-family: 'Cairo', sans-serif;}
+
+        .pdf-export-btn { display: none; width: 100%; padding: 15px; background: var(--text-dark); color: var(--lime); border: none; border-radius: 15px; font-size: 14px; font-weight: bold; cursor: pointer; margin-top: 15px; }
+
+        .hidden-links-data { display: none; }
+
+        /* تنسيق رقم الهاتف مع مفتاح الدولة */
+        .phone-wrapper { display: flex; gap: 8px; }
+        .country-code-select { width: 110px; padding: 0 8px; border-radius: 15px; border: 1px solid #eee; background: #fafafa; }
+        .phone-input { flex: 1; }
+
+        /* المحافظ الإلكترونية */
+        .wallet-type-selector { display: flex; gap: 5px; margin-bottom: 10px; }
+        .wallet-type-btn { flex: 1; padding: 8px; border: 1px solid #eee; border-radius: 12px; background: #fafafa; font-size: 12px; cursor: pointer; }
+        .wallet-type-btn.active { background: var(--text-dark); color: white; }
+
+        /* صلاحيات المساعد */
+        .permission-check { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+
+    <!-- شاشات الدخول والإعداد (نفس السابق) -->
+    <div id="loginSection" class="screen auth-screen active">
+        <i class="fa-solid fa-fingerprint auth-icon"></i>
+        <h2 style="margin-bottom: 10px;">لوحة إدارة العقرب</h2>
+        <p style="margin-bottom: 40px; color: var(--text-gray);">النسخة الحديثة والمركزية لإدارة منصتك</p>
+        <button class="btn-google" onclick="loginWithGoogle()">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="24">
+            دخول باستخدام جوجل
+        </button>
+    </div>
+
+    <div id="setupSection" class="screen auth-screen">
+        <i class="fa-solid fa-wand-magic-sparkles auth-icon" style="color: var(--text-dark);"></i>
+        <h2 style="margin-bottom: 10px;">إنشاء رابطك المخصص</h2>
+        <p style="margin-bottom: 30px; color: var(--text-gray);">اختر رابط مميز لعملائك (مثال: ali10)</p>
+        <div class="input-group">
+            <input type="text" id="newUserId" placeholder="اكتب اسم الرابط هنا" dir="ltr" style="text-align: center; font-size: 1.5rem; font-weight: bold;">
+        </div>
+        <button class="btn-main" onclick="setupAccount()">تأكيد وبدء الاستخدام</button>
+    </div>
+
+    <!-- الشاشة الرئيسية -->
+    <div id="homeScreen" class="screen">
+        <div class="header">
+            <span>الرئيسية</span>
+            <button class="icon-btn" onclick="logout()" style="color: var(--danger-color);"><i class="fa-solid fa-power-off"></i></button>
+        </div>
+        <div class="content">
+            <button class="public-link-btn" onclick="copyMyLink()">
+                <i class="fa-solid fa-copy"></i> <span id="userPublicLink">alaqrab.com/?id=...</span>
+            </button>
+
+            <div class="card profile">
+                <div class="profile-img-box" onclick="document.getElementById('fInp').click()">
+                    <i id="upIcon" class="fa-solid fa-camera"></i>
+                    <img id="previewImg">
+                </div>
+                <input type="file" id="fInp" hidden accept="image/*" onchange="showPreview(this)">
+                <h2 id="homeName">اسم المستخدم</h2>
+                <p id="homeTitle" style="color: var(--text-gray); font-size: 0.9rem;">المسمى الوظيفي</p>
+                
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <h3 id="statCust">0</h3>
+                        <p>العملاء</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3 id="statRating">-</h3>
+                        <p>التقييم</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3 id="statYear">2026</h3>
+                        <p>التأسيس</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- شاشة الإعدادات (Profile) -->
+    <div id="profileScreen" class="screen">
+        <div class="header">
+            <span>الإعدادات والبيانات</span>
+        </div>
+        <div class="content">
+            <!-- بيانات شخصية -->
+            <div class="card">
+                <div class="section-title">البيانات الشخصية</div>
+                <div class="input-group"><label>الاسم بالكامل</label><input type="text" id="adminName" placeholder="الاسم الذي يظهر للناس"></div>
+                <div class="input-group"><label>المسمى الوظيفي</label><input type="text" id="adminTitle" placeholder="مثال: مصمم جرافيك"></div>
+                <div class="input-group"><label>نبذة عنك</label><textarea id="adminAbout" placeholder="اكتب نبذة مختصرة..."></textarea></div>
+            </div>
+
+            <!-- أرقام الهاتف -->
+            <div class="card">
+                <div class="section-title">أرقام التواصل</div>
+                <div class="input-group">
+                    <label>رقم الهاتف الأساسي</label>
+                    <div class="phone-wrapper">
+                        <select id="phone1CountryCode" class="country-code-select"></select>
+                        <input type="tel" id="phone1" dir="ltr" placeholder="01xxxxxxxxx" class="phone-input">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>رقم هاتف إضافي</label>
+                    <div class="phone-wrapper">
+                        <select id="phone2CountryCode" class="country-code-select"></select>
+                        <input type="tel" id="phone2" dir="ltr" placeholder="اختياري" class="phone-input">
+                    </div>
+                </div>
+            </div>
+
+            <!-- الإحصائيات -->
+            <div class="card">
+                <div class="section-title">تحديث الإحصائيات</div>
+                <div style="display:flex; gap:10px;">
+                    <div class="input-group"><label>عدد العملاء</label><input type="text" id="custCount" placeholder="مثال: 500K"></div>
+                    <div class="input-group"><label>التقييم</label><input type="text" id="rating" dir="ltr" placeholder="4.9"></div>
+                    <div class="input-group"><label>سنة التأسيس</label><input type="number" id="foundYear"></div>
+                </div>
+            </div>
+
+            <!-- المحافظ الإلكترونية -->
+            <div class="card">
+                <div class="section-title"><i class="fa-solid fa-wallet"></i> المحافظ الإلكترونية</div>
+                <!-- InstaPay -->
+                <div style="margin-bottom:20px;">
+                    <label style="font-weight:bold; margin-bottom:8px; display:block;">InstaPay</label>
+                    <div class="wallet-type-selector">
+                        <div class="wallet-type-btn active" data-target="instapay-phone" onclick="switchWalletType('instapay', 'phone')">رقم هاتف</div>
+                        <div class="wallet-type-btn" data-target="instapay-link" onclick="switchWalletType('instapay', 'link')">رابط</div>
+                    </div>
+                    <div id="instapay-phone" class="phone-wrapper">
+                        <select id="instapayCountryCode" class="country-code-select"></select>
+                        <input type="tel" id="instapayPhone" dir="ltr" placeholder="رقم InstaPay" class="phone-input">
+                    </div>
+                    <div id="instapay-link" style="display:none;">
+                        <input type="text" id="instapayLinkInput" placeholder="رابط InstaPay" dir="ltr" style="width:100%; padding:15px; border-radius:15px; border:1px solid #eee;">
+                    </div>
+                </div>
+                <!-- محفظة أخرى -->
+                <div>
+                    <label style="font-weight:bold; margin-bottom:8px; display:block;">محفظة أخرى</label>
+                    <div class="wallet-type-selector">
+                        <div class="wallet-type-btn active" data-target="other-phone" onclick="switchWalletType('other', 'phone')">رقم هاتف</div>
+                        <div class="wallet-type-btn" data-target="other-link" onclick="switchWalletType('other', 'link')">رابط</div>
+                    </div>
+                    <div id="other-phone" class="phone-wrapper">
+                        <select id="otherWalletCountryCode" class="country-code-select"></select>
+                        <input type="tel" id="otherWalletPhone" dir="ltr" placeholder="رقم المحفظة" class="phone-input">
+                    </div>
+                    <div id="other-link" style="display:none;">
+                        <input type="text" id="otherWalletLinkInput" placeholder="رابط المحفظة" dir="ltr" style="width:100%; padding:15px; border-radius:15px; border:1px solid #eee;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- إدارة المساعدين -->
+            <div class="card">
+                <div class="section-title"><i class="fa-solid fa-user-plus"></i> المساعدين</div>
+                <p style="font-size:0.8rem; margin-bottom:10px;">أضف مساعدين (يدخلون بحساب جوجل) بصلاحيات محددة.</p>
+                <div style="display:flex; gap:10px; margin-bottom:15px;">
+                    <input type="email" id="assistantEmail" placeholder="البريد الإلكتروني للمساعد" style="flex:1; padding:12px; border-radius:12px; border:1px solid #eee;">
+                    <button type="button" class="icon-add-btn" onclick="openAssistantPermissions()"><i class="fas fa-cog"></i></button>
+                </div>
+                <div id="assistantsList" style="display:flex; flex-direction:column; gap:5px;"></div>
+                
+                <!-- الكود المتغير -->
+                <div style="margin-top:20px; border-top:1px solid #eee; padding-top:15px;">
+                    <label style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+                        <input type="checkbox" id="enableAssistantCode" style="width:18px; height:18px;">
+                        <span style="font-weight:bold;">تفعيل الكود المتغير للمساعدين</span>
+                    </label>
+                    <div class="input-group"><label>مدة صلاحية الكود</label>
+                        <select id="codeValidityMonths" style="padding:12px;">
+                            <option value="6">6 أشهر</option>
+                            <option value="12">12 شهر (سنة)</option>
+                        </select>
+                    </div>
+                    <div id="currentCodeDisplay" style="margin-top:10px; background:#f0f0f0; padding:10px; border-radius:10px; display:none;">
+                        <span>الكود الحالي: <b id="assistantCodeValue"></b> (صالح حتى <span id="codeExpiryDate"></span>)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- شاشة الحجوزات -->
+    <div id="bookingsScreen" class="screen">
+        <div class="header">
+            <span>إدارة الحجوزات</span>
+            <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size:0.75rem; color:var(--text-gray); font-weight:bold;">التفعيل</span>
+                <label class="switch">
+                    <input type="checkbox" id="isBookingActiveToggle" onchange="toggleBookingRealtime()">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        
+        <div class="content" style="padding-top:0;">
+            <div class="booking-tabs">
+                <div class="b-tab active" onclick="switchBTab('active', this)">الانتظار</div>
+                <div class="b-tab" onclick="switchBTab('done', this)">الأرشيف</div>
+                <div class="b-tab" onclick="switchBTab('settings', this)">الضبط</div>
+                <div class="b-tab" onclick="switchBTab('report', this)">التقارير</div>
+            </div>
+
+            <div id="b_activeView">
+                <div class="search-wrapper">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="tel" id="searchInput" class="search-input" placeholder="ابحث برقم الهاتف..." oninput="filterBookings()">
+                </div>
+                <div class="stats-grid" style="border:none; margin-top:0; padding-top:0; margin-bottom:15px;">
+                    <div class="stat-item"><h3 id="activeC">0</h3><p>انتظار</p></div>
+                    <div class="stat-item"><h3 id="doneC" style="color:var(--success-color);">0</h3><p>منتهي</p></div>
+                    <div class="stat-item"><h3 id="cancelC" style="color:var(--danger-color);">0</h3><p>ملغي</p></div>
+                </div>
+                <div id="activeList"></div>
+            </div>
+
+            <div id="b_doneView" style="display:none;">
+                <div id="doneList"></div>
+            </div>
+
+            <div id="b_settingsView" style="display:none;">
+                <!-- نفس إعدادات الضبط السابقة -->
+                <div class="card">
+                    <div class="section-title"><i class="fas fa-code-branch"></i> الفروع والعيادات</div>
+                    <label style="display:flex; align-items:center; gap:10px; margin-bottom:15px; font-weight:bold; font-size:13px;">
+                        <input type="checkbox" id="enableBranches" style="width:16px; height:16px; accent-color:var(--text-dark);">
+                        تفعيل ميزة اختيار الفرع
+                    </label>
+                    <div style="display:flex; gap:10px; margin-bottom:10px;">
+                        <input type="text" id="newBranchName" placeholder="اسم الفرع" style="flex:1; padding:12px; border-radius:12px; border:1px solid #eee;">
+                        <button type="button" class="icon-add-btn" onclick="addBranch()"><i class="fas fa-plus"></i></button>
+                    </div>
+                    <div id="branchesList" style="display:flex; flex-wrap:wrap;"></div>
+                </div>
+                <div class="card">
+                    <div class="section-title"><i class="fas fa-money-bill-wave"></i> أسعار الكشوفات</div>
+                    <div style="display:flex; gap:10px;">
+                        <div class="input-group"><label>جديد</label><input type="number" id="pNew" placeholder="0" style="text-align:center;"></div>
+                        <div class="input-group"><label>إعادة</label><input type="number" id="pFollow" placeholder="0" style="text-align:center;"></div>
+                        <div class="input-group"><label>VIP</label><input type="number" id="pVIP" placeholder="0" style="text-align:center;"></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="section-title"><i class="far fa-calendar-check"></i> جداول المواعيد</div>
+                    <div id="advancedSchedulesContainer"></div>
+                </div>
+                <div class="card" style="margin-bottom: 50px;">
+                    <div class="section-title"><i class="fas fa-calendar-day"></i> الإجازات الاستثنائية</div>
+                    <div style="display:flex; gap:10px;">
+                        <input type="date" id="holidayDate" style="flex:1; padding:12px; border-radius:12px; border:1px solid #eee;">
+                        <button type="button" class="icon-add-btn" onclick="addHoliday()"><i class="fas fa-plus"></i></button>
+                    </div>
+                    <div id="holidaysList" style="margin-top:10px; display:flex; flex-wrap:wrap;"></div>
+                </div>
+            </div>
+
+            <div id="b_reportView" style="display:none;">
+                <div class="card">
+                    <h3 style="margin-bottom:10px; color:var(--text-dark);">استخراج جرد الحجوزات</h3>
+                    <div style="display:flex; gap:10px; margin-bottom: 15px;">
+                        <div class="input-group"><label>من تاريخ</label><input type="date" id="reportFrom"></div>
+                        <div class="input-group"><label>إلى تاريخ</label><input type="date" id="reportTo"></div>
+                    </div>
+                    <button class="btn-main" onclick="generateReport()">إصدار التقرير</button>
+                    <div id="printArea"><!-- محتوى التقرير --></div>
+                    <button class="pdf-export-btn" id="pdfBtn" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> تحميل PDF</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- شاشة الروابط -->
+    <div id="linksScreen" class="screen">
+        <div class="header"><span>إدارة الروابط</span></div>
+        <div class="content">
+            <div class="card">
+                <p style="font-size:0.85rem; color:var(--text-gray); margin-bottom:20px;">اضغط على أي منصة لإضافة أو تعديل الرابط.</p>
+                <div id="socialList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- شريط التنقل السفلي -->
+    <div class="bottom-nav" id="mainNav" style="display: none;">
+        <div class="nav-item active" onclick="switchTab('homeScreen', this)"><i class="fa-solid fa-house"></i><span>الرئيسية</span></div>
+        <div class="nav-item" onclick="switchTab('profileScreen', this)"><i class="fa-solid fa-user-gear"></i><span>الإعدادات</span></div>
+        <div class="nav-save" onclick="saveAdminData()" id="saveBtnBtn"><i class="fa-solid fa-check"></i></div>
+        <div class="nav-item" onclick="switchTab('bookingsScreen', this)"><i class="fa-solid fa-calendar-check"></i><span>الحجوزات</span></div>
+        <div class="nav-item" onclick="switchTab('linksScreen', this)"><i class="fa-solid fa-link"></i><span>الروابط</span></div>
+    </div>
+
+    <!-- مودال الروابط -->
+    <div id="linkModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-drag" onclick="closeModal()"></div>
+            <div class="modal-icon" id="modalIcon"></div>
+            <h2 id="modalTitle"></h2>
+            <div class="input-group"><label>الرابط</label><input type="url" id="modalInput" dir="ltr"></div>
+            <button class="btn-main" id="modalSaveBtn" onclick="saveModalLink()">حفظ مؤقت</button>
+        </div>
+    </div>
+
+    <!-- مودال صلاحيات المساعد -->
+    <div id="assistantPermissionsModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-drag" onclick="closeAssistantPermissions()"></div>
+            <h3 style="margin-bottom:20px;">صلاحيات المساعد</h3>
+            <div style="width:100%;">
+                <div class="permission-check"><input type="checkbox" id="permViewBookings" checked disabled> عرض الحجوزات</div>
+                <div class="permission-check"><input type="checkbox" id="permChangeStatus"> تغيير حالة الحجز (تنفيذ/إلغاء)</div>
+                <div class="permission-check"><input type="checkbox" id="permViewReports"> عرض التقارير</div>
+                <div class="permission-check"><input type="checkbox" id="permEditSettings"> تعديل إعدادات الحجوزات</div>
+            </div>
+            <button class="btn-main" onclick="addAssistantWithPermissions()" style="margin-top:20px;">إضافة المساعد</button>
+        </div>
+    </div>
+
+    <!-- حقول مخفية للروابط -->
+    <div class="hidden-links-data">
+        <input type="hidden" id="linkWa"><input type="hidden" id="linkFb"><input type="hidden" id="linkInsta">
+        <input type="hidden" id="linkTiktok"><input type="hidden" id="linkYt"><input type="hidden" id="linkTh">
+        <input type="hidden" id="linkTg"><input type="hidden" id="linkSn"><input type="hidden" id="linkXt">
+        <input type="hidden" id="linkLinkedin"><input type="hidden" id="linkMap"><input type="hidden" id="linkReviews">
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, onSnapshot, query, orderBy, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAxxWhIBlC92x_T4lBjDj7p7B3hrvhVZYg",
+      authDomain: "alaqrab-system.firebaseapp.com",
+      projectId: "alaqrab-system",
+      storageBucket: "alaqrab-system.firebasestorage.app",
+      messagingSenderId: "660494503813",
+      appId: "1:660494503813:web:3f45fc069b3506f8657eec"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
+
+    let currentAuthUser = null;
+    let userDocId = null;
+    let isAssistantMode = false;
+    let assistantPermissions = {};
+    let currentModalSocialId = null;
+
+    // أكواد الدول بدون إيموجي
+    const countryCodes = [
+        { code: "+20", name: "مصر" },
+        { code: "+966", name: "السعودية" },
+        { code: "+971", name: "الإمارات" },
+        { code: "+965", name: "الكويت" },
+        { code: "+974", name: "قطر" },
+        { code: "+973", name: "البحرين" },
+        { code: "+968", name: "عمان" },
+        { code: "+962", name: "الأردن" },
+        { code: "+961", name: "لبنان" },
+        { code: "+963", name: "سوريا" },
+        { code: "+964", name: "العراق" },
+        { code: "+967", name: "اليمن" },
+        { code: "+970", name: "فلسطين" },
+        { code: "+216", name: "تونس" },
+        { code: "+213", name: "الجزائر" },
+        { code: "+212", name: "المغرب" },
+        { code: "+218", name: "ليبيا" },
+        { code: "+249", name: "السودان" },
+        { code: "+252", name: "الصومال" }
+    ];
+
+    function populateCountryCodes() {
+        const selects = ['phone1CountryCode', 'phone2CountryCode', 'instapayCountryCode', 'otherWalletCountryCode'];
+        selects.forEach(id => {
+            const select = document.getElementById(id);
+            if (!select) return;
+            select.innerHTML = '';
+            countryCodes.forEach(c => {
+                const option = document.createElement('option');
+                option.value = c.code;
+                option.textContent = `${c.code} (${c.name})`;
+                if (c.code === "+20") option.selected = true;
+                select.appendChild(option);
+            });
+        });
+    }
+
+    // التبديل بين رقم هاتف ورابط للمحافظ
+    window.switchWalletType = (wallet, type) => {
+        const phoneDiv = document.getElementById(`${wallet}-phone`);
+        const linkDiv = document.getElementById(`${wallet}-link`);
+        const btns = document.querySelectorAll(`.wallet-type-btn[data-target^="${wallet}"]`);
+        btns.forEach(b => b.classList.remove('active'));
+        if (type === 'phone') {
+            phoneDiv.style.display = 'flex';
+            linkDiv.style.display = 'none';
+            btns[0].classList.add('active');
+        } else {
+            phoneDiv.style.display = 'none';
+            linkDiv.style.display = 'block';
+            btns[1].classList.add('active');
+        }
+    };
+
+    // المنصات الاجتماعية
+    const socialPlatforms = [
+        { id: 'linkWa', name: 'WhatsApp', icon: 'fa-whatsapp', color: '#25D366' },
+        { id: 'linkFb', name: 'Facebook', icon: 'fa-facebook-f', color: '#1877F2' },
+        { id: 'linkInsta', name: 'Instagram', icon: 'fa-instagram', color: '#E4405F' },
+        { id: 'linkTiktok', name: 'TikTok', icon: 'fa-tiktok', color: '#000000' },
+        { id: 'linkYt', name: 'YouTube', icon: 'fa-youtube', color: '#FF0000' },
+        { id: 'linkTh', name: 'Threads', icon: 'fa-threads', color: '#000000' },
+        { id: 'linkTg', name: 'Telegram', icon: 'fa-telegram', color: '#0088cc' },
+        { id: 'linkSn', name: 'Snapchat', icon: 'fa-snapchat', color: '#FFFC00', iconColor: '#000' },
+        { id: 'linkXt', name: 'X (Twitter)', icon: 'fa-x-twitter', color: '#000000' },
+        { id: 'linkLinkedin', name: 'LinkedIn', icon: 'fa-linkedin-in', color: '#0077B5' },
+        { id: 'linkMap', name: 'Google Maps', icon: 'fa-map-location-dot', color: '#EA4335' },
+        { id: 'linkReviews', name: 'Google Reviews', icon: 'fa-star', color: '#FBBC05' }
+    ];
+
+    function renderSocialList() {
+        const listDiv = document.getElementById('socialList');
+        if (!listDiv) return;
+        listDiv.innerHTML = '';
+        socialPlatforms.forEach(p => {
+            const val = document.getElementById(p.id).value;
+            const hasLink = val && val.trim() !== '';
+            listDiv.innerHTML += `
+                <div class="social-item" onclick="openModal('${p.id}', '${p.name}', '${p.icon}', '${p.color}', '${p.iconColor || '#fff'}')">
+                    <div class="social-info">
+                        <div class="social-icon-box" style="background: ${p.color}; color: ${p.iconColor || '#fff'}">
+                            <i class="fa-brands ${p.icon}"></i>
+                        </div>
+                        <span>${p.name}</span>
+                    </div>
+                    <div class="social-status ${hasLink ? 'active' : ''}">${hasLink ? 'متصل' : 'إضافة'}</div>
+                </div>
+            `;
+        });
+    }
+
+    window.openModal = function(id, name, iconClass, bgColor, iconColor) {
+        currentModalSocialId = id;
+        document.getElementById('modalTitle').innerText = name;
+        document.getElementById('modalIcon').style.background = bgColor;
+        document.getElementById('modalIcon').style.color = iconColor;
+        document.getElementById('modalIcon').innerHTML = `<i class="fa-brands ${iconClass}"></i>`;
+        document.getElementById('modalInput').value = document.getElementById(id).value;
+        document.getElementById('modalSaveBtn').classList.remove('saved');
+        document.getElementById('modalSaveBtn').innerText = 'حفظ الرابط مؤقتاً';
+        document.getElementById('linkModal').classList.add('active');
+    };
+    window.closeModal = () => document.getElementById('linkModal').classList.remove('active');
+    window.saveModalLink = function() {
+        document.getElementById(currentModalSocialId).value = document.getElementById('modalInput').value;
+        const btn = document.getElementById('modalSaveBtn');
+        btn.classList.add('saved'); btn.innerText = 'تم ✓ (اضغط الزر الأخضر الرئيسي للحفظ النهائي)';
+        renderSocialList(); 
+        setTimeout(() => closeModal(), 1200);
+    };
+
+    // التنقل
+    window.switchTab = (screenId, el) => {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(screenId).classList.add('active');
+        if (el) {
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+        }
+        if (screenId === 'linksScreen') renderSocialList();
+    };
+
+    window.switchBTab = (tab, el) => {
+        document.querySelectorAll('.b-tab').forEach(i => i.classList.remove('active'));
+        el.classList.add('active');
+        ['active','done','settings','report'].forEach(t => {
+            document.getElementById(`b_${t}View`).style.display = t === tab ? 'block' : 'none';
+        });
+    };
+
+    // الحجوزات
+    window.currentBranches = [];
+    window.currentHolidays = [];
+    window.allBookings = [];
+    const daysMap = [
+        { id: 6, name: "السبت" }, { id: 0, name: "الأحد" }, { id: 1, name: "الإثنين" },
+        { id: 2, name: "الثلاثاء" }, { id: 3, name: "الأربعاء" }, { id: 4, name: "الخميس" }, { id: 5, name: "الجمعة" }
+    ];
+
+    function buildScheduleUI() {
+        const container = document.getElementById('advancedSchedulesContainer');
+        container.innerHTML = '';
+        daysMap.forEach(day => {
+            container.innerHTML += `
+                <div class="schedule-card">
+                    <div class="schedule-header">
+                        <label class="day-name"><input type="checkbox" id="dayOn_${day.id}" onchange="toggleDayInputs(${day.id})"> ${day.name}</label>
+                        <span class="status-badge badge-closed" id="statusBadge_${day.id}">مغلق</span>
+                    </div>
+                    <div class="schedule-inputs" id="dayInputs_${day.id}">
+                        <div class="time-block"><span class="lbl">من</span><input type="time" id="dayFrom_${day.id}"></div>
+                        <div class="time-block"><span class="lbl">إلى</span><input type="time" id="dayTo_${day.id}"></div>
+                        <div class="cap-block"><span class="lbl">العدد</span><input type="number" id="dayCap_${day.id}" placeholder="5"></div>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    window.toggleDayInputs = (id) => {
+        const isChecked = document.getElementById(`dayOn_${id}`).checked;
+        const inputsDiv = document.getElementById(`dayInputs_${id}`);
+        const badge = document.getElementById(`statusBadge_${id}`);
+        inputsDiv.style.display = isChecked ? 'flex' : 'none';
+        badge.innerText = isChecked ? 'عمل' : 'مغلق';
+        badge.className = `status-badge ${isChecked ? 'badge-open' : 'badge-closed'}`;
+    };
+
+    window.addBranch = () => {
+        const name = document.getElementById('newBranchName').value.trim();
+        if (name) { window.currentBranches.push({ name }); renderBranches(); document.getElementById('newBranchName').value = ''; }
+    };
+    window.removeBranch = (idx) => { window.currentBranches.splice(idx, 1); renderBranches(); };
+    function renderBranches() {
+        const list = document.getElementById('branchesList');
+        list.innerHTML = '';
+        window.currentBranches.forEach((b, i) => {
+            list.innerHTML += `<div class="holiday-tag">${b.name} <i class="fas fa-times-circle" onclick="window.removeBranch(${i})"></i></div>`;
+        });
+    }
+
+    window.addHoliday = () => {
+        const d = document.getElementById('holidayDate').value;
+        if (d && !window.currentHolidays.includes(d)) { window.currentHolidays.push(d); renderHolidays(); }
+    };
+    window.removeHoliday = (d) => { window.currentHolidays = window.currentHolidays.filter(x => x !== d); renderHolidays(); };
+    function renderHolidays() {
+        const list = document.getElementById('holidaysList');
+        list.innerHTML = '';
+        window.currentHolidays.forEach(d => {
+            list.innerHTML += `<div class="holiday-tag">${d} <i class="fas fa-times-circle" onclick="window.removeHoliday('${d}')"></i></div>`;
+        });
+    }
+
+    window.toggleBookingRealtime = async () => {
+        if (!userDocId || isAssistantMode) return;
+        const isActive = document.getElementById('isBookingActiveToggle').checked;
+        await updateDoc(doc(db, "users", userDocId), { isBookingActive: isActive });
+    };
+
+    window.filterBookings = () => {
+        const queryText = document.getElementById('searchInput').value.trim();
+        const activeC = document.getElementById('activeList');
+        const doneC = document.getElementById('doneList');
+        activeC.innerHTML = ''; doneC.innerHTML = '';
+        let stats = { act: 0, dn: 0, can: 0 };
+
+        window.allBookings.forEach(b => {
+            if (queryText && b.userPhone && !b.userPhone.includes(queryText)) return;
+            
+            let typeClass = 'new', typeText = b.type || 'كشف جديد';
+            if (b.type === 'إعادة') typeClass = 'follow';
+            if (b.type === 'VIP') typeClass = 'vip';
+
+            const isDone = b.status === 'done', isCanceled = b.status === 'canceled', isActive = !isDone && !isCanceled;
+            const tagHtml = isDone ? `<span class="status-tag tag-done">مكتمل</span>` : isCanceled ? `<span class="status-tag tag-canceled">ملغي</span>` : '';
+            
+            const canChangeStatus = !isAssistantMode || assistantPermissions.changeStatus;
+            const actionsHtml = isActive && canChangeStatus ? `
+                <button class="btn-circle check-btn" onclick="window.updateStatus('${b.id}', 'done')"><i class="fas fa-check"></i></button>
+                <button class="btn-circle cancel-btn" onclick="window.updateStatus('${b.id}', 'canceled')"><i class="fas fa-times"></i></button>
+            ` : '';
+
+            const card = `
+                <div class="booking-card" style="${isCanceled ? 'opacity:0.6;' : ''}">
+                    ${tagHtml}
+                    <div class="card-details">
+                        <span class="type-badge ${typeClass}">${typeText}</span>
+                        <b>${b.userName || 'غير معروف'}</b>
+                        ${b.branchName ? `<p><i class="fas fa-map-marker-alt"></i> ${b.branchName}</p>` : ''}
+                        <p><i class="far fa-calendar-alt"></i> ${b.date || '---'} | <i class="far fa-clock"></i> ${b.timeLabel || '---'}</p>
+                        <p style="color:var(--text-dark); font-weight:bold;">${b.userPhone || ''}</p>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn-circle wa-btn" onclick="window.open('https://wa.me/${b.userPhone}')"><i class="fab fa-whatsapp"></i></button>
+                        ${actionsHtml}
+                    </div>
+                </div>
+            `;
+            if (isActive) { activeC.innerHTML += card; stats.act++; } 
+            else { doneC.innerHTML += card; if (isDone) stats.dn++; if (isCanceled) stats.can++; }
+        });
+
+        if (activeC.innerHTML === '') activeC.innerHTML = '<p style="text-align:center; color:#888; padding:20px;">لا يوجد حجوزات قيد الانتظار.</p>';
+        document.getElementById('activeC').innerText = stats.act;
+        document.getElementById('doneC').innerText = stats.dn;
+        document.getElementById('cancelC').innerText = stats.can;
+    };
+
+    window.updateStatus = async (id, newStatus) => {
+        if (isAssistantMode && !assistantPermissions.changeStatus) return;
+        if (confirm(newStatus === 'done' ? "تأكيد التنفيذ؟" : "تأكيد الإلغاء؟")) {
+            await updateDoc(doc(db, "users", userDocId, "bookings", id), { status: newStatus });
+        }
+    };
+
+    // التقارير (مبسطة)
+    window.generateReport = () => { /* ... */ };
+    window.downloadPDF = () => { /* ... */ };
+
+    // المصادقة
+    const previewImg = document.getElementById('previewImg'), upIcon = document.getElementById('upIcon');
+    window.showPreview = (inp) => {
+        if (inp.files && inp.files[0]) {
+            const r = new FileReader(); r.onload = e => { previewImg.src = e.target.result; previewImg.style.display = 'block'; upIcon.style.display = 'none'; };
+            r.readAsDataURL(inp.files[0]);
+        }
+    };
+    function getImageBase64() { return (previewImg.style.display === 'block' && previewImg.src.startsWith('data:image')) ? previewImg.src : null; }
+
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            currentAuthUser = user;
+            const mappingDoc = await getDoc(doc(db, "auth_mapping", user.uid));
+            if (mappingDoc.exists()) {
+                const data = mappingDoc.data();
+                userDocId = data.userDocId;
+                isAssistantMode = data.isAssistant || false;
+                assistantPermissions = data.permissions || {};
+            } else {
+                // التحقق من كونه مساعداً مدعواً
+                const q = query(collection(db, "assistants"), where("email", "==", user.email));
+                const snap = await getDocs(q);
+                if (!snap.empty) {
+                    const assistantData = snap.docs[0].data();
+                    userDocId = assistantData.ownerId;
+                    isAssistantMode = true;
+                    assistantPermissions = assistantData.permissions || {};
+                    await setDoc(doc(db, "auth_mapping", user.uid), { userDocId, isAssistant: true, permissions: assistantPermissions });
+                } else {
+                    showAuthScreen('setupSection');
+                    return;
+                }
+            }
+            loadData();
+        } else {
+            showAuthScreen('loginSection');
+        }
+    });
+
+    window.loginWithGoogle = () => signInWithPopup(auth, provider);
+    window.logout = () => signOut(auth);
+    function showAuthScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.getElementById('mainNav').style.display = 'none';
+    }
+
+    window.setupAccount = async () => {
+        const desiredId = document.getElementById('newUserId').value.trim().toLowerCase();
+        if (desiredId.length < 3) return alert("اختر رابط من 3 أحرف على الأقل.");
+        if ((await getDoc(doc(db, "users", desiredId))).exists()) return alert("الرابط محجوز.");
+        await setDoc(doc(db, "users", desiredId), { uid: currentAuthUser.uid, isActive: true, isBookingActive: false, displayName: currentAuthUser.displayName });
+        await setDoc(doc(db, "auth_mapping", currentAuthUser.uid), { userDocId: desiredId, isAssistant: false });
+        userDocId = desiredId; isAssistantMode = false;
+        loadData();
+    };
+
+    // المساعدين والصلاحيات
+    let pendingAssistantEmail = '';
+    window.openAssistantPermissions = () => {
+        const email = document.getElementById('assistantEmail').value.trim();
+        if (!email) return alert('أدخل البريد الإلكتروني');
+        pendingAssistantEmail = email;
+        document.getElementById('assistantPermissionsModal').classList.add('active');
+    };
+    window.closeAssistantPermissions = () => document.getElementById('assistantPermissionsModal').classList.remove('active');
+    window.addAssistantWithPermissions = async () => {
+        const permissions = {
+            viewBookings: true,
+            changeStatus: document.getElementById('permChangeStatus').checked,
+            viewReports: document.getElementById('permViewReports').checked,
+            editSettings: document.getElementById('permEditSettings').checked
+        };
+        const assistant = { email: pendingAssistantEmail, permissions };
+        window.assistants.push(assistant);
+        renderAssistants();
+        closeAssistantPermissions();
+        document.getElementById('assistantEmail').value = '';
+    };
+
+    window.assistants = [];
+    function renderAssistants() {
+        const list = document.getElementById('assistantsList');
+        list.innerHTML = '';
+        window.assistants.forEach((a, i) => {
+            list.innerHTML += `<div class="holiday-tag">${a.email} <i class="fas fa-times-circle" onclick="window.removeAssistant(${i})"></i></div>`;
+        });
+    }
+    window.removeAssistant = (idx) => { window.assistants.splice(idx, 1); renderAssistants(); };
+
+    // توليد كود عشوائي
+    function generateCode() {
+        return Math.random().toString(36).substring(2, 8).toUpperCase();
+    }
+
+    async function loadData() {
+        populateCountryCodes();
+        buildScheduleUI();
+        document.getElementById('userPublicLink').innerText = `${window.location.host}/?id=${userDocId}`;
+        
+        const docSnap = await getDoc(doc(db, "users", userDocId));
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            
+            // صورة البروفايل
+            if (data.heroImg && data.heroImg.startsWith('data:image')) {
+                previewImg.src = data.heroImg; previewImg.style.display = 'block'; upIcon.style.display = 'none';
+            }
+            document.getElementById('homeName').innerText = data.displayName || 'بدون اسم';
+            document.getElementById('homeTitle').innerText = data.title || '';
+            document.getElementById('statCust').innerText = data.customersCount || '0';
+            document.getElementById('statRating').innerText = data.rating || '-';
+            document.getElementById('statYear').innerText = data.foundedYear || '2026';
+
+            document.getElementById('adminName').value = data.displayName || '';
+            document.getElementById('adminTitle').value = data.title || '';
+            document.getElementById('adminAbout').value = data.about || '';
+            
+            // الهواتف
+            const phone1 = data.phone1 ? data.phone1.split('|') : ['+20', ''];
+            document.getElementById('phone1CountryCode').value = phone1[0];
+            document.getElementById('phone1').value = phone1[1] || '';
+            const phone2 = data.phone2 ? data.phone2.split('|') : ['+20', ''];
+            document.getElementById('phone2CountryCode').value = phone2[0];
+            document.getElementById('phone2').value = phone2[1] || '';
+            
+            document.getElementById('custCount').value = data.customersCount || '';
+            document.getElementById('foundYear').value = data.foundedYear || '';
+            document.getElementById('rating').value = data.rating || '';
+            
+            // المحافظ الإلكترونية
+            if (data.instapayType === 'phone') {
+                switchWalletType('instapay', 'phone');
+                const ip = data.instapayPhone ? data.instapayPhone.split('|') : ['+20', ''];
+                document.getElementById('instapayCountryCode').value = ip[0];
+                document.getElementById('instapayPhone').value = ip[1] || '';
+            } else {
+                switchWalletType('instapay', 'link');
+                document.getElementById('instapayLinkInput').value = data.instapayLink || '';
+            }
+            if (data.otherWalletType === 'phone') {
+                switchWalletType('other', 'phone');
+                const op = data.otherWalletPhone ? data.otherWalletPhone.split('|') : ['+20', ''];
+                document.getElementById('otherWalletCountryCode').value = op[0];
+                document.getElementById('otherWalletPhone').value = op[1] || '';
+            } else {
+                switchWalletType('other', 'link');
+                document.getElementById('otherWalletLinkInput').value = data.otherWalletLink || '';
+            }
+            
+            // روابط السوشيال
+            socialPlatforms.forEach(p => { document.getElementById(p.id).value = data[p.id.replace('link','').toLowerCase()] || ''; });
+            
+            // إعدادات الحجوزات
+            document.getElementById('isBookingActiveToggle').checked = data.isBookingActive || false;
+            document.getElementById('enableBranches').checked = data.enableBranches || false;
+            window.currentBranches = data.branches || []; renderBranches();
+            document.getElementById('pNew').value = data.prices?.new || '';
+            document.getElementById('pFollow').value = data.prices?.followup || '';
+            document.getElementById('pVIP').value = data.prices?.vip || '';
+            
+            let advSched = data.advancedSchedules || {};
+            daysMap.forEach(day => {
+                const isWorking = advSched[day.id] ? !advSched[day.id].isOff : !(data.offDays || []).includes(day.id);
+                document.getElementById(`dayOn_${day.id}`).checked = isWorking;
+                window.toggleDayInputs(day.id);
+                document.getElementById(`dayFrom_${day.id}`).value = advSched[day.id]?.from || data.workFrom || "09:00";
+                document.getElementById(`dayTo_${day.id}`).value = advSched[day.id]?.to || data.workTo || "17:00";
+                document.getElementById(`dayCap_${day.id}`).value = advSched[day.id]?.capacity || data.capacityPerHour || 5;
+            });
+            window.currentHolidays = data.holidays || []; renderHolidays();
+            
+            // المساعدين والكود
+            window.assistants = data.assistants || []; renderAssistants();
+            document.getElementById('enableAssistantCode').checked = data.enableAssistantCode || false;
+            document.getElementById('codeValidityMonths').value = data.codeValidityMonths || '6';
+            if (data.enableAssistantCode) {
+                const now = new Date();
+                let codeData = data.assistantCode;
+                if (!codeData || new Date(codeData.expires) < now) {
+                    // إنشاء كود جديد
+                    const newCode = generateCode();
+                    const expires = new Date();
+                    expires.setMonth(expires.getMonth() + parseInt(data.codeValidityMonths || 6));
+                    codeData = { code: newCode, expires: expires.toISOString() };
+                    await updateDoc(doc(db, "users", userDocId), { assistantCode: codeData });
+                }
+                document.getElementById('assistantCodeValue').innerText = codeData.code;
+                document.getElementById('codeExpiryDate').innerText = new Date(codeData.expires).toLocaleDateString('ar-EG');
+                document.getElementById('currentCodeDisplay').style.display = 'block';
+            }
+        }
+
+        // واجهة المساعد
+        if (isAssistantMode) {
+            document.querySelectorAll('.nav-item').forEach(n => n.style.display = 'none');
+            document.querySelector('.nav-item[onclick*="bookingsScreen"]').style.display = 'flex';
+            document.getElementById('saveBtnBtn').style.display = 'none';
+            if (!assistantPermissions.editSettings) {
+                document.querySelector('.b-tab[onclick*="settings"]').style.display = 'none';
+            }
+            if (!assistantPermissions.viewReports) {
+                document.querySelector('.b-tab[onclick*="report"]').style.display = 'none';
+            }
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('bookingsScreen').classList.add('active');
+        } else {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('homeScreen').classList.add('active');
+            document.getElementById('mainNav').style.display = 'flex';
+        }
+
+        // مراقبة الحجوزات
+        onSnapshot(query(collection(db, "users", userDocId, "bookings"), orderBy("createdAt", "desc")), snap => {
+            window.allBookings = [];
+            snap.forEach(d => { let b = d.data(); b.id = d.id; window.allBookings.push(b); });
+            window.filterBookings();
+        });
+    }
+
+    window.saveAdminData = async function() {
+        if (isAssistantMode) return;
+        const btn = document.getElementById('saveBtnBtn');
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+        
+        let newAdvSched = {}, classicOffDays = [];
+        daysMap.forEach(day => {
+            const isWorking = document.getElementById(`dayOn_${day.id}`).checked;
+            if (!isWorking) classicOffDays.push(day.id);
+            newAdvSched[day.id] = {
+                isOff: !isWorking,
+                from: document.getElementById(`dayFrom_${day.id}`).value || "09:00",
+                to: document.getElementById(`dayTo_${day.id}`).value || "17:00",
+                capacity: parseInt(document.getElementById(`dayCap_${day.id}`).value) || 5
+            };
+        });
+
+        const phone1 = document.getElementById('phone1CountryCode').value + '|' + document.getElementById('phone1').value;
+        const phone2 = document.getElementById('phone2CountryCode').value + '|' + document.getElementById('phone2').value;
+
+        const instapayType = document.getElementById('instapay-phone').style.display === 'none' ? 'link' : 'phone';
+        const instapayData = instapayType === 'phone' 
+            ? { instapayPhone: document.getElementById('instapayCountryCode').value + '|' + document.getElementById('instapayPhone').value }
+            : { instapayLink: document.getElementById('instapayLinkInput').value };
+
+        const otherType = document.getElementById('other-phone').style.display === 'none' ? 'link' : 'phone';
+        const otherData = otherType === 'phone'
+            ? { otherWalletPhone: document.getElementById('otherWalletCountryCode').value + '|' + document.getElementById('otherWalletPhone').value }
+            : { otherWalletLink: document.getElementById('otherWalletLinkInput').value };
+
+        const profileData = {
+            displayName: document.getElementById('adminName').value,
+            title: document.getElementById('adminTitle').value,
+            about: document.getElementById('adminAbout').value,
+            phone1, phone2,
+            customersCount: document.getElementById('custCount').value,
+            foundedYear: document.getElementById('foundYear').value,
+            rating: document.getElementById('rating').value,
+            instapayType, ...instapayData,
+            otherWalletType: otherType, ...otherData,
+            isBookingActive: document.getElementById('isBookingActiveToggle').checked,
+            enableBranches: document.getElementById('enableBranches').checked,
+            branches: window.currentBranches,
+            advancedSchedules: newAdvSched,
+            offDays: classicOffDays,
+            holidays: window.currentHolidays,
+            workFrom: document.getElementById('dayFrom_1')?.value || "09:00",
+            workTo: document.getElementById('dayTo_1')?.value || "17:00",
+            capacityPerHour: parseInt(document.getElementById('dayCap_1')?.value) || 5,
+            prices: {
+                new: parseInt(document.getElementById('pNew').value) || 0,
+                followup: parseInt(document.getElementById('pFollow').value) || 0,
+                vip: parseInt(document.getElementById('pVIP').value) || 0
+            },
+            assistants: window.assistants,
+            enableAssistantCode: document.getElementById('enableAssistantCode').checked,
+            codeValidityMonths: document.getElementById('codeValidityMonths').value
+        };
+
+        socialPlatforms.forEach(p => { profileData[p.id.replace('link','').toLowerCase()] = document.getElementById(p.id).value; });
+        
+        const img64 = getImageBase64(); if (img64) profileData.heroImg = img64;
+
+        try {
+            await updateDoc(doc(db, "users", userDocId), profileData);
+            btn.innerHTML = '<i class="fa-solid fa-check-double"></i>';
+            setTimeout(() => btn.innerHTML = '<i class="fa-solid fa-check"></i>', 2000);
+        } catch (e) {
+            alert("خطأ في الحفظ");
+            btn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+        }
+    };
+
+    window.copyMyLink = () => {
+        navigator.clipboard.writeText(document.getElementById('userPublicLink').innerText);
+        const btn = document.querySelector('.public-link-btn');
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> تم النسخ';
+        setTimeout(() => btn.innerHTML = '<i class="fa-solid fa-copy"></i> <span id="userPublicLink">'+window.location.host+'/?id='+userDocId+'</span>', 2000);
+    };
+</script>
+</body>
+</html>
