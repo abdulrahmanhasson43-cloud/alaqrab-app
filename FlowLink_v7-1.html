@@ -1,0 +1,2554 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>FlowLink</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: blob:; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' https: data: blob:; connect-src https:; frame-src https:;">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Raleway:wght@300;400;500;600;700&family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700&family=Noto+Naskh+Arabic:wght@400;700&family=Almarai:wght@400;700&family=Lateef&family=Scheherazade+New&family=Reem+Kufi:wght@400;700&family=Markazi+Text:wght@400;700&family=Changa:wght@400;700&family=Nunito:wght@400;600;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous">
+
+    <style>
+        /* ═══════════════════════════════════════════════════
+           FLOWLINK v7 — PROFESSIONAL TRANSPARENT UI
+           No cards. Pure lines. 20+ themes.
+        ═══════════════════════════════════════════════════ */
+
+        :root {
+            /* Base font stacks */
+            --font-display: 'Syne', sans-serif;
+            --font-body:    'DM Sans', sans-serif;
+            --font-ar:      'Amiri', serif;
+            --font-en:      'DM Sans', sans-serif;
+            --font-ui:      'Outfit', sans-serif;
+
+            /* Default theme: Snow */
+            --bg:           #ffffff;
+            --bg2:          #f8f8f8;
+            --surface:      rgba(255,255,255,0.72);
+            --border:       rgba(0,0,0,0.08);
+            --border-strong:rgba(0,0,0,0.18);
+            --text-1:       #0a0a0a;
+            --text-2:       #444444;
+            --text-3:       #888888;
+            --accent:       #0a0a0a;
+            --accent-fg:    #ffffff;
+            --accent-soft:  rgba(10,10,10,0.06);
+            --overlay:      rgba(0,0,0,0.50);
+            --hero-grad:    linear-gradient(to bottom, transparent 50%, rgba(255,255,255,0.97) 100%);
+            --vip-gold:     #C9A84C;
+            --vip-light:    #F3E5AB;
+            --danger:       #dc2626;
+            --success:      #16a34a;
+            --blur:         blur(16px) saturate(160%);
+            --blur-sm:      blur(8px);
+            --t:            0.22s cubic-bezier(0.4, 0, 0.2, 1);
+            --r:            14px;
+            --r-sm:         8px;
+            --r-lg:         22px;
+            --sh:           0 2px 20px rgba(0,0,0,0.06);
+            --sh-up:        0 8px 32px rgba(0,0,0,0.12);
+        }
+
+        /* ═══════════════════════════════════════════════════
+           20+ THEMES
+        ═══════════════════════════════════════════════════ */
+
+        /* 1. Snow (default) — pure white editorial */
+        [data-theme="snow"] {
+            --bg:#ffffff; --bg2:#f5f5f5; --surface:rgba(255,255,255,0.80);
+            --border:rgba(0,0,0,0.07); --border-strong:rgba(0,0,0,0.15);
+            --text-1:#0a0a0a; --text-2:#4a4a4a; --text-3:#909090;
+            --accent:#0a0a0a; --accent-fg:#ffffff; --accent-soft:rgba(0,0,0,0.05);
+            --overlay:rgba(0,0,0,0.48); --hero-grad:linear-gradient(to bottom,transparent 48%,rgba(255,255,255,0.96) 100%);
+        }
+
+        /* 2. Midnight — dark navy */
+        [data-theme="midnight"] {
+            --bg:#0b0f1a; --bg2:#111827; --surface:rgba(11,15,26,0.85);
+            --border:rgba(255,255,255,0.08); --border-strong:rgba(255,255,255,0.18);
+            --text-1:#f0f4ff; --text-2:#94a3c0; --text-3:#4a5568;
+            --accent:#4f8ef7; --accent-fg:#ffffff; --accent-soft:rgba(79,142,247,0.12);
+            --overlay:rgba(0,0,0,0.65); --hero-grad:linear-gradient(to bottom,transparent 48%,rgba(11,15,26,0.96) 100%);
+        }
+
+        /* 3. Obsidian — pure black */
+        [data-theme="obsidian"] {
+            --bg:#000000; --bg2:#0f0f0f; --surface:rgba(0,0,0,0.88);
+            --border:rgba(255,255,255,0.07); --border-strong:rgba(255,255,255,0.20);
+            --text-1:#ffffff; --text-2:#a0a0a0; --text-3:#505050;
+            --accent:#ffffff; --accent-fg:#000000; --accent-soft:rgba(255,255,255,0.07);
+            --overlay:rgba(0,0,0,0.72); --hero-grad:linear-gradient(to bottom,transparent 48%,rgba(0,0,0,0.97) 100%);
+        }
+
+        /* 4. Sand — warm editorial */
+        [data-theme="sand"] {
+            --bg:#faf6ef; --bg2:#f0e9de; --surface:rgba(250,246,239,0.82);
+            --border:rgba(120,80,30,0.10); --border-strong:rgba(120,80,30,0.22);
+            --text-1:#1c1108; --text-2:#6b4a22; --text-3:#a8875a;
+            --accent:#8B5E3C; --accent-fg:#ffffff; --accent-soft:rgba(139,94,60,0.08);
+            --overlay:rgba(28,17,8,0.52); --hero-grad:linear-gradient(to bottom,transparent 48%,rgba(250,246,239,0.96) 100%);
+        }
+
+        /* 5. Forest — deep green */
+        [data-theme="forest"] {
+            --bg:#0d1a12; --bg2:#14281d; --surface:rgba(13,26,18,0.85);
+            --border:rgba(255,255,255,0.07); --border-strong:rgba(255,255,255,0.18);
+            --text-1:#e8f5ec; --text-2:#7db892; --text-3:#3d6b50;
+            --accent:#4ade80; --accent-fg:#0d1a12; --accent-soft:rgba(74,222,128,0.10);
+            --overlay:rgba(0,0,0,0.65); --hero-grad:linear-gradient(to bottom,transparent 48%,rgba(13,26,18,0.96) 100%);
+        }
+
+        /* 6. Ocean — deep sea blue */
+        [data-theme="ocean"] {
+            --bg:#05101e; --bg2:#081828; --surface:rgba(5,16,30,0.85);
+            --border:rgba(255,255,255,0.07); --border-strong:rgba(255,255,255,0.18);
+            --text-1:#dff0ff; --text-2:#6b9ec4; --text-3:#2e5880;
+            --accent:#38bdf8; --accent-fg:#05101e; --accent-soft:rgba(56,189,248,0.10);
+            --overlay:rgba(0,0,0,0.68); --hero-grad:linear-gradient(to bottom,transparent 48%,rgba(5,16,30,0.96) 100%);
+        }
+
+        /* 7. Rose — dark rose */
+        [data-theme="rose"] {
+            --bg:#1a060f; --bg2:#280d1a; --surface:rgba(26,6,15,0.88);
+            --border:rgba(255,100,150,0.10); --border-strong:rgba(255,100,150,0.25);
+            --text-1:#ffeef5; --text-2:#c47090; --text-3:#6b3050;
+            --accent:#f06292; --accent-fg:#1a060f; --accent-soft:rgba(240,98,146,0.10);
+            --overlay:rgba(0,0,0,0.68); --hero-grad:linear-gradient(to bottom,transparent 48%,rgba(26,6,15,0.96) 100%);
+        }
+
+        /* 8. Slate — cool gray */
+        [data-theme="slate"] {
+            --bg:#f1f3f5; --bg2:#e8eaed; --surface:rgba(241,243,245,0.82);
+            --border:rgba(0,0,0,0.08); --border-strong:rgba(0,0,0,0.18);
+            --text-1:#1a1f2e; --text-2:#4a5568; --text-3:#8895aa;
+            --accent:#475569; --accent-fg:#ffffff; --accent-soft:rgba(71,85,105,0.08);
+            --overlay:rgba(26,31,46,0.50); --hero-grad:linear-gradient(to bottom,transparent 48%,rgba(241,243,245,0.96) 100%);
+        }
+
+        /* 9. Lavender — soft purple */
+        [data-theme="lavender"] {
+            --bg:#f5f3ff; --bg2:#ede9fe; --surface:rgba(245,243,255,0.82);
+            --border:rgba(100,60,200,0.10); --border-strong:rgba(100,60,200,0.22);
+            --text-1:#1e1030; --text-2:#6d4bad; --text-3:#a78bcc;
+            --accent:#7c3aed; --accent-fg:#ffffff; --accent-soft:rgba(124,58,237,0.08);
+            --overlay:rgba(30,16,48,0.52); --hero-grad:linear-gradient(to bottom,transparent 48%,rgba(245,243,255,0.96) 100%);
+        }
+
+        /* 10. Coral — warm coral */
+        [data-theme="coral"] {
+            --bg:#fff5f0; --bg2:#ffe8de; --surface:rgba(255,245,240,0.82);
+            --border:rgba(200,80,40,0.10); --border-strong:rgba(200,80,40,0.22);
+            --text-1:#1c0a06; --text-2:#8b3520; --text-3:#c06040;
+            --accent:#e8623a; --accent-fg:#ffffff; --accent-soft:rgba(232,98,58,0.08);
+            --overlay:rgba(28,10,6,0.52); --hero-grad:linear-gradient(to bottom,transparent 48%,rgba(255,245,240,0.96) 100%);
+        }
+
+        /* 11. Mint — clean mint */
+        [data-theme="mint"] {
+            --bg:#f0fdf8; --bg2:#dcfce8; --surface:rgba(240,253,248,0.82);
+            --border:rgba(20,160,100,0.10); --border-strong:rgba(20,160,100,0.22);
+            --text-1:#062318; --text-2:#1a6b4a; --text-3:#4ea07a;
+            --accent:#059669; --accent-fg:#ffffff; --accent-soft:rgba(5,150,105,0.08);
+            --overlay:rgba(6,35,24,0.52); --hero-grad:linear-gradient(to bottom,transparent 48%,rgba(240,253,248,0.96) 100%);
+        }
+
+        /* 12. Charcoal — dark warm gray */
+        [data-theme="charcoal"] {
+            --bg:#1c1917; --bg2:#292524; --surface:rgba(28,25,23,0.88);
+            --border:rgba(255,255,255,0.07); --border-strong:rgba(255,255,255,0.18);
+            --text-1:#fafaf9; --text-2:#a8a29e; --text-3:#57534e;
+            --accent:#f5f5f4; --accent-fg:#1c1917; --accent-soft:rgba(245,245,244,0.07);
+            --overlay:rgba(0,0,0,0.68); --hero-grad:linear-gradient(to bottom,transparent 48%,rgba(28,25,23,0.96) 100%);
+        }
+
+        /* 13. Amber — warm golden */
+        [data-theme="amber"] {
+            --bg:#fffbeb; --bg2:#fef3c7; --surface:rgba(255,251,235,0.82);
+            --border:rgba(180,120,0,0.10); --border-strong:rgba(180,120,0,0.22);
+            --text-1:#1c1500; --text-2:#925a00; --text-3:#c08030;
+            --accent:#d97706; --accent-fg:#ffffff; --accent-soft:rgba(217,119,6,0.08);
+            --overlay:rgba(28,21,0,0.52); --hero-grad:linear-gradient(to bottom,transparent 48%,rgba(255,251,235,0.96) 100%);
+        }
+
+        /* 14. Indigo — deep violet */
+        [data-theme="indigo"] {
+            --bg:#1e1b4b; --bg2:#252060; --surface:rgba(30,27,75,0.88);
+            --border:rgba(165,180,252,0.10); --border-strong:rgba(165,180,252,0.25);
+            --text-1:#eef2ff; --text-2:#a5b4fc; --text-3:#4c4490;
+            --accent:#818cf8; --accent-fg:#1e1b4b; --accent-soft:rgba(129,140,248,0.12);
+            --overlay:rgba(0,0,0,0.68); --hero-grad:linear-gradient(to bottom,transparent 48%,rgba(30,27,75,0.96) 100%);
+        }
+
+        /* 15. Emerald — rich green */
+        [data-theme="emerald"] {
+            --bg:#f0fdf4; --bg2:#dcfce7; --surface:rgba(240,253,244,0.82);
+            --border:rgba(22,101,52,0.10); --border-strong:rgba(22,101,52,0.22);
+            --text-1:#052e16; --text-2:#166534; --text-3:#4ade80;
+            --accent:#16a34a; --accent-fg:#ffffff; --accent-soft:rgba(22,163,74,0.08);
+            --overlay:rgba(5,46,22,0.52); --hero-grad:linear-gradient(to bottom,transparent 48%,rgba(240,253,244,0.96) 100%);
+        }
+
+        /* 16. Wine — deep burgundy */
+        [data-theme="wine"] {
+            --bg:#1a0812; --bg2:#280d1c; --surface:rgba(26,8,18,0.88);
+            --border:rgba(200,100,130,0.10); --border-strong:rgba(200,100,130,0.25);
+            --text-1:#fce7f0; --text-2:#b06080; --text-3:#6b3050;
+            --accent:#be185d; --accent-fg:#ffffff; --accent-soft:rgba(190,24,93,0.10);
+            --overlay:rgba(0,0,0,0.68); --hero-grad:linear-gradient(to bottom,transparent 48%,rgba(26,8,18,0.96) 100%);
+        }
+
+        /* 17. Arctic — ice blue */
+        [data-theme="arctic"] {
+            --bg:#f0f8ff; --bg2:#e0f0ff; --surface:rgba(240,248,255,0.82);
+            --border:rgba(0,100,200,0.10); --border-strong:rgba(0,100,200,0.22);
+            --text-1:#001a30; --text-2:#1a5a8a; --text-3:#5090c0;
+            --accent:#0284c7; --accent-fg:#ffffff; --accent-soft:rgba(2,132,199,0.08);
+            --overlay:rgba(0,26,48,0.52); --hero-grad:linear-gradient(to bottom,transparent 48%,rgba(240,248,255,0.96) 100%);
+        }
+
+        /* 18. Graphite — industrial */
+        [data-theme="graphite"] {
+            --bg:#111111; --bg2:#1a1a1a; --surface:rgba(17,17,17,0.88);
+            --border:rgba(255,255,255,0.06); --border-strong:rgba(255,255,255,0.16);
+            --text-1:#e8e8e8; --text-2:#888888; --text-3:#444444;
+            --accent:#e8e8e8; --accent-fg:#111111; --accent-soft:rgba(232,232,232,0.06);
+            --overlay:rgba(0,0,0,0.72); --hero-grad:linear-gradient(to bottom,transparent 48%,rgba(17,17,17,0.97) 100%);
+        }
+
+        /* 19. Sunset — warm orange/red */
+        [data-theme="sunset"] {
+            --bg:#fff7f0; --bg2:#ffe8d6; --surface:rgba(255,247,240,0.82);
+            --border:rgba(200,70,20,0.10); --border-strong:rgba(200,70,20,0.22);
+            --text-1:#1c0800; --text-2:#8b3010; --text-3:#c05030;
+            --accent:#ea580c; --accent-fg:#ffffff; --accent-soft:rgba(234,88,12,0.08);
+            --overlay:rgba(28,8,0,0.52); --hero-grad:linear-gradient(to bottom,transparent 48%,rgba(255,247,240,0.96) 100%);
+        }
+
+        /* 20. Cream — old money luxury */
+        [data-theme="cream"] {
+            --bg:#fdfaf3; --bg2:#f5edd8; --surface:rgba(253,250,243,0.82);
+            --border:rgba(180,140,60,0.12); --border-strong:rgba(180,140,60,0.28);
+            --text-1:#18120a; --text-2:#7a5c1e; --text-3:#b89040;
+            --accent:#9a6f2a; --accent-fg:#ffffff; --accent-soft:rgba(154,111,42,0.08);
+            --overlay:rgba(24,18,10,0.52); --hero-grad:linear-gradient(to bottom,transparent 48%,rgba(253,250,243,0.96) 100%);
+        }
+
+        /* 21. Neon — dark + neon green */
+        [data-theme="neon"] {
+            --bg:#050a05; --bg2:#0a150a; --surface:rgba(5,10,5,0.88);
+            --border:rgba(0,255,80,0.10); --border-strong:rgba(0,255,80,0.25);
+            --text-1:#e0ffe0; --text-2:#22c55e; --text-3:#166534;
+            --accent:#00ff50; --accent-fg:#050a05; --accent-soft:rgba(0,255,80,0.08);
+            --overlay:rgba(0,0,0,0.72); --hero-grad:linear-gradient(to bottom,transparent 48%,rgba(5,10,5,0.97) 100%);
+        }
+
+        /* 22. Sakura — pink blossom */
+        [data-theme="sakura"] {
+            --bg:#fff0f6; --bg2:#ffd6e7; --surface:rgba(255,240,246,0.82);
+            --border:rgba(220,60,120,0.10); --border-strong:rgba(220,60,120,0.22);
+            --text-1:#1a0010; --text-2:#9d174d; --text-3:#db7093;
+            --accent:#e91e8c; --accent-fg:#ffffff; --accent-soft:rgba(233,30,140,0.08);
+            --overlay:rgba(26,0,16,0.52); --hero-grad:linear-gradient(to bottom,transparent 48%,rgba(255,240,246,0.96) 100%);
+        }
+
+        /* 23. Storm — dark blue-gray */
+        [data-theme="storm"] {
+            --bg:#0e1520; --bg2:#162030; --surface:rgba(14,21,32,0.88);
+            --border:rgba(180,210,255,0.08); --border-strong:rgba(180,210,255,0.20);
+            --text-1:#dce8ff; --text-2:#6b8cb8; --text-3:#2e4a6b;
+            --accent:#60a5fa; --accent-fg:#0e1520; --accent-soft:rgba(96,165,250,0.10);
+            --overlay:rgba(0,0,0,0.68); --hero-grad:linear-gradient(to bottom,transparent 48%,rgba(14,21,32,0.96) 100%);
+        }
+
+        /* 24. Mocha — coffee brown */
+        [data-theme="mocha"] {
+            --bg:#1a1008; --bg2:#241808; --surface:rgba(26,16,8,0.88);
+            --border:rgba(220,170,100,0.10); --border-strong:rgba(220,170,100,0.25);
+            --text-1:#fdf2e0; --text-2:#c49a5a; --text-3:#7a5a30;
+            --accent:#d4a064; --accent-fg:#1a1008; --accent-soft:rgba(212,160,100,0.10);
+            --overlay:rgba(0,0,0,0.68); --hero-grad:linear-gradient(to bottom,transparent 48%,rgba(26,16,8,0.96) 100%);
+        }
+
+        /* ═══════════════════════════════════════════════════
+           RESET & BASE
+        ═══════════════════════════════════════════════════ */
+        *, *::before, *::after { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html, body {
+            margin: 0; padding: 0;
+            background: var(--bg);
+            color: var(--text-1);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+        ::-webkit-scrollbar { display: none !important; }
+        * { scrollbar-width: none !important; }
+
+        /* ═══════════════════════════════════════════════════
+           PROGRESS BAR
+        ═══════════════════════════════════════════════════ */
+        #flowlink-loader {
+            position: fixed; top: 0; left: 0; right: 0; height: 2px;
+            background: transparent; z-index: 9999; display: none;
+        }
+        .top-progress-bar {
+            height: 100%; width: 100%;
+            background: var(--accent);
+            transform-origin: left;
+            animation: prog 1.2s ease-in-out infinite alternate;
+        }
+        @keyframes prog { 0%{transform:scaleX(0.05)} 100%{transform:scaleX(1)} }
+
+        /* ═══════════════════════════════════════════════════
+           SKELETON
+        ═══════════════════════════════════════════════════ */
+        .skeleton {
+            background: linear-gradient(90deg, var(--bg2) 25%, var(--surface) 50%, var(--bg2) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite linear;
+            border-radius: var(--r-sm);
+        }
+        @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+        .skel-name   { width: 55%; height: 32px; margin: 0 auto 10px; border-radius: 20px; }
+        .skel-title  { width: 35%; height: 16px; margin: 0 auto 28px; border-radius: 10px; }
+        .skel-pills  { display: flex; gap: 10px; justify-content: center; margin-bottom: 28px; }
+        .skel-pill   { width: 52px; height: 52px; border-radius: 50%; }
+        .skel-cta    { width: 100%; height: 52px; border-radius: var(--r); margin-bottom: 32px; }
+        .skel-row    { width: 100%; height: 58px; border-radius: 4px; margin-bottom: 1px; }
+
+        /* ═══════════════════════════════════════════════════
+           MAIN LAYOUT
+        ═══════════════════════════════════════════════════ */
+        .app-wrap {
+            width: 100%; max-width: 440px;
+            margin: 0 auto;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* ── Hero Photo ── */
+        .hero {
+            position: fixed; top: 0;
+            width: 100%; max-width: 440px;
+            height: 60vh; z-index: 1; overflow: hidden;
+        }
+        .hero-img {
+            width: 100%; height: 100%;
+            object-fit: cover; object-position: center 15%;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            user-select: none; pointer-events: none;
+        }
+        .hero-img.loaded { opacity: 1; }
+        .hero-grad {
+            position: absolute; inset: 0;
+            background: var(--hero-grad);
+        }
+        /* Logo badge on hero */
+        .hero-logo {
+            position: absolute; top: 20px; left: 20px;
+            z-index: 3; display: none;
+        }
+        .hero-logo img {
+            height: 34px; width: auto;
+            filter: drop-shadow(0 2px 10px rgba(0,0,0,0.4));
+            object-fit: contain;
+        }
+
+        /* ── Panel ── */
+        .panel {
+            position: relative; z-index: 5;
+            margin-top: 52vh;
+            background: var(--surface);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            border-top: 1px solid var(--border-strong);
+            border-radius: 28px 28px 0 0;
+            min-height: 60vh;
+            padding: 36px 24px 120px;
+            animation: panelUp 0.7s cubic-bezier(0.2,1,0.4,1) both;
+            transition: background 0.4s ease;
+        }
+        @keyframes panelUp { from{transform:translateY(40px);opacity:0} to{transform:translateY(0);opacity:1} }
+
+        /* ── Desktop layout ── */
+        @media (min-width: 1024px) {
+            .app-wrap { max-width: 100%; display: grid; grid-template-columns: 38% 62%; }
+            .hero { position: sticky; top: 0; width: 100%; max-width: 100%; height: 100vh; }
+            .hero::after { display: none; }
+            .hero-grad { display: none; }
+            .panel { margin-top: 0; border-radius: 0; border-top: none; border-left: 1px solid var(--border); min-height: 100vh; padding: 56px 60px 120px; backdrop-filter: none; background: var(--bg); }
+        }
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .app-wrap { max-width: 580px; }
+            .hero { max-width: 580px; }
+        }
+
+        /* ═══════════════════════════════════════════════════
+           PROFILE HEADER
+        ═══════════════════════════════════════════════════ */
+        .profile-head { text-align: center; margin-bottom: 28px; }
+        .profile-name {
+            margin: 0 0 4px;
+            font-family: var(--font-display);
+            font-size: clamp(28px, 7vw, 42px);
+            font-weight: 700;
+            color: var(--text-1);
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            unicode-bidi: plaintext;
+        }
+        .profile-title {
+            font-size: 14px; font-weight: 400;
+            color: var(--text-3);
+            font-family: var(--font-body);
+            letter-spacing: 0.05em;
+            display: block;
+            margin-top: 4px;
+        }
+
+        /* ═══════════════════════════════════════════════════
+           ACTION PILLS — circular transparent icon buttons
+        ═══════════════════════════════════════════════════ */
+        .action-pills {
+            display: flex; justify-content: center; gap: 12px;
+            margin-bottom: 28px;
+        }
+        .pill-btn {
+            width: 52px; height: 52px;
+            border-radius: 50%;
+            border: 1px solid var(--border-strong);
+            background: transparent;
+            color: var(--text-1);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 17px; cursor: pointer;
+            transition: all var(--t);
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+        .pill-btn:hover {
+            background: var(--accent-soft);
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-3px);
+        }
+        .pill-btn:active { transform: scale(0.92); }
+
+        /* ═══════════════════════════════════════════════════
+           CTA BUTTON — save contact
+        ═══════════════════════════════════════════════════ */
+        .cta-btn {
+            width: 100%; height: 52px;
+            background: var(--accent);
+            color: var(--accent-fg);
+            border: none; border-radius: var(--r);
+            font-family: var(--font-ui);
+            font-size: 15px; font-weight: 600;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            margin-bottom: 32px;
+            transition: all var(--t);
+            letter-spacing: 0.02em;
+        }
+        .cta-btn:hover { opacity: 0.88; transform: translateY(-2px); }
+        .cta-btn:active { transform: scale(0.97); }
+
+        /* ═══════════════════════════════════════════════════
+           SECTION HEADING
+        ═══════════════════════════════════════════════════ */
+        .sec-heading {
+            font-family: var(--font-ui);
+            font-size: 10px; font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--text-3);
+            margin: 28px 0 4px;
+            padding: 0 2px;
+        }
+
+        /* ═══════════════════════════════════════════════════
+           LINK ROWS — no cards, just clean lines
+        ═══════════════════════════════════════════════════ */
+        .link-row {
+            display: flex; align-items: center;
+            padding: 15px 2px;
+            border-bottom: 1px solid var(--border);
+            text-decoration: none;
+            color: var(--text-1);
+            cursor: pointer;
+            transition: all var(--t);
+            gap: 14px;
+        }
+        .link-row:first-of-type { border-top: 1px solid var(--border); }
+        .link-row:hover { padding-left: 6px; }
+        .link-row:hover .lr-arrow { opacity: 1; transform: translateX(3px); }
+        .link-row:active { opacity: 0.6; }
+
+        .lr-icon {
+            width: 32px; height: 32px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px; flex-shrink: 0;
+            opacity: 0.75;
+        }
+        .lr-text { flex: 1; }
+        .lr-name {
+            font-size: 15px; font-weight: 500;
+            color: var(--text-1); display: block;
+            font-family: var(--font-body);
+        }
+        .lr-sub {
+            font-size: 12px; color: var(--text-3);
+            display: block; margin-top: 1px;
+        }
+        .lr-arrow {
+            font-size: 11px; color: var(--text-3);
+            opacity: 0; transition: all var(--t);
+            flex-shrink: 0;
+        }
+
+        /* ── Booking row special ── */
+        .link-row.booking-row .lr-icon { color: var(--accent); opacity: 1; }
+        .link-row.booking-row .lr-name { color: var(--accent); }
+
+        /* ═══════════════════════════════════════════════════
+           ABOUT BOX — clean, no card
+        ═══════════════════════════════════════════════════ */
+        .about-wrap {
+            margin-top: 36px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+        }
+        .about-heading {
+            font-family: var(--font-display);
+            font-size: 13px; font-weight: 700;
+            letter-spacing: 0.10em; text-transform: uppercase;
+            color: var(--text-3); margin: 0 0 16px;
+        }
+        .stats-row {
+            display: flex; gap: 0;
+            margin-bottom: 20px;
+        }
+        .stat {
+            flex: 1; text-align: center;
+            padding: 12px 0;
+            border-right: 1px solid var(--border);
+        }
+        .stat:last-child { border-right: none; }
+        .stat-num {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 22px; font-weight: 700;
+            color: var(--text-1);
+            direction: ltr;
+            unicode-bidi: isolate;
+        }
+        .stat-label {
+            font-size: 11px; color: var(--text-3);
+            letter-spacing: 0.06em; text-transform: uppercase;
+        }
+        .about-text {
+            font-size: 15px; color: var(--text-2);
+            line-height: 1.75; margin: 0;
+            white-space: pre-wrap; unicode-bidi: plaintext;
+        }
+        .footer-copy {
+            margin-top: 24px;
+            font-size: 11px; color: var(--text-3);
+            font-family: var(--font-body);
+            letter-spacing: 0.04em;
+        }
+
+        /* ═══════════════════════════════════════════════════
+           SUSPENDED BANNER
+        ═══════════════════════════════════════════════════ */
+        #suspendedBanner {
+            display: none;
+            background: rgba(220,38,38,0.08);
+            border: 1px solid rgba(220,38,38,0.25);
+            border-radius: var(--r);
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: var(--danger);
+            text-align: center;
+            font-family: var(--font-ui);
+        }
+        .app-suspended .link-row,
+        .app-suspended .cta-btn,
+        .app-suspended .pill-btn { pointer-events: none; opacity: 0.35; }
+
+        /* ═══════════════════════════════════════════════════
+           MAP SECTION
+        ═══════════════════════════════════════════════════ */
+        .map-wrap {
+            margin-top: 4px;
+            border-radius: var(--r);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        .map-branch-sel {
+            width: 100%; padding: 12px 14px;
+            background: transparent; border: none;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-1); font-family: var(--font-body);
+            font-size: 14px; cursor: pointer;
+        }
+
+        /* ═══════════════════════════════════════════════════
+           BOOKING MODAL
+        ═══════════════════════════════════════════════════ */
+        .booking-overlay {
+            position: fixed; inset: 0;
+            background: var(--overlay);
+            z-index: 8000; display: none;
+            align-items: flex-end; justify-content: center;
+            backdrop-filter: var(--blur-sm);
+            -webkit-backdrop-filter: var(--blur-sm);
+            padding: 0;
+        }
+        .booking-overlay.open { display: flex; }
+
+        .booking-sheet {
+            width: 100%; max-width: 440px;
+            background: var(--bg);
+            border-radius: 24px 24px 0 0;
+            border-top: 1px solid var(--border-strong);
+            padding: 0 20px 40px;
+            max-height: 90vh; overflow-y: auto;
+            animation: sheetUp 0.38s cubic-bezier(0.2,1,0.4,1) both;
+            position: relative;
+        }
+        @keyframes sheetUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+
+        .sheet-handle {
+            width: 36px; height: 4px;
+            background: var(--border-strong);
+            border-radius: 2px;
+            margin: 12px auto 20px;
+        }
+        .sheet-title {
+            font-family: var(--font-display);
+            font-size: 18px; font-weight: 700;
+            color: var(--text-1);
+            margin: 0 0 20px; text-align: center;
+        }
+
+        .spinner-layer {
+            position: absolute; inset: 0;
+            background: var(--bg);
+            border-radius: 24px 24px 0 0;
+            display: none; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 12px; z-index: 5;
+        }
+        .spinner-layer i { color: var(--accent); }
+
+        /* Tabs */
+        .sheet-tabs {
+            display: flex; gap: 0;
+            border: 1px solid var(--border);
+            border-radius: var(--r-sm);
+            margin-bottom: 20px; overflow: hidden;
+        }
+        .stab {
+            flex: 1; padding: 10px;
+            text-align: center; font-size: 13px; font-weight: 600;
+            cursor: pointer; color: var(--text-3);
+            font-family: var(--font-ui); transition: all var(--t);
+            border: none; background: transparent;
+        }
+        .stab.active { background: var(--accent); color: var(--accent-fg); }
+
+        /* Form fields */
+        .f-label {
+            font-size: 11px; font-weight: 600;
+            letter-spacing: 0.10em; text-transform: uppercase;
+            color: var(--text-3); display: block;
+            margin-bottom: 6px; font-family: var(--font-ui);
+        }
+        .f-input {
+            width: 100%; padding: 12px 14px;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--r-sm);
+            color: var(--text-1); font-family: var(--font-body);
+            font-size: 15px; outline: none;
+            transition: border-color var(--t);
+            margin-bottom: 14px;
+        }
+        .f-input:focus { border-color: var(--accent); }
+        .f-row { display: flex; gap: 10px; }
+        .f-row > div { flex: 1; }
+
+        /* Custom select trigger */
+        .sel-trigger {
+            width: 100%; padding: 12px 14px;
+            background: var(--bg2); border: 1px solid var(--border);
+            border-radius: var(--r-sm); color: var(--text-1);
+            font-family: var(--font-body); font-size: 15px;
+            cursor: pointer; display: flex;
+            align-items: center; justify-content: space-between;
+            margin-bottom: 14px; transition: border-color var(--t);
+        }
+        .sel-trigger:hover { border-color: var(--accent); }
+
+        /* Price box */
+        .price-strip {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: var(--r-sm); margin-bottom: 16px;
+            background: var(--accent-soft);
+        }
+        .price-lbl { font-size: 12px; color: var(--text-3); font-family: var(--font-ui); text-transform: uppercase; letter-spacing: 0.08em; }
+        .price-val { font-size: 18px; font-weight: 700; color: var(--accent); font-family: var(--font-display); }
+
+        /* VIP box */
+        .vip-strip {
+            display: none; padding: 14px;
+            border: 1px solid rgba(201,168,76,0.35);
+            border-radius: var(--r-sm); margin-bottom: 14px;
+            text-align: center; background: rgba(201,168,76,0.06);
+        }
+        .vip-badge-pill {
+            display: inline-block; padding: 3px 14px;
+            background: linear-gradient(135deg,#D4AF37,#8B6508);
+            color: #fff; border-radius: 20px;
+            font-size: 11px; font-weight: 700;
+            letter-spacing: 0.08em; font-family: var(--font-ui);
+        }
+
+        /* Sheet action buttons */
+        .sheet-btns { display: flex; gap: 10px; }
+        .btn-ghost {
+            flex: 1; height: 48px;
+            border: 1px solid var(--border-strong);
+            border-radius: var(--r-sm); background: transparent;
+            color: var(--text-2); font-family: var(--font-ui);
+            font-size: 14px; font-weight: 600; cursor: pointer;
+            transition: all var(--t);
+        }
+        .btn-ghost:hover { background: var(--accent-soft); }
+        .btn-solid {
+            flex: 2; height: 48px;
+            background: var(--accent); color: var(--accent-fg);
+            border: none; border-radius: var(--r-sm);
+            font-family: var(--font-ui); font-size: 15px;
+            font-weight: 700; cursor: pointer;
+            transition: all var(--t);
+        }
+        .btn-solid:hover { opacity: 0.88; transform: translateY(-1px); }
+
+        /* Appointment card */
+        .appt-row {
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .appt-row:first-child { border-top: 1px solid var(--border); }
+        .appt-meta { font-size: 13px; color: var(--text-3); margin-bottom: 4px; }
+        .appt-date { font-size: 16px; font-weight: 600; color: var(--text-1); }
+        .cancel-link {
+            font-size: 12px; color: var(--danger);
+            cursor: pointer; font-family: var(--font-ui);
+            font-weight: 600; letter-spacing: 0.05em;
+            text-decoration: underline; border: none;
+            background: transparent; padding: 0;
+        }
+
+        /* ═══════════════════════════════════════════════════
+           GLASS POPUP (select / alerts)
+        ═══════════════════════════════════════════════════ */
+        .glass-overlay {
+            position: fixed; inset: 0;
+            background: var(--overlay);
+            z-index: 9000; display: none;
+            align-items: center; justify-content: center;
+            backdrop-filter: var(--blur-sm);
+            -webkit-backdrop-filter: var(--blur-sm);
+            padding: 20px;
+        }
+        .glass-overlay.active { display: flex; }
+        .glass-popup {
+            background: var(--bg);
+            border: 1px solid var(--border-strong);
+            border-radius: var(--r-lg);
+            width: 100%; max-width: 340px;
+            overflow: hidden;
+            animation: popIn 0.28s cubic-bezier(0.2,1,0.4,1) both;
+        }
+        @keyframes popIn { from{transform:scale(0.88);opacity:0} to{transform:scale(1);opacity:1} }
+        .popup-hdr {
+            padding: 14px 18px 12px;
+            border-bottom: 1px solid var(--border);
+            font-size: 11px; font-weight: 700;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            color: var(--text-3); text-align: center;
+            font-family: var(--font-ui);
+        }
+        .popup-opts { max-height: 44vh; overflow-y: auto; }
+        .popup-opt {
+            padding: 15px 18px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-1); font-size: 16px;
+            cursor: pointer; font-family: var(--font-body);
+            transition: background var(--t);
+        }
+        .popup-opt:hover { background: var(--accent-soft); }
+        .popup-opt.disabled { color: var(--text-3); pointer-events: none; opacity: 0.4; }
+        .popup-cancel {
+            padding: 15px 18px; text-align: center;
+            color: var(--danger); font-size: 15px;
+            font-weight: 700; cursor: pointer;
+            font-family: var(--font-ui);
+            border-top: 1px solid var(--border);
+            transition: background var(--t);
+        }
+        .popup-cancel:hover { background: rgba(220,38,38,0.05); }
+
+        /* Alert popup */
+        .alert-body { padding: 24px 20px 8px; text-align: center; }
+        .alert-icon { font-size: 28px; margin-bottom: 12px; }
+        .alert-title { font-size: 17px; font-weight: 700; color: var(--text-1); margin: 0 0 8px; font-family: var(--font-display); }
+        .alert-msg { font-size: 14px; color: var(--text-2); line-height: 1.6; margin: 0; }
+        .alert-foot { padding: 16px 20px 20px; }
+        .alert-ok {
+            width: 100%; height: 44px;
+            background: var(--accent); color: var(--accent-fg);
+            border: none; border-radius: var(--r-sm);
+            font-size: 15px; font-weight: 700;
+            cursor: pointer; font-family: var(--font-ui);
+        }
+
+        /* ═══════════════════════════════════════════════════
+           PHONE SHEET
+        ═══════════════════════════════════════════════════ */
+        .phone-sheet-overlay {
+            position: fixed; inset: 0;
+            background: var(--overlay);
+            z-index: 8500; display: none;
+            align-items: flex-end; justify-content: center;
+            backdrop-filter: var(--blur-sm);
+            -webkit-backdrop-filter: var(--blur-sm);
+        }
+        .phone-sheet-overlay.open { display: flex; }
+        .phone-sheet {
+            width: 100%; max-width: 440px;
+            background: var(--bg);
+            border-radius: 24px 24px 0 0;
+            border-top: 1px solid var(--border-strong);
+            padding: 0 20px 32px;
+            animation: sheetUp 0.32s cubic-bezier(0.2,1,0.4,1) both;
+        }
+        .phone-option {
+            display: flex; align-items: center; gap: 16px;
+            padding: 16px 2px;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer; text-decoration: none;
+            color: var(--text-1); transition: padding-left var(--t);
+        }
+        .phone-option:first-of-type { border-top: 1px solid var(--border); }
+        .phone-option:hover { padding-left: 6px; }
+        .phone-icon { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+        .phone-label { font-size: 15px; font-weight: 500; color: var(--text-1); }
+
+        /* ═══════════════════════════════════════════════════
+           CALENDAR
+        ═══════════════════════════════════════════════════ */
+        .calendar-glass {
+            background: var(--bg);
+            border: 1px solid var(--border-strong);
+            border-radius: var(--r-lg);
+            overflow: hidden; max-width: 340px;
+        }
+        .cal-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        .cal-title { font-size: 15px; font-weight: 600; color: var(--text-1); font-family: var(--font-ui); }
+        .cal-nav {
+            background: none; border: none; color: var(--text-2);
+            font-size: 16px; cursor: pointer; padding: 4px 8px;
+            border-radius: var(--r-sm); transition: background var(--t);
+        }
+        .cal-nav:hover { background: var(--accent-soft); }
+        .cal-grid { padding: 12px 10px 14px; }
+        .cal-weekdays { display: grid; grid-template-columns: repeat(7,1fr); text-align: center; margin-bottom: 6px; }
+        .cal-weekdays span { font-size: 11px; font-weight: 600; color: var(--text-3); padding: 4px; font-family: var(--font-ui); text-transform: uppercase; letter-spacing: 0.05em; }
+        .cal-days { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; }
+        .cal-day {
+            aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+            font-size: 13px; cursor: pointer; border-radius: var(--r-sm);
+            color: var(--text-1); font-family: var(--font-ui); transition: all var(--t);
+        }
+        .cal-day:hover:not(.disabled):not(.empty) { background: var(--accent-soft); color: var(--accent); }
+        .cal-day.selected { background: var(--accent); color: var(--accent-fg); font-weight: 700; }
+        .cal-day.today { border: 1px solid var(--accent); color: var(--accent); font-weight: 600; }
+        .cal-day.disabled, .cal-day.empty { opacity: 0.25; cursor: default; }
+
+        /* ═══════════════════════════════════════════════════
+           SESSION TIMEOUT OVERLAY
+        ═══════════════════════════════════════════════════ */
+        #sessionLockOverlay {
+            position: fixed; inset: 0; z-index: 9999;
+            background: var(--overlay);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            display: none; align-items: center; justify-content: center;
+        }
+        #sessionLockOverlay.active { display: flex; }
+
+        /* ═══════════════════════════════════════════════════
+           LANDING PAGE
+        ═══════════════════════════════════════════════════ */
+        #landingPage {
+            display: none; position: fixed; inset: 0;
+            z-index: 200; overflow: hidden; background: #000;
+        }
+
+        /* ── Linktree-style inline social icons ── */
+        .social-icons-row {
+            display: flex; justify-content: center;
+            gap: 16px; flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+        .soc-icon {
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 15px; color: var(--text-2);
+            text-decoration: none;
+            transition: all var(--t);
+        }
+        .soc-icon:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+        /* ── Linktree-style link buttons (not rows) ── */
+        .lt-link {
+            display: flex; align-items: center; gap: 14px;
+            width: 100%; padding: 14px 18px;
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            background: var(--accent-soft);
+            text-decoration: none; color: var(--text-1);
+            margin-bottom: 10px;
+            transition: all var(--t);
+            cursor: pointer;
+        }
+        .lt-link:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: var(--sh-up); }
+        .lt-link:active { transform: scale(0.98); }
+        .lt-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; background: var(--surface); }
+        .lt-label { flex: 1; font-size: 15px; font-weight: 600; color: var(--text-1); text-align: center; font-family: var(--font-ui); }
+
+    </style>
+</head>
+<body>
+    <div id="flowlink-loader"><div class="top-progress-bar"></div></div>
+    <div id="sessionLockOverlay" class="glass-overlay" style="display:none;align-items:center;justify-content:center;">
+        <div class="glass-popup" style="text-align:center;padding:32px 24px;">
+            <i class="fa-solid fa-lock" style="font-size:32px;color:var(--text-3);margin-bottom:16px;display:block;"></i>
+            <p style="color:var(--text-2);font-family:var(--font-ui);font-size:14px;margin:0;">Session expired — reload to continue</p>
+        </div>
+    </div>
+
+    <!-- Landing Page -->
+    <div id="landingPage"></div>
+
+    <!-- Alert Overlay -->
+    <div class="glass-overlay" id="glassAlertOverlay">
+        <div class="glass-popup">
+            <div class="alert-body">
+                <div class="alert-icon" id="alertIcon">✓</div>
+                <p class="alert-title" id="alertTitle">Done</p>
+                <p class="alert-msg" id="alertMsg"></p>
+            </div>
+            <div class="alert-foot">
+                <button class="alert-ok" onclick="document.getElementById('glassAlertOverlay').classList.remove('active')">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Select Overlay -->
+    <div class="glass-overlay" id="glassSelectOverlay">
+        <div class="glass-popup" style="max-width:340px;">
+            <div class="popup-hdr" id="glassSelectTitle">Choose</div>
+            <div class="popup-opts" id="glassSelectOptions"></div>
+            <div class="popup-cancel" onclick="document.getElementById('glassSelectOverlay').classList.remove('active')">Cancel</div>
+        </div>
+    </div>
+
+    <!-- Phone Sheet -->
+    <div class="phone-sheet-overlay" id="phoneSheetOverlay">
+        <div class="phone-sheet">
+            <div class="sheet-handle" style="width:36px;height:4px;background:var(--border-strong);border-radius:2px;margin:12px auto 20px;"></div>
+            <div id="phoneOptions"></div>
+            <div class="phone-option" onclick="document.getElementById('phoneSheetOverlay').classList.remove('open')" style="color:var(--danger);border-top:1px solid var(--border);border-bottom:none;font-weight:700;font-family:var(--font-ui);font-size:15px;justify-content:center;">
+                Cancel
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="fullApp" style="display:none;">
+        <div class="app-wrap">
+
+            <!-- Hero -->
+            <div class="hero" id="heroBgContainer">
+                <div id="heroSkel" class="skeleton" style="position:absolute;inset:0;border-radius:0;z-index:2;"></div>
+                <img id="mainHeroImg" class="hero-img" src="" alt="" draggable="false"
+                     oncontextmenu="return false;" ondragstart="return false;"
+                     onload="this.classList.add('loaded');document.getElementById('heroSkel').style.display='none';">
+                <div class="hero-grad"></div>
+                <div class="hero-logo" id="heroLogoOverlay">
+                    <img id="heroLogoWhite" src="" alt="logo" style="display:none;">
+                    <img id="heroLogoBlack" src="" alt="logo" style="display:none;">
+                </div>
+            </div>
+
+            <!-- Panel -->
+            <div class="panel">
+
+                <!-- Suspended Banner -->
+                <div id="suspendedBanner" style="display:none;">
+                    ⚠ This account has been suspended
+                </div>
+
+                <!-- Skeleton -->
+                <div id="skeletonView" style="display:none;">
+                    <div style="text-align:center;margin-bottom:24px;">
+                        <div class="skeleton skel-name"></div>
+                        <div class="skeleton skel-title"></div>
+                    </div>
+                    <div class="skel-pills">
+                        <div class="skeleton skel-pill"></div>
+                        <div class="skeleton skel-pill"></div>
+                        <div class="skeleton skel-pill"></div>
+                        <div class="skeleton skel-pill"></div>
+                    </div>
+                    <div class="skeleton skel-cta"></div>
+                    <div class="skeleton skel-row" style="margin-bottom:1px;"></div>
+                    <div class="skeleton skel-row" style="margin-bottom:1px;"></div>
+                    <div class="skeleton skel-row"></div>
+                </div>
+
+                <!-- Real content -->
+                <div id="realContentView" style="display:none;">
+
+                    <!-- Profile Header -->
+                    <div class="profile-head">
+                        <h1 id="brandName" class="profile-name">Loading...</h1>
+                        <span id="brandTitle" class="profile-title"></span>
+                    </div>
+
+                    <!-- Action Pills -->
+                    <div class="action-pills">
+                        <div class="pill-btn" onclick="openPhoneSheet()" id="btnPhoneAction" title="Call">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                        <a id="topMapLink" href="#" class="pill-btn" target="_blank" title="Map">
+                            <i class="fa-solid fa-map-location-dot"></i>
+                        </a>
+                        <div id="bookingShardBtn" class="pill-btn" onclick="openBooking()" title="Book">
+                            <i class="fa-regular fa-calendar"></i>
+                        </div>
+                        <div class="pill-btn" onclick="copyURL()" id="btnCopyAction" title="Share">
+                            <i class="fa-solid fa-link"></i>
+                        </div>
+                    </div>
+
+                    <!-- CTA Save Contact -->
+                    <div class="cta-btn" onclick="window.saveContactVCF()" id="btnVCFAction">
+                        <i class="fa-solid fa-address-card"></i>
+                        Save Contact
+                    </div>
+
+                    <!-- Social Links -->
+                    <div id="socialSection" style="display:none;">
+                        <div class="sec-heading">Connect</div>
+                        <!-- Linktree-style social links -->
+                        <a id="waLink"         href="#" class="lt-link" target="_blank" style="display:none;"><span class="lt-icon" style="color:#25d366;background:rgba(37,211,102,0.08);"><i class="fa-brands fa-whatsapp"></i></span><span class="lt-label">WhatsApp</span></a>
+                        <a id="fbLink"         href="#" class="lt-link" target="_blank" style="display:none;"><span class="lt-icon" style="color:#1877f2;background:rgba(24,119,242,0.08);"><i class="fa-brands fa-facebook-f"></i></span><span class="lt-label">Facebook</span></a>
+                        <a id="instaLink"      href="#" class="lt-link" target="_blank" style="display:none;"><span class="lt-icon" style="color:#e4405f;background:rgba(228,64,95,0.08);"><i class="fa-brands fa-instagram"></i></span><span class="lt-label">Instagram</span></a>
+                        <a id="tiktokLink"     href="#" class="lt-link" target="_blank" style="display:none;"><span class="lt-icon"><i class="fa-brands fa-tiktok"></i></span><span class="lt-label">TikTok</span></a>
+                        <a id="ytLink"         href="#" class="lt-link" target="_blank" style="display:none;"><span class="lt-icon" style="color:#FF0000;background:rgba(255,0,0,0.06);"><i class="fa-brands fa-youtube"></i></span><span class="lt-label">YouTube</span></a>
+                        <a id="snapLink"       href="#" class="lt-link" target="_blank" style="display:none;"><span class="lt-icon" style="color:#222;background:rgba(255,252,0,0.12);"><i class="fa-brands fa-snapchat"></i></span><span class="lt-label">Snapchat</span></a>
+                        <a id="xLink"          href="#" class="lt-link" target="_blank" style="display:none;"><span class="lt-icon"><i class="fa-brands fa-x-twitter"></i></span><span class="lt-label">X (Twitter)</span></a>
+                        <a id="linkedinLink"   href="#" class="lt-link" target="_blank" style="display:none;"><span class="lt-icon" style="color:#0A66C2;background:rgba(10,102,194,0.08);"><i class="fa-brands fa-linkedin-in"></i></span><span class="lt-label">LinkedIn</span></a>
+                        <a id="threadsLink"    href="#" class="lt-link" target="_blank" style="display:none;"><span class="lt-icon"><i class="fa-brands fa-threads"></i></span><span class="lt-label">Threads</span></a>
+                        <a id="truecallerLink" href="#" class="lt-link" target="_blank" style="display:none;"><span class="lt-icon" style="color:#0056D2;background:rgba(0,86,210,0.08);"><i class="fa-solid fa-phone-flip"></i></span><span class="lt-label">Truecaller</span></a>
+                        <a id="reviewsLink"    href="#" class="lt-link" target="_blank" style="display:none;"><span class="lt-icon" style="color:#F4B400;background:rgba(244,180,0,0.08);"><i class="fa-solid fa-star"></i></span><span class="lt-label">Google Reviews</span></a>
+                        <a id="mapsSocialLink" href="#" class="lt-link" target="_blank" style="display:none;"><span class="lt-icon" style="color:#34A853;background:rgba(52,168,83,0.08);"><i class="fa-solid fa-map-pin"></i></span><span class="lt-label">Google Maps</span></a>
+                    </div>
+
+                    <!-- Booking -->
+                    <div id="bookingSectionContainer">
+                        <div class="sec-heading" id="bookingSectionLabel">Services</div>
+                        <div class="lt-link" onclick="openBooking()" style="cursor:pointer;">
+                            <span class="lt-icon" style="color:var(--accent);background:var(--accent-soft);"><i class="fa-solid fa-calendar-check"></i></span>
+                            <span class="lt-label">Book an Appointment</span>
+                            <i class="fa-solid fa-chevron-right" style="font-size:11px;color:var(--text-3);"></i>
+                        </div>
+                    </div>
+
+                    <!-- Map (multi-branch) -->
+                    <div id="multiBranchMapSection" style="display:none;margin-top:20px;">
+                        <div class="sec-heading">Location</div>
+                        <div class="map-wrap">
+                            <select id="mapBranchSelect" class="map-branch-sel" onchange="window.updateMapIframe()"></select>
+                            <iframe id="mapIframe" width="100%" height="220" style="border:0;display:block;" allowfullscreen="" loading="lazy"></iframe>
+                        </div>
+                    </div>
+
+                    <!-- Payment -->
+                    <div id="paymentSection" style="display:none;">
+                        <div class="sec-heading">Payment</div>
+                        <div class="lt-link" id="instapayCard" style="display:none;" onclick="window.handleInstapay()">
+                            <span class="lt-icon" style="color:var(--success);background:rgba(22,163,74,0.08);"><i class="fa-solid fa-bolt"></i></span>
+                            <span class="lt-label">InstaPay</span>
+                        </div>
+                        <div class="lt-link" id="walletCard" style="display:none;" onclick="window.handleWallet()">
+                            <span class="lt-icon" style="color:#f97316;background:rgba(249,115,22,0.08);"><i class="fa-solid fa-wallet"></i></span>
+                            <span class="lt-label" id="walletName">E-Wallet</span>
+                        </div>
+                    </div>
+
+                    <!-- About -->
+                    <div class="about-wrap">
+                        <p class="about-heading">About</p>
+                        <div class="stats-row">
+                            <div class="stat"><span class="stat-num" id="userCounter">0</span><span class="stat-label">Users</span></div>
+                            <div class="stat"><span class="stat-num" id="foundedYear">—</span><span class="stat-label">Founded</span></div>
+                            <div class="stat"><span class="stat-num" id="ratingScore">A+</span><span class="stat-label">Rating</span></div>
+                        </div>
+                        <p id="aboutText" class="about-text"></p>
+                        <p class="footer-copy">All Rights Reserved &copy; <span class="dynamic-year"></span> · Powered by FlowLink</p>
+                    </div>
+
+                </div><!-- /realContentView -->
+            </div><!-- /panel -->
+        </div><!-- /app-wrap -->
+    </div><!-- /fullApp -->
+
+    <div id="suspendedMessage" style="display:none;"></div>
+
+    <!-- ══ BOOKING MODAL ══ -->
+    <div class="booking-overlay" id="bookingModal">
+        <div class="booking-sheet" id="mainBookingCard">
+            <div class="spinner-layer" id="bookingSpinner">
+                <i class="fa-solid fa-spinner fa-spin" style="font-size:28px;"></i>
+                <span style="font-family:var(--font-ui);font-size:14px;color:var(--text-2);">Processing...</span>
+            </div>
+            <div class="sheet-handle"></div>
+            <div class="sheet-tabs">
+                <button class="stab active" id="tabNew" onclick="switchTab('new')">Book Appointment</button>
+                <button class="stab" id="tabMy" onclick="switchTab('my')">My Appointments</button>
+            </div>
+
+            <!-- New Booking -->
+            <div id="newBookingArea">
+                <div class="f-row">
+                    <div>
+                        <label class="f-label">Full Name</label>
+                        <input type="text" id="visitorName" class="f-input name-input-field" placeholder="Your name" maxlength="60" autocomplete="off">
+                        <p id="nameHint" style="display:none;color:var(--danger);font-size:11px;margin:-10px 0 10px;font-family:var(--font-ui);">Letters only, no numbers</p>
+                    </div>
+                    <div>
+                        <label class="f-label">Phone</label>
+                        <input type="tel" id="visitorPhone" class="f-input" placeholder="01xxxxxxxxx">
+                        <p id="phoneHint" style="display:none;color:var(--danger);font-size:11px;margin:-10px 0 10px;font-family:var(--font-ui);"></p>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="f-label">Governorate</label>
+                    <div class="sel-trigger" onclick="openGlassSelect('visitorGovernorate', 'Select Governorate')">
+                        <span id="visitorGovernorateTrigger">Select...</span>
+                        <i class="fa-solid fa-chevron-down" style="font-size:11px;color:var(--text-3);"></i>
+                    </div>
+                    <select id="visitorGovernorate" style="display:none;">
+                        <option value="" selected disabled>Select...</option>
+                        <option value="الإسكندرية">Alexandria — الإسكندرية</option>
+                        <option value="الإسماعيلية">Ismailia — الإسماعيلية</option>
+                        <option value="أسوان">Aswan — أسوان</option>
+                        <option value="أسيوط">Asyut — أسيوط</option>
+                        <option value="الأقصر">Luxor — الأقصر</option>
+                        <option value="البحر الأحمر">Red Sea — البحر الأحمر</option>
+                        <option value="البحيرة">Beheira — البحيرة</option>
+                        <option value="بني سويف">Beni Suef — بني سويف</option>
+                        <option value="بورسعيد">Port Said — بورسعيد</option>
+                        <option value="الجيزة">Giza — الجيزة</option>
+                        <option value="الدقهلية">Dakahlia — الدقهلية</option>
+                        <option value="دمياط">Damietta — دمياط</option>
+                        <option value="سوهاج">Sohag — سوهاج</option>
+                        <option value="السويس">Suez — السويس</option>
+                        <option value="الشرقية">Sharkia — الشرقية</option>
+                        <option value="شمال سيناء">North Sinai — شمال سيناء</option>
+                        <option value="جنوب سيناء">South Sinai — جنوب سيناء</option>
+                        <option value="الغربية">Gharbia — الغربية</option>
+                        <option value="الفيوم">Fayoum — الفيوم</option>
+                        <option value="القاهرة">Cairo — القاهرة</option>
+                        <option value="القليوبية">Qalyubia — القليوبية</option>
+                        <option value="قنا">Qena — قنا</option>
+                        <option value="كفر الشيخ">Kafr El Sheikh — كفر الشيخ</option>
+                        <option value="مطروح">Matrouh — مطروح</option>
+                        <option value="المنوفية">Menoufia — المنوفية</option>
+                        <option value="المنيا">Minya — المنيا</option>
+                        <option value="الوادي الجديد">New Valley — الوادي الجديد</option>
+                    </select>
+                </div>
+
+                <div id="branchSelectionArea" style="display:none;">
+                    <label class="f-label">Branch / Clinic</label>
+                    <div class="sel-trigger" onclick="openGlassSelect('branchSelect', 'Select Branch')">
+                        <span id="branchSelectTrigger">Select branch...</span>
+                        <i class="fa-solid fa-chevron-down" style="font-size:11px;color:var(--text-3);"></i>
+                    </div>
+                    <select id="branchSelect" style="display:none;" onchange="window.handleBranchChange()">
+                        <option value="" selected disabled>Select branch...</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="f-label">Visit Type</label>
+                    <div class="sel-trigger" onclick="openGlassSelect('bookingType', 'Visit Type')">
+                        <span id="bookingTypeTrigger">New Visit</span>
+                        <i class="fa-solid fa-chevron-down" style="font-size:11px;color:var(--text-3);"></i>
+                    </div>
+                    <select id="bookingType" style="display:none;" onchange="window.handleTypeChange()">
+                        <option id="optNew" value="كشف جديد" data-price="0">New Visit</option>
+                        <option id="optFollow" value="متابعة" data-price="0">Follow-up</option>
+                        <option id="optVip" value="VIP" data-price="0">VIP — Priority Access</option>
+                    </select>
+                </div>
+
+                <div class="vip-strip" id="vipMessage">
+                    <div class="vip-badge-pill">VIP Priority Access</div>
+                    <p style="font-size:13px;color:var(--vip-gold);margin:10px 0 0;">Skip the queue — absolute priority</p>
+                </div>
+
+                <div>
+                    <label class="f-label">Date</label>
+                    <div class="sel-trigger" onclick="window.openGlassCalendar()">
+                        <span id="bookingDateTrigger">Select date...</span>
+                        <i class="fa-solid fa-calendar" style="font-size:11px;color:var(--text-3);"></i>
+                    </div>
+                    <input type="hidden" id="bookingDate">
+                </div>
+
+                <div id="timeSelectionArea" style="display:none;">
+                    <label class="f-label">Time Slot</label>
+                    <div class="sel-trigger" onclick="openGlassSelect('timeSelect', 'Select Time')">
+                        <span id="timeSelectTrigger">Select time...</span>
+                        <i class="fa-solid fa-chevron-down" style="font-size:11px;color:var(--text-3);"></i>
+                    </div>
+                    <select id="timeSelect" style="display:none;">
+                        <option value="" selected disabled>Select time...</option>
+                    </select>
+                </div>
+
+                <div class="price-strip">
+                    <span class="price-lbl">Visit Fee</span>
+                    <span id="priceDisplay" class="price-val">0 EGP</span>
+                </div>
+
+                <div class="sheet-btns">
+                    <button class="btn-ghost" onclick="closeBooking()">Cancel</button>
+                    <button class="btn-solid" id="confirmBtn" onclick="window.submitBooking()">Confirm Booking</button>
+                </div>
+            </div>
+
+            <!-- My Appointments -->
+            <div id="myBookingArea" style="display:none;">
+                <label class="f-label">Your Phone Number</label>
+                <div style="display:flex;gap:8px;margin-bottom:16px;">
+                    <input type="tel" id="lookupPhone" class="f-input" placeholder="01xxxxxxxxx" style="margin:0;flex:1;">
+                    <button onclick="window.lookupBookings()" class="btn-solid" style="flex:none;width:80px;font-size:13px;">Search</button>
+                </div>
+                <div id="myAppointmentsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp }
+            from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, doc, onSnapshot, collection, addDoc,
+                 query, where, getDocs, deleteDoc, setDoc, getDoc,
+                 serverTimestamp }
+            from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged }
+            from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+        // ═══════════════════════════════════════════════════════
+        //  Fix #11: HTTPS Enforcement
+        // ═══════════════════════════════════════════════════════
+        if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
+            location.replace('https:' + location.href.substring(location.protocol.length));
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  Fix #8: Centralized Error Logger
+        //  ⚠️  To enable Sentry, replace the stub with:
+        //      import * as Sentry from "https://browser.sentry-cdn.com/...";
+        //      Sentry.init({ dsn: "YOUR_DSN" });
+        // ═══════════════════════════════════════════════════════
+        window._logError = (context, err) => {
+            const ts = new Date().toISOString();
+            console.error(`[FlowLink][${ts}][${context}]`, err);
+            // TODO: Sentry.captureException(err, { tags: { context } });
+        };
+
+        window.toArabicDigits = (str) =>
+            str.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+
+        // Security: safe text setter (prevents XSS)
+        window._safeText = (el, txt) => { if(el) el.textContent = String(txt||'').replace(/[<>"'`]/g,''); };
+
+        window.showGlassAlert = (title, msg) => {
+            document.getElementById('glassAlertTitle').textContent   = String(title).substring(0, 80);
+            document.getElementById('glassAlertMessage').textContent = String(msg).substring(0, 200);
+            document.getElementById('glassAlertOverlay').classList.add('active');
+        };
+
+        // Logic Lock Variables
+        window.toggles = {
+            vcf: true, phone: true, booking: true, social: true, map: true, landingPage: true
+        };
+
+        // VCF — Egyptian format: +20xxxxxxxxx (no dashes, no spaces)
+        window.saveContactVCF = () => {
+            if(window._locked) return;
+            if (!window.toggles.vcf) return;
+            if (!window.currentUserData) {
+                window.showGlassAlert("خطأ", "بيانات الاتصال غير متوفرة بعد.");
+                return;
+            }
+            const data = window.currentUserData;
+            const name = String(data.displayName || 'جهة اتصال').replace(/[\\:;,]/g, ' ').substring(0, 60);
+            const title = String(data.title || '').replace(/[\\:;,]/g, ' ').substring(0, 60);
+
+            // Collect & normalize all phones to +20xxxxxxxxx
+            function normalizeEGPhone(raw) {
+                if (!raw) return null;
+                var p = raw.toString().replace(/[\s\-\(\)\.]/g, ''); // remove spaces/dashes
+                // Remove leading +2 or 2 and ensure 01x
+                if (p.startsWith('+20')) p = '0' + p.slice(3);
+                else if (p.startsWith('20') && p.length === 12) p = '0' + p.slice(2);
+                // Must be 01[0125]xxxxxxxx
+                if (/^01[0125][0-9]{8}$/.test(p)) return '+2' + p;
+                return null;
+            }
+
+            var phones = ['phone1','phone2','phone3','phone4']
+                .map(k => normalizeEGPhone(data[k]))
+                .filter(Boolean)
+                .filter((v, i, arr) => arr.indexOf(v) === i); // deduplicate
+
+            if (phones.length === 0) {
+                return window.showGlassAlert("عذراً", "لا يوجد رقم هاتف مصري صالح للحفظ.");
+            }
+
+            var telLines = phones.map(p => 'TEL;TYPE=CELL:' + p).join('\n');
+            var titleLine = title ? 'TITLE:' + title + '\n' : '';
+            var vcf = 'BEGIN:VCARD\nVERSION:3.0\nFN:' + name + '\nN:' + name + ';;;;\n' + titleLine + telLines + '\nEND:VCARD';
+
+            // Security: validate vcf size
+            if (vcf.length > 4096) vcf = vcf.substring(0, 4096);
+
+            const blob = new Blob([vcf], { type: "text/vcard;charset=utf-8" });
+            const url  = URL.createObjectURL(blob);
+            const a    = document.createElement("a");
+            a.href     = url;
+            a.download = name.replace(/[^a-zA-Z0-9\u0600-\u06FF _-]/g, '') + '.vcf';
+            document.body.appendChild(a); a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            window.showGlassAlert("تم بنجاح", "تم تنزيل جهة الاتصال بنجاح.");
+        };
+
+        window.openPhoneSheet = () => {
+            if (!window.toggles.phone) return;
+            document.getElementById('phoneOverlay').classList.add('active');
+        };
+        window.closePhoneSheet = () => document.getElementById('phoneOverlay').classList.remove('active');
+        window.makeCall = (n) => { if(window._locked) return;
+            if (!window.toggles.phone) return;
+            window.location.href = 'tel:' + n;
+            closePhoneSheet();
+        };
+
+        // Copy URL directly (no share menu)
+        window.copyURL = async () => { if(window._locked) return;
+            let shareUrl = window.location.origin + window.location.pathname +
+                (targetUserId ? '#/' + targetUserId : '');
+            try {
+                const ds = await getDoc(doc(db, "users", targetUserId));
+                if (ds.exists() && ds.data().currentDomain)
+                    shareUrl = ds.data().currentDomain + '/#/' + targetUserId;
+            } catch(e) {}
+            try {
+                await navigator.clipboard.writeText(shareUrl);
+            } catch (clipErr) {
+                const ta = document.createElement('textarea');
+                ta.value = shareUrl;
+                ta.style.cssText = 'position:fixed;opacity:0;';
+                document.body.appendChild(ta);
+                ta.focus(); ta.select();
+                try { document.execCommand('copy'); } catch(e2) {}
+                document.body.removeChild(ta);
+            }
+            window.showGlassAlert("تم النسخ", "تم نسخ الرابط بنجاح.");
+        };
+
+        // Booking Logic
+        window.isBookingDisabledGlobal = false;
+        window.openBooking = () => { if(window._locked) return;
+            if (!window.toggles.booking || window.isBookingDisabledGlobal) return;
+            document.getElementById('bookingModal').classList.add('open');
+            window.handleTypeChange();
+            window.switchTab('new');
+        };
+        window.closeBooking = () => document.getElementById('bookingModal').classList.remove('open');
+
+        window.startNowAction = () => { window.location.href = dynamicAdminLink; };
+
+        let _currentSelectId = null;
+        window.openGlassSelect = (selectId, title) => {
+            _currentSelectId = selectId;
+            const originalSelect = document.getElementById(selectId);
+            const container = document.getElementById('glassSelectOptions');
+            document.getElementById('glassSelectTitle').innerText = title;
+
+            container.innerHTML = '';
+            Array.from(originalSelect.options).forEach((opt, index) => {
+                const div = document.createElement('div');
+                div.className = 'popup-opt';
+                div.innerText = opt.text;
+
+                if (opt.disabled) {
+                    div.classList.add('disabled');
+                } else {
+                    div.onclick = () => {
+                        originalSelect.selectedIndex = index;
+                        document.getElementById(selectId + 'Trigger').innerText = opt.text;
+                        originalSelect.dispatchEvent(new Event('change'));
+                        closeGlassSelect();
+                    };
+                }
+                container.appendChild(div);
+            });
+            document.getElementById('glassSelectOverlay').classList.add('active');
+        };
+        window.closeGlassSelect = () => document.getElementById('glassSelectOverlay').classList.remove('active');
+
+        // Map Dynamic Updates
+        window.updateMapIframe = () => {
+            if (!window.toggles.map) return;
+            const sel = document.getElementById('mapBranchSelect');
+            if (sel && sel.options[sel.selectedIndex]) {
+                const mapLink = sel.options[sel.selectedIndex].value;
+                document.getElementById('mapIframe').src = mapLink;
+            }
+        };
+
+        let calCurrentDate = new Date();
+        const arabicMonths = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+        const arabicDayNames = ['أحد','إثنين','ثلاثاء','أربعاء','خميس','جمعة','سبت'];
+
+        window.openGlassCalendar = () => {
+            calCurrentDate = new Date();
+            renderCalendar();
+            document.getElementById('glassCalendarOverlay').classList.add('active');
+        };
+        window.closeGlassCalendar = () => document.getElementById('glassCalendarOverlay').classList.remove('active');
+
+        window.changeCalMonth = (dir) => {
+            calCurrentDate.setMonth(calCurrentDate.getMonth() + dir);
+            renderCalendar();
+        };
+
+        function renderCalendar() {
+            const year  = calCurrentDate.getFullYear();
+            const month = calCurrentDate.getMonth();
+            document.getElementById('calMonthYearText').innerText = `${arabicMonths[month]} ${window.toArabicDigits(year)}`;
+
+            const namesRow = document.getElementById('calDayNamesRow');
+            namesRow.innerHTML = '';
+            arabicDayNames.forEach(d => {
+                const el = document.createElement('div');
+                el.className = 'cal-day-name';
+                el.innerText = d;
+                namesRow.appendChild(el);
+            });
+
+            const grid = document.getElementById('calDaysGrid');
+            grid.innerHTML = '';
+
+            const today        = new Date(); today.setHours(0,0,0,0);
+            const firstDayIdx  = new Date(year, month, 1).getDay();
+            const daysInMonth  = new Date(year, month + 1, 0).getDate();
+
+            for (let i = 0; i < firstDayIdx; i++) grid.appendChild(document.createElement('div'));
+
+            for (let i = 1; i <= daysInMonth; i++) {
+                const cellDate = new Date(year, month, i);
+                const isPast   = cellDate < today;
+                const isToday  = cellDate.getTime() === today.getTime();
+
+                const day = document.createElement('div');
+                day.className = 'cal-day';
+                day.innerText = window.toArabicDigits(i);
+
+                if (isPast) {
+                    day.classList.add('disabled');
+                } else {
+                    if (isToday) day.classList.add('today');
+                    day.onclick = () => {
+                        grid.querySelectorAll('.cal-day.selected').forEach(el => el.classList.remove('selected'));
+                        day.classList.add('selected');
+
+                        const formatted = `${year}-${String(month+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
+                        document.getElementById('bookingDate').value = formatted;
+                        document.getElementById('bookingDateTrigger').innerText =
+                            `${window.toArabicDigits(i)} ${arabicMonths[month]} ${window.toArabicDigits(year)}`;
+
+                        setTimeout(() => {
+                            window.checkAvailability();
+                            window.closeGlassCalendar();
+                        }, 220);
+                    };
+                }
+                grid.appendChild(day);
+            }
+        }
+
+        document.querySelectorAll('.dynamic-year').forEach(el => el.innerText = new Date().getFullYear());
+        const _todayNow = new Date();
+        _todayNow.setMinutes(_todayNow.getMinutes() - _todayNow.getTimezoneOffset());
+        document.getElementById('bookingDate').min = _todayNow.toISOString().split('T')[0];
+
+        // ╔═══════════════════════════════════════════════════════════════╗
+        //  Fix #1: ⚠️  SECURITY WARNING — Firebase API Keys
+        //  Keys are intentionally public by Firebase design.
+        //  Your ONLY real server-side protection = Firestore Security Rules.
+        //
+        // ┌───────────────────────────────────────────────────────────────┐
+        // │  FIRESTORE RULES — الصق هذا في:                              │
+        // │  Firebase Console → Firestore Database → Rules → Edit rules   │
+        // └───────────────────────────────────────────────────────────────┘
+        //
+        //  ⚙️  خطوة مطلوبة قبل النشر: تعيين Custom Claim للـ Super Admin
+        //  شغّل مرة واحدة فقط في Firebase Admin SDK أو Cloud Functions:
+        //    admin.auth().setCustomUserClaims("ADMIN_UID_HERE", { admin: true });
+        //
+        // ───────────────────────────────────────────────────────────────
+        //  rules_version = '2';
+        //  service cloud.firestore {
+        //    match /databases/{database}/documents {
+        //
+        //      // ═══════════════════════════════
+        //      // FUNCTIONS
+        //      // ═══════════════════════════════
+        //
+        //      // ✅ Custom Claim بدل الـ email الـ hardcoded
+        //      function isSuperAdmin() {
+        //        return request.auth != null
+        //            && request.auth.token.admin == true;
+        //      }
+        //
+        //      function isOwner(username) {
+        //        return request.auth != null
+        //            && exists(/databases/$(database)/documents/users/$(username))
+        //            && get(/databases/$(database)/documents/users/$(username)).data.uid
+        //               == request.auth.uid;
+        //      }
+        //
+        //      function isValidPhone(phone) {
+        //        return phone is string
+        //            && phone.matches('^01[0125][0-9]{8}$');
+        //      }
+        //
+        //      function isValidDate(d) {
+        //        return d is string
+        //            && d.matches('^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$');
+        //      }
+        //
+        //      function isValidType(t) {
+        //        return t is string
+        //            && t in ['جديد', 'متابعة', 'VIP'];
+        //      }
+        //
+        //      function isValidName(n) {
+        //        return n is string
+        //            && n.size() >= 2
+        //            && n.size() <= 60;
+        //      }
+        //
+        //      // ═══════════════════════════════
+        //      // 1. USERS
+        //      // ═══════════════════════════════
+        //      match /users/{username} {
+        //        allow read: if true;
+        //        allow create: if request.auth != null
+        //            && request.resource.data.uid == request.auth.uid;
+        //        allow update: if isOwner(username) || isSuperAdmin();
+        //        allow delete: if isSuperAdmin();
+        //      }
+        //
+        //      // ═══════════════════════════════
+        //      // 2. USERS INFO
+        //      // ═══════════════════════════════
+        //      match /users_info/{username} {
+        //        allow read:  if isOwner(username) || isSuperAdmin();
+        //        allow write: if isOwner(username) || isSuperAdmin();
+        //      }
+        //
+        //      // ═══════════════════════════════
+        //      // 3. BOOKINGS
+        //      // ═══════════════════════════════
+        //      match /users/{username}/bookings/{bookingId} {
+        //        allow read: if isOwner(username) || isSuperAdmin();
+        //
+        //        // ✅ createdByUid يربط الحجز بالـ anonymous uid
+        //        // ✅ الزائر يقدر يحذف حجزه هو بس (مش حجوزات غيره)
+        //        allow create: if request.auth != null
+        //            && request.resource.data.keys().hasAll(
+        //                 ['userName', 'userPhone', 'date', 'type', 'createdAt', 'createdByUid'])
+        //            && isValidName(request.resource.data.userName)
+        //            && isValidPhone(request.resource.data.userPhone)
+        //            && isValidDate(request.resource.data.date)
+        //            && isValidType(request.resource.data.type)
+        //            && request.resource.data.createdAt is timestamp
+        //            && request.resource.data.createdByUid == request.auth.uid;
+        //
+        //        // ✅ الزائر يحذف حجزه | الدكتور يحذف أي حجز | السوبر أدمن بكره
+        //        allow delete: if request.auth != null
+        //            && (resource.data.createdByUid == request.auth.uid
+        //                || isOwner(username)
+        //                || isSuperAdmin());
+        //        allow update: if isSuperAdmin();
+        //      }
+        //
+        //      // ═══════════════════════════════
+        //      // 4. ADMIN SETTINGS
+        //      // ═══════════════════════════════
+        //      match /admin_settings/{docId} {
+        //        allow read:  if isSuperAdmin();
+        //        allow write: if isSuperAdmin();
+        //      }
+        //
+        //      // ═══════════════════════════════
+        //      // 5. SYSTEM SETTINGS
+        //      // ═══════════════════════════════
+        //      match /system_settings/{docId} {
+        //        allow read:  if true;
+        //        allow write: if isSuperAdmin();
+        //      }
+        //
+        //      // ═══════════════════════════════
+        //      // 6. OM PRODUCTS
+        //      // ═══════════════════════════════
+        //      match /OM_Products/{productId} {
+        //        allow read: if true;
+        //        allow create, update, delete: if isSuperAdmin();
+        //      }
+        //
+        //      // ═══════════════════════════════
+        //      // 7. ASSISTANTS
+        //      // ═══════════════════════════════
+        //      match /assistants/{docId} {
+        //        // ✅ Fix: مقيّد للـ owner والـ superadmin بس (مش كل auth)
+        //        allow read:   if isSuperAdmin()
+        //                      || (request.auth != null
+        //                          && isOwner(resource.data.adminId));
+        //        allow create: if request.auth != null
+        //                      && isOwner(request.resource.data.adminId);
+        //        allow update, delete: if isSuperAdmin()
+        //                      || (request.auth != null
+        //                          && isOwner(resource.data.adminId));
+        //      }
+        //
+        //      // ═══════════════════════════════
+        //      // 8. CHATS
+        //      // ═══════════════════════════════
+        //      match /chats/{username}/messages/{msgId} {
+        //        allow read, write: if isSuperAdmin() || isOwner(username);
+        //      }
+        //
+        //      // ═══════════════════════════════
+        //      // 9. AUTH MAPPING
+        //      // ═══════════════════════════════
+        //      match /auth_mapping/{uid} {
+        //        allow read:  if request.auth != null && request.auth.uid == uid;
+        //        allow write: if request.auth != null && request.auth.uid == uid;
+        //      }
+        //
+        //    }
+        //  }
+        // ╚═══════════════════════════════════════════════════════════════╝
+        const firebaseConfig = {
+            apiKey:            "AIzaSyAxxWhIBlC92x_T4lBjDj7p7B3hrvhVZYg",
+            authDomain:        "alaqrab-system.firebaseapp.com",
+            projectId:         "alaqrab-system",
+            storageBucket:     "alaqrab-system.firebasestorage.app",
+            messagingSenderId: "660494503813",
+            appId:             "1:660494503813:web:3f45fc069b3506f8657eec",
+            measurementId:     "G-YHT6ZJJ8J3"
+        };
+        const app  = initializeApp(firebaseConfig);
+        const db   = getFirestore(app);
+        // Fix #4: Firebase Anonymous Authentication
+        const auth = getAuth(app);
+        let _currentAnonymousUser = null;
+        signInAnonymously(auth).catch(e => window._logError('anonAuth', e));
+        onAuthStateChanged(auth, user => { _currentAnonymousUser = user; });
+
+        const _loader = document.getElementById('flowlink-loader');
+
+        function applyCloudFonts(fontAr, fontEn) {
+            if (fontAr) document.documentElement.style.setProperty('--font-ar', `'${fontAr}', serif`);
+            if (fontEn) document.documentElement.style.setProperty('--font-en', `'${fontEn}', sans-serif`);
+        }
+
+        function getHashUserId() {
+            const raw = window.location.hash.replace(/^#\/?/, '').trim() || null;
+            // Fix #7 (IDOR): validate userId — only allow alphanumeric + safe Firebase ID chars
+            if (raw && !/^[a-zA-Z0-9_\-]{4,128}$/.test(raw)) return null;
+            return raw;
+        }
+
+        let targetUserId    = getHashUserId();
+        let dynamicAdminLink = "admin.html";
+        let clinicSettings  = {
+            priceNew: 0, priceFollow: 0, priceVip: 0, capacity: 50,
+            workFrom: "09:00", workTo: "17:00", offDays: [], holidays: [],
+            enableBranches: false, branches: [], advancedSchedules: null
+        };
+
+        if (!targetUserId) {
+            document.getElementById('fullApp').style.display         = 'none';
+            document.getElementById('suspendedMessage').style.display = 'none';
+            window.location.href = dynamicAdminLink;
+        } else {
+            _loader.style.display = 'block';
+            document.getElementById('suspendedMessage').style.display = 'none';
+            
+            document.getElementById('fullApp').style.display          = 'block';
+            document.getElementById('skeletonView').style.display     = 'block';
+            document.getElementById('realContentView').style.display  = 'none';
+
+            onSnapshot(doc(db, "users", targetUserId), (docSnap) => {
+                // Check if suspended
+                const isSuspended = !docSnap.exists() || docSnap.data().isActive === false;
+
+                if (isSuspended && !docSnap.exists()) {
+                    // No user document at all — nothing to show
+                    window._locked = true;
+                    document.getElementById('suspendedBanner').style.display = 'block';
+                    document.getElementById('fullApp').classList.add('app-suspended');
+                    document.getElementById('fullApp').style.display = 'block';
+                    document.getElementById('skeletonView').style.display = 'none';
+                    document.getElementById('realContentView').style.display = 'block';
+                    _loader.style.display = 'none';
+                    return;
+                }
+
+                if (isSuspended) {
+                    // Account suspended — lock interactions, but STILL LOAD DATA
+                    window._locked = true;
+                    document.getElementById('suspendedBanner').style.display = 'block';
+                    document.getElementById('fullApp').classList.add('app-suspended');
+                }
+
+                const data = docSnap.data();
+                window.currentUserData = data; 
+                document.getElementById('suspendedMessage').style.display = 'none';
+
+                document.getElementById('skeletonView').style.display     = 'none';
+                document.getElementById('realContentView').style.display  = 'block';
+
+                (function(){
+                    var mq = window.matchMedia('(prefers-color-scheme: dark)');
+                    function apply(e){ document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light'); }
+                    apply(mq);
+                    if(mq.addEventListener) mq.addEventListener('change', apply);
+                })();
+                applyCloudFonts(data.fontAr || null, data.fontEn || null);
+
+                (function(){
+                    var h = document.getElementById('brandName');
+                    h.textContent = (data.displayName || 'الاسم').toString().trim();
+                })();
+                
+                var _titleVal = (data.title || '').toString().trim();
+                var _titleEl = document.getElementById('brandTitle');
+                _titleEl.textContent = _titleVal;
+                _titleEl.style.display = _titleVal ? 'block' : 'none';
+                var _hs = (data.heroImg||'').toString().trim();
+                // Security: only reject actual script injection — NOT data: (base64 images are valid)
+                if(_hs && /^(javascript:|vbscript:)/i.test(_hs)) _hs = '';
+                var _imgEl = document.getElementById('mainHeroImg');
+                if (_hs) {
+                    _imgEl.src = _hs;
+                } else {
+                    _imgEl.src = 'https://g.top4top.io/p_374327hvm1.jpg';
+                }
+                document.getElementById('aboutText').innerText  = data.about || '';
+
+                if (data.logoImg) {
+                    const li = document.getElementById('lpLogoImg');
+                    if (li) { li.src = data.logoImg; li.style.display = 'block'; }
+
+                    // ── Hero overlay logo (top of cover photo) ──
+                    const _overlay  = document.getElementById('heroLogoOverlay');
+                    const _lw       = document.getElementById('heroLogoWhite');
+                    const _lb       = document.getElementById('heroLogoBlack');
+                    if (_overlay && _lw && _lb) {
+                        _lw.src = data.logoImg;
+                        _lb.src = data.logoImg;
+                        _overlay.style.display = 'flex';
+                    }
+                }
+
+
+                // ── Apply UI Theme (1-24) from Firestore ──
+                (function(){
+                    const THEMES = ['snow','midnight','obsidian','sand','forest','ocean',
+                                    'rose','slate','lavender','coral','mint','charcoal',
+                                    'amber','indigo','emerald','wine','arctic','graphite',
+                                    'sunset','cream','neon','sakura','storm','mocha'];
+                    const idx   = (parseInt(data.uiTheme || data.ui_theme || '1') || 1) - 1;
+                    const theme = THEMES[Math.min(Math.max(idx,0), THEMES.length-1)];
+                    document.documentElement.setAttribute('data-theme', theme);
+                    window._currentUiTheme = theme;
+                })();
+
+
+                const _now = new Date();
+                // يشتغل مع booking_enabled أو bookingEnabled
+                let isBookingDisabled = (data.booking_enabled === false);
+
+                if (data.booking_expiry) {
+                    const bExp = data.booking_expiry.toDate ? data.booking_expiry.toDate() : new Date(data.booking_expiry);
+                    if (_now > bExp) isBookingDisabled = true;
+                }
+                
+                window.toggles.booking = !isBookingDisabled;
+                window.isBookingDisabledGlobal = isBookingDisabled;
+
+                const _shardBtn   = document.getElementById('bookingShardBtn');
+                const _bookingBox = document.getElementById('bookingSectionContainer');
+                
+                if (isBookingDisabled) {
+                    if (_shardBtn)   _shardBtn.style.setProperty('display', 'none', 'important');
+                    if (_bookingBox) _bookingBox.style.setProperty('display', 'none', 'important');
+                } else {
+                    if (_shardBtn)   _shardBtn.style.setProperty('display', 'flex', 'important');
+                    if (_bookingBox) _bookingBox.style.setProperty('display', 'block', 'important');
+                }
+
+                clinicSettings.priceNew    = Number(data?.prices?.new      ?? data?.priceNew)    || 0;
+                clinicSettings.priceFollow = Number(data?.prices?.followup  ?? data?.priceFollow) || 0;
+                clinicSettings.priceVip    = Number(data?.prices?.vip       ?? data?.priceVip)    || 0;
+                const adminCap = parseInt(data?.capacityPerHour ?? data?.capacity);
+                clinicSettings.capacity    = isNaN(adminCap) ? 50 : adminCap;
+
+                clinicSettings.enableBranches   = data.enableBranches    || false;
+                clinicSettings.branches         = data.branches          || [];
+                clinicSettings.advancedSchedules = data.advancedSchedules || null;
+                clinicSettings.workFrom  = data?.workFrom  || "09:00";
+                clinicSettings.workTo    = data?.workTo    || "17:00";
+                clinicSettings.offDays   = data?.offDays   || [];
+                clinicSettings.holidays  = data?.officialHolidays || data?.holidays || [];
+                var _cap = parseInt(data?.capacityPerHour ?? data?.capacity);
+                clinicSettings.capacity  = isNaN(_cap) ? 10 : _cap;
+
+                document.getElementById('optNew').setAttribute('data-price',    clinicSettings.priceNew);
+                document.getElementById('optFollow').setAttribute('data-price', clinicSettings.priceFollow);
+                document.getElementById('optVip').setAttribute('data-price',    clinicSettings.priceVip);
+
+                if (clinicSettings.enableBranches && clinicSettings.branches.length > 0) {
+                    document.getElementById('branchSelectionArea').style.display = 'block';
+                    const bSel = document.getElementById('branchSelect');
+                    bSel.innerHTML = '';
+                    const defOpt = document.createElement('option');
+                    defOpt.value = ''; defOpt.selected = true; defOpt.disabled = true;
+                    defOpt.textContent = 'اختر العيادة...';
+                    bSel.appendChild(defOpt);
+                    clinicSettings.branches.forEach((b, i) => {
+                        const opt = document.createElement('option');
+                        opt.value = String(i);
+                        opt.textContent = String(b.name || '');
+                        bSel.appendChild(opt);
+                    });
+                    document.getElementById('branchSelectTrigger').innerText = 'اختر العيادة...';
+                } else {
+                    document.getElementById('branchSelectionArea').style.display = 'none';
+                }
+
+                window.handleTypeChange();
+
+                // Multi-Branch Map
+                const mapSection = document.getElementById('multiBranchMapSection');
+                const mapSelect  = document.getElementById('mapBranchSelect');
+                if (data.mapBranches && data.mapBranches.length > 0) {
+                    window.toggles.map = true;
+                    mapSection.style.display = 'block';
+                    mapSelect.innerHTML = '';
+                    data.mapBranches.forEach((mb) => {
+                        if (mb.name && mb.link) {
+                            const opt = document.createElement('option');
+                            // Fix #12: validate map link URL
+                            try {
+                                const u = new URL(mb.link);
+                                if (!['http:','https:'].includes(u.protocol)) return;
+                                opt.value = mb.link;
+                            } catch(_) { return; }
+                            opt.textContent = String(mb.name);
+                            mapSelect.appendChild(opt);
+                        }
+                    });
+                    if (mapSelect.options.length > 0) window.updateMapIframe();
+                    else mapSection.style.display = 'none';
+                } else {
+                    window.toggles.map = false;
+                    mapSection.style.display = 'none';
+                }
+
+                // ── Top Map Button ──
+                const _mapBtn = document.getElementById('topMapLink');
+                const _mapUrl = data.googleMaps || data.mapLink || data.location || '';
+                if (_mapBtn && _mapUrl) {
+                    _mapBtn.href = _mapUrl;
+                    _mapBtn.style.pointerEvents = 'auto';
+                    _mapBtn.style.opacity = '1';
+                } else if (_mapBtn) {
+                    _mapBtn.style.pointerEvents = 'none';
+                    _mapBtn.style.opacity = '0.35';
+                }
+
+                // ── Social Links ──
+                const platforms = [
+                    { id:'waLink',         dbKey:'whatsapp'     },
+                    { id:'tiktokLink',     dbKey:'tiktok'       },
+                    { id:'fbLink',         dbKey:'facebook'     },
+                    { id:'instaLink',      dbKey:'insta'        },
+                    { id:'ytLink',         dbKey:'youtube'      },
+                    { id:'snapLink',       dbKey:'snapchat'     },
+                    { id:'xLink',          dbKey:'x'            },
+                    { id:'linkedinLink',   dbKey:'linkedin'     },
+                    { id:'truecallerLink', dbKey:'truecaller'   },
+                    { id:'threadsLink',    dbKey:'threads'      },
+                    { id:'mapsSocialLink', dbKey:'googleMaps'   },
+                    { id:'reviewsLink',    dbKey:'googleReviews'}
+                ];
+                // Fix #12: Validate external URLs — only allow safe protocols
+                function _sanitizeUrl(url) {
+                    if (!url) return '#';
+                    try {
+                        const u = new URL(url);
+                        if (/^(javascript:|data:|vbscript:)/i.test(u.protocol)) return '#';
+                        if (!['http:', 'https:', 'tel:', 'mailto:'].includes(u.protocol)) return '#';
+                        return url;
+                    } catch (_) {
+                        // Relative or non-parseable — allow tel: shorthand only
+                        if (/^tel:/i.test(url)) return url;
+                        return '#';
+                    }
+                }
+
+                let hasSocial = false;
+                platforms.forEach(p => {
+                    const el = document.getElementById(p.id);
+                    if (!el) return;
+                    const val = data[p.dbKey];
+                    if (val && val.toString().trim() !== '') {
+                        el.href = _sanitizeUrl(val.toString().trim());
+                        el.style.display = 'flex';
+                        hasSocial = true;
+                    } else {
+                        el.style.display = 'none';
+                    }
+                });
+                document.getElementById('socialSection').style.display = hasSocial ? 'block' : 'none';
+
+                // ── Payment Section ──
+                let showPay = false;
+                if (data.instapay && data.instapay.toString().trim() !== '') {
+                    const ipVal = data.instapay.toString().trim();
+                    const isLink = /^https?:\/\//i.test(ipVal);
+                    const ic = document.getElementById('instapayCard');
+                    ic.style.display = 'flex';
+                    ic.href = '#';
+                    ic.onclick = (e) => {
+                        e.preventDefault();
+                        if (isLink) {
+                            window.open(ipVal, '_blank');
+                        } else {
+                            try {
+                                navigator.clipboard.writeText(ipVal);
+                            } catch(_) {
+                                const ta = document.createElement('textarea');
+                                ta.value = ipVal;
+                                ta.style.cssText = 'position:fixed;opacity:0;';
+                                document.body.appendChild(ta);
+                                ta.focus(); ta.select();
+                                try { document.execCommand('copy'); } catch(e2) {}
+                                document.body.removeChild(ta);
+                            }
+                            window.showGlassAlert("تم النسخ", "تم نسخ عنوان إنستاباي بنجاح.");
+                        }
+                    };
+                    showPay = true;
+                } else {
+                    document.getElementById('instapayCard').style.display = 'none';
+                }
+                if (data.showWallet || data.walletNumber) {
+                    const wc = document.getElementById('walletCard');
+                    wc.style.display = 'flex';
+                    document.getElementById('walletName').innerText = data.walletName || 'محافظ إلكترونية';
+                    wc.onclick = () => {
+                        navigator.clipboard.writeText(data.walletNumber);
+                        window.showGlassAlert("تم النسخ", `تم نسخ رقم ${data.walletName || 'المحفظة'} بنجاح.`);
+                    };
+                    showPay = true;
+                } else {
+                    document.getElementById('walletCard').style.display = 'none';
+                }
+                document.getElementById('paymentSection').style.display = showPay ? 'block' : 'none';
+
+                document.getElementById('userCounter').innerText  = data.customersCount || 0;
+                document.getElementById('foundedYear').innerText  = window.toArabicDigits(data.foundedYear || 2026);
+                document.getElementById('ratingScore').innerText  = data.rating || 'A+';
+
+                const pg = document.getElementById('phoneNumbersGroup');
+                pg.innerHTML = '';
+                ['phone1','phone2','phone3','phone4'].forEach(function(k){
+                    var n=(data[k]||'').toString().trim().replace(/[^0-9+\-\s]/g,'');
+                    if(!n) return;
+                    var b=document.createElement('button');
+                    b.className='phone-number-btn';
+                    b.textContent=n; // English digits — do NOT convert to Arabic
+                    b.style.fontFamily='var(--font-en)';
+                    b.style.direction='ltr';
+                    b.addEventListener('click',function(){window.makeCall(n);});
+                    pg.appendChild(b);
+                });
+
+                _loader.style.display = 'none';
+
+            }, (err) => {
+                // Firestore error — show dimmed/locked page with red banner
+                window._locked = true;
+                document.getElementById('suspendedBanner').style.display = 'block';
+                document.getElementById('fullApp').classList.add('app-suspended');
+                document.getElementById('fullApp').style.display = 'block';
+                document.getElementById('skeletonView').style.display = 'none';
+                document.getElementById('realContentView').style.display = 'block';
+                _loader.style.display = 'none';
+            });
+        }
+
+        window.switchTab = (tab) => {
+            document.getElementById('tabNew').classList.toggle('active', tab === 'new');
+            document.getElementById('tabMy').classList.toggle('active', tab === 'my');
+            document.getElementById('newBookingArea').style.display  = tab === 'new' ? 'block' : 'none';
+            document.getElementById('myBookingsArea').style.display  = tab === 'my'  ? 'block' : 'none';
+        };
+
+        window.handleBranchChange = () => {
+            document.getElementById('bookingDate').value               = '';
+            document.getElementById('bookingDateTrigger').innerText    = 'اختر التاريخ...';
+            document.getElementById('timeSelectionArea').style.display = 'none';
+        };
+
+        window.handleTypeChange = () => {
+            const ts    = document.getElementById('bookingType');
+            const type  = ts.value;
+            const price = Number(ts.options[ts.selectedIndex]?.getAttribute('data-price')) || 0;
+            const card  = document.getElementById('mainBookingCard');
+
+            document.getElementById('priceDisplay').innerText = window.toArabicDigits(price) + ' ج.م';
+            document.getElementById('bookingTypeTrigger').innerText = type;
+
+            if (type === 'VIP') {
+                card.classList.add('vip-active');
+                document.getElementById('timeSelectionArea').style.display = 'none';
+                document.getElementById('vipMessage').style.display        = 'block';
+                document.getElementById('confirmBtn').style.background     = 'var(--vip-gold)';
+                document.getElementById('confirmBtn').style.color          = 'var(--dark-navy)';
+            } else {
+                card.classList.remove('vip-active');
+                document.getElementById('vipMessage').style.display        = 'none';
+                document.getElementById('confirmBtn').style.background     = 'var(--accent)';
+                document.getElementById('confirmBtn').style.color          = '#ffffff';
+                if (document.getElementById('bookingDate').value) window.checkAvailability();
+            }
+        };
+
+        window.formatTo12Hour = (t) => {
+            let [h, m] = t.split(':'); h = parseInt(h);
+            const ap = h >= 12 ? 'مساءً' : 'صباحاً';
+            h = h % 12 || 12;
+            return `${window.toArabicDigits(h)}:${window.toArabicDigits(m || '00')} ${ap}`;
+        };
+
+        window.checkAvailability = async () => {
+            if (!window.toggles.booking) return;
+            const type = document.getElementById('bookingType').value;
+            if (type === 'VIP') return; 
+
+            let selectedBranch   = "";
+            let activeScheduleObj = clinicSettings.advancedSchedules;
+
+            if (clinicSettings.enableBranches && clinicSettings.branches.length > 0) {
+                const bi = document.getElementById('branchSelect').value;
+                if (!bi) {
+                    document.getElementById('bookingDate').value            = '';
+                    document.getElementById('bookingDateTrigger').innerText = 'اختر التاريخ...';
+                    return window.showGlassAlert("تنبيه", "يرجى اختيار العيادة أولاً.");
+                }
+                const branch = clinicSettings.branches[bi];
+                selectedBranch = branch.name;
+                if (branch.schedules) activeScheduleObj = branch.schedules;
+            }
+
+            const dateVal = document.getElementById('bookingDate').value;
+            if (!dateVal) return;
+            const dow = new Date(dateVal + 'T00:00:00').getDay();
+
+            const isHoliday = clinicSettings.holidays.includes(dateVal);
+            const isOffDay  = clinicSettings.offDays.includes(dow);
+            if (isHoliday || isOffDay) {
+                document.getElementById('bookingDate').value            = '';
+                document.getElementById('bookingDateTrigger').innerText = 'اختر التاريخ...';
+                document.getElementById('timeSelectionArea').style.display = 'none';
+                return window.showGlassAlert("العيادة مغلقة", "عذراً، العيادة مغلقة في هذا اليوم. يرجى اختيار يوم آخر.");
+            }
+
+            let dayStart, dayEnd, cap = clinicSettings.capacity;
+            var parseH = function(v){ if(!v&&v!==0) return NaN; if(typeof v==='number') return v; var s=String(v).trim(); return parseInt(s.split(':')[0]); };
+
+            if (activeScheduleObj && activeScheduleObj[dow] !== undefined) {
+                const dc = activeScheduleObj[dow];
+                if (!dc || dc.isOff === true) {
+                    document.getElementById('bookingDate').value            = '';
+                    document.getElementById('bookingDateTrigger').innerText = 'اختر التاريخ...';
+                    document.getElementById('timeSelectionArea').style.display = 'none';
+                    return window.showGlassAlert("عطلة", "العيادة لا تعمل في هذا اليوم.");
+                }
+                dayStart = parseH(dc.from); dayEnd = parseH(dc.to);
+                if (dc.capacity) cap = parseInt(dc.capacity) || cap;
+            } else {
+                dayStart = parseH(clinicSettings.workFrom);
+                dayEnd   = parseH(clinicSettings.workTo);
+            }
+            if (isNaN(dayStart)||isNaN(dayEnd)||dayStart>=dayEnd) {
+                document.getElementById('timeSelectionArea').style.display='none';
+                return window.showGlassAlert("تنبيه","لم يتم تحديد أوقات عمل لهذا اليوم.");
+            }
+
+            document.getElementById('timeSelectionArea').style.display  = 'block';
+            const timeTriggerEl = document.getElementById('timeSelectTrigger');
+            timeTriggerEl.innerText = 'جاري الفحص...';
+            // Disable the trigger while loading to prevent opening empty select
+            timeTriggerEl.parentElement.style.pointerEvents = 'none';
+            timeTriggerEl.parentElement.style.opacity = '0.6';
+
+            const ts = document.getElementById('timeSelect');
+            ts.innerHTML = '';
+            const defaultOpt = document.createElement('option');
+            defaultOpt.value = ''; defaultOpt.selected = true; defaultOpt.disabled = true;
+            defaultOpt.textContent = 'اختر الساعة...';
+            ts.appendChild(defaultOpt);
+            let hasSlots = false;
+            let booked = {};
+
+            try {
+                const ref     = collection(db, "users", targetUserId, "bookings");
+                let   filters = [where("date", "==", dateVal)];
+                if (selectedBranch) filters.push(where("branchName", "==", selectedBranch));
+                const snap = await getDocs(query(ref, ...filters));
+                snap.forEach(d => {
+                    const b = d.data();
+                    if (b.type !== 'VIP' && b.timeValue) booked[b.timeValue] = (booked[b.timeValue] || 0) + 1;
+                });
+            } catch(fetchErr) {
+                window._logError('checkAvailability', fetchErr);
+                booked = {};
+            }
+
+            for (let h = dayStart; h < dayEnd; h++) {
+                const hs  = h.toString().padStart(2, '0') + ':00';
+                const rem = cap - (booked[hs] || 0);
+                const hNum = h % 12 || 12;
+                const ampm = h < 12 ? 'ص' : 'م';
+                const lbl  = `${hNum}:00 ${ampm}`;
+                const opt  = document.createElement('option');
+                if (rem > 0) {
+                    hasSlots = true;
+                    opt.value = hs;
+                    opt.textContent = `${lbl} (متبقي ${window.toArabicDigits(rem)})`;
+                } else {
+                    opt.value = '';
+                    opt.disabled = true;
+                    opt.textContent = `${lbl} (مكتمل)`;
+                }
+                ts.appendChild(opt);
+            }
+
+            timeTriggerEl.innerText = hasSlots ? 'اختر الساعة...' : 'اكتملت الحجوزات';
+            if (!hasSlots) {
+                ts.innerHTML = '';
+                const noOpt = document.createElement('option');
+                noOpt.value = ''; noOpt.selected = true; noOpt.disabled = true;
+                noOpt.textContent = 'اكتملت حجوزات هذا اليوم';
+                ts.appendChild(noOpt);
+            }
+            // Re-enable the trigger
+            timeTriggerEl.parentElement.style.pointerEvents = '';
+            timeTriggerEl.parentElement.style.opacity = '';
+        };
+
+        // Fix #2: Robust Rate Limiting — timestamp-based, survives page navigations within session
+        const _RL = {
+            _key: 'fl_booking_attempts',
+            _max: 3,
+            _windowMs: 2 * 60 * 1000, // 2 minutes
+            check() {
+                const now = Date.now();
+                const attempts = JSON.parse(sessionStorage.getItem(this._key) || '[]')
+                    .filter(t => now - t < this._windowMs);
+                if (attempts.length >= this._max) {
+                    const wait = Math.ceil((this._windowMs - (now - attempts[0])) / 1000);
+                    return { allowed: false, waitSeconds: wait };
+                }
+                attempts.push(now);
+                sessionStorage.setItem(this._key, JSON.stringify(attempts));
+                return { allowed: true };
+            }
+        };
+
+        window.submitBooking = async () => {
+            // Fix #2: Check rate limit before anything else
+            const rl = _RL.check();
+            if (!rl.allowed) {
+                return window.showGlassAlert('تنبيه', `الرجاء الانتظار ${rl.waitSeconds} ثانية قبل المحاولة مجدداً.`);
+            }
+            if (!window.toggles.booking) return;
+            const nameVal  = (document.getElementById('visitorName').value  || '').trim();
+            const phoneVal = (document.getElementById('visitorPhone').value || '').trim();
+
+            if (!nameVal || !phoneVal) return window.showGlassAlert("تنبيه", "يرجى إدخال الاسم ورقم الهاتف.");
+            if(/[0-9٠-٩]/.test(nameVal)) return window.showGlassAlert("تنبيه","الاسم لا يجب أن يحتوي على أرقام.");
+            if(nameVal.length<2||nameVal.length>60) return window.showGlassAlert("تنبيه","يرجى إدخال اسم صحيح.");
+            var _ph=phoneVal.replace(/\s/g,""); if(!/^01[0125][0-9]{8}$/.test(_ph)) return window.showGlassAlert("تنبيه","رقم هاتف مصري غير صحيح.");
+            if (!/^[\u0600-\u06FF\sA-Za-z]{2,50}$/.test(nameVal)) return window.showGlassAlert("تنبيه", "يرجى إدخال اسم صحيح.");
+            if (!/^01[0125][0-9]{8}$/.test(phoneVal)) return window.showGlassAlert("تنبيه", "يرجى إدخال رقم هاتف مصري صحيح.");
+
+            const date  = document.getElementById('bookingDate').value;
+            const ts    = document.getElementById('bookingType');
+            const type  = ts.value;
+            const price = Number(ts.options[ts.selectedIndex].getAttribute('data-price')) || 0;
+
+            let selectedBranch = "";
+            if (clinicSettings.enableBranches && clinicSettings.branches.length > 0) {
+                const bi = document.getElementById('branchSelect').value;
+                if (!bi) return window.showGlassAlert("تنبيه", "برجاء اختيار العيادة (الفرع).");
+                selectedBranch = clinicSettings.branches[bi].name;
+            }
+            if (!date) return window.showGlassAlert("تنبيه", "برجاء اختيار التاريخ.");
+
+            let timeValue = '', timeLabel = '';
+            if (type !== 'VIP') {
+                const tsel = document.getElementById('timeSelect');
+                timeValue  = tsel.value;
+                if (!timeValue) return window.showGlassAlert("تنبيه", "برجاء اختيار الساعة.");
+                timeLabel  = tsel.options[tsel.selectedIndex].text.split('(')[0].trim();
+            } else {
+                timeLabel = 'بدون انتظار (VIP Priority Access)';
+            }
+
+            // Fix #24: Disable the form entirely during submission
+            const confirmBtn = document.getElementById('confirmBtn');
+            const spinner    = document.getElementById('bookingSpinner');
+            if (confirmBtn) confirmBtn.disabled = true;
+            spinner.style.display = 'flex';
+
+            try {
+                // Fix #4: Require anonymous auth before writing
+                if (!_currentAnonymousUser) {
+                    try { await signInAnonymously(auth); } catch(_) {}
+                }
+                const ref  = collection(db, "users", targetUserId, "bookings");
+                // Fix #3: Server-side validation is enforced via Firestore Security Rules (see comment above)
+                const bookingData = {
+                    userName:     nameVal.substring(0, 60),
+                    userPhone:    phoneVal,
+                    date,
+                    type,
+                    price,
+                    timeValue,
+                    timeLabel,
+                    // ✅ serverTimestamp() — مطلوب عشان Firestore Rule تقبله كـ timestamp حقيقي
+                    createdAt:    serverTimestamp(),
+                    // ✅ createdByUid — بيربط الحجز بالـ anonymous uid عشان الزائر يقدر يحذف حجزه بس
+                    createdByUid: _currentAnonymousUser?.uid || ''
+                };
+                if (selectedBranch) bookingData.branchName = selectedBranch;
+                await addDoc(ref, bookingData);
+
+                spinner.style.display = 'none';
+                if (confirmBtn) confirmBtn.disabled = false;
+                window.showGlassAlert("تم بنجاح", "تم تسجيل حجزك بنجاح. سنتواصل معك قريباً.");
+
+                document.getElementById('bookingDate').value            = '';
+                document.getElementById('bookingDateTrigger').innerText = 'اختر التاريخ...';
+                document.getElementById('timeSelectionArea').style.display = 'none';
+                document.getElementById('visitorName').value            = '';
+                document.getElementById('visitorPhone').value           = '';
+
+            } catch(e) {
+                spinner.style.display = 'none';
+                if (confirmBtn) confirmBtn.disabled = false;
+                // Fix #8: Log error centrally
+                window._logError('submitBooking', e);
+                window.showGlassAlert("خطأ", "حدث خطأ أثناء الحجز. يرجى المحاولة مرة أخرى.");
+            }
+        };
+
+        window.lookupBookings = async () => {
+            if (!window.toggles.booking) return;
+            const phone = (document.getElementById('lookupPhone').value || '').trim();
+            if (!/^01[0125][0-9]{8}$/.test(phone)) return window.showGlassAlert("تنبيه", "يرجى إدخال رقم هاتف مصري صحيح.");
+
+            const list = document.getElementById('myAppointmentsList');
+            list.innerHTML = '';
+            const loadP = document.createElement('p');
+            loadP.style.cssText = 'text-align:center; color:var(--text-muted); padding:20px;';
+            loadP.textContent = 'جاري التحميل...';
+            list.appendChild(loadP);
+
+            try {
+                const ref  = collection(db, "users", targetUserId, "bookings");
+                const snap = await getDocs(query(ref, where("userPhone", "==", phone)));
+
+                list.innerHTML = '';
+                if (snap.empty) {
+                    const p = document.createElement('p');
+                    p.style.cssText = 'text-align:center; color:var(--text-muted); margin-top:20px;';
+                    p.textContent = 'لا توجد حجوزات مسجلة.';
+                    list.appendChild(p);
+                    return;
+                }
+
+                // Fix #10/#6: Build cards with DOM API — no innerHTML interpolation from DB data
+                snap.forEach(ds => {
+                    const b = ds.data(), bId = ds.id, isVip = b.type === 'VIP';
+                    const card = document.createElement('div');
+                    card.className = 'appointment-card';
+                    card.style.cssText = isVip
+                        ? 'border:1.5px solid var(--vip-gold); background:linear-gradient(135deg,rgba(212,175,55,0.06),rgba(212,175,55,0.12));'
+                        : 'border:1px solid var(--glass-border);';
+
+                    if (isVip) {
+                        const badge = document.createElement('span');
+                        badge.style.cssText = 'display:inline-block; background:var(--vip-grad); color:var(--dark-navy); padding:2px 12px; border-radius:20px; font-size:11px; font-weight:700; margin-bottom:6px;';
+                        badge.textContent = 'VIP';
+                        card.appendChild(badge);
+                        card.appendChild(document.createElement('br'));
+                    }
+
+                    const mkP = (label, val, size) => {
+                        const p = document.createElement('p');
+                        p.style.cssText = `margin:4px 0; font-size:${size||15}px; color:var(--text-main);`;
+                        const strong = document.createElement('strong');
+                        strong.textContent = String(val || '');
+                        p.textContent = label + ' ';
+                        p.appendChild(strong);
+                        return p;
+                    };
+                    card.appendChild(mkP('التاريخ:', window.toArabicDigits(b.date || '')));
+                    card.appendChild(mkP('الساعة:', b.timeLabel || ''));
+                    if (b.branchName) {
+                        const bp = mkP('الفرع:', b.branchName, 13);
+                        bp.style.color = 'var(--text-secondary)';
+                        card.appendChild(bp);
+                    }
+                    const tp = mkP('النوع:', b.type || '', 13);
+                    tp.style.color = 'var(--text-secondary)';
+                    card.appendChild(tp);
+
+                    const btn = document.createElement('button');
+                    btn.className = 'cancel-btn';
+                    btn.textContent = 'إلغاء الموعد';
+                    btn.addEventListener('click', () => window.cancelBooking(bId));
+                    card.appendChild(btn);
+                    list.appendChild(card);
+                });
+            } catch(e) {
+                window._logError('lookupBookings', e);
+                list.innerHTML = '';
+                const errP = document.createElement('p');
+                errP.style.cssText = 'text-align:center; color:var(--danger); margin-top:20px;';
+                errP.textContent = 'حدث خطأ أثناء جلب الحجوزات.';
+                list.appendChild(errP);
+            }
+        };
+
+        window.cancelBooking = async (docId) => {
+            if (!window.toggles.booking) return;
+            // Fix #25: Confirm before cancelling
+            if (!window.confirm('هل أنت متأكد من إلغاء هذا الموعد؟')) return;
+            // ✅ تأكد إن الـ anonymous auth شغال — لازم يكون موجود عشان الـ Firestore Rule تقبل الحذف
+            if (!_currentAnonymousUser) {
+                try { await signInAnonymously(auth); } catch(_) {}
+            }
+            if (!_currentAnonymousUser) {
+                return window.showGlassAlert("خطأ", "يرجى تحديث الصفحة والمحاولة مرة أخرى.");
+            }
+            try {
+                await deleteDoc(doc(db, "users", targetUserId, "bookings", docId));
+                window.showGlassAlert("تم الإلغاء", "تم إلغاء الموعد بنجاح.");
+                window.lookupBookings();
+            } catch(e) {
+                window._logError('cancelBooking', e);
+                window.showGlassAlert("خطأ", "لم نتمكن من إلغاء الحجز. يرجى المحاولة مرة أخرى.");
+            }
+        };
+
+        // Fix #26: Session Timeout — auto-lock page after 30 minutes of inactivity
+        (function() {
+            const TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes
+            let _idleTimer;
+
+            function _lockSession() {
+                // Mask sensitive displayed data without full reload
+                window._locked = true;
+                document.getElementById('suspendedBanner').style.display = 'block';
+                document.getElementById('fullApp').classList.add('app-suspended');
+                // Close any open modals
+                ['bookingModal', 'glassCalendarOverlay', 'glassAlertOverlay',
+                 'phoneOverlay', 'glassSelectOverlay'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) { el.style.display = 'none'; el.classList.remove('active'); }
+                });
+                window.showGlassAlert("انتهت الجلسة", "انتهت مهلة الجلسة. يرجى تحديث الصفحة للمتابعة.");
+            }
+
+            function _resetTimer() {
+                clearTimeout(_idleTimer);
+                if (!window._locked) _idleTimer = setTimeout(_lockSession, TIMEOUT_MS);
+            }
+
+            ['mousemove','keydown','click','scroll','touchstart'].forEach(ev =>
+                document.addEventListener(ev, _resetTimer, { passive: true })
+            );
+            _resetTimer();
+        })();
+
+        window.renderAppointments = window.lookupBookings;
+    </script>
+
+    <!-- Fix #3: Client-side Input Validation (server-side enforced via Firestore Security Rules) -->
+    <script>
+        (function(){
+            var nEl   = document.getElementById('visitorName');
+            var nHint = document.getElementById('nameHint');
+            if (nEl) {
+                nEl.addEventListener('input', function(){
+                    // Allow ONLY: Arabic letters, English letters, spaces
+                    var orig  = this.value;
+                    var clean = orig.replace(/[^\u0600-\u06FF\u0750-\u077F\u08A0-\u08FFa-zA-Z\s]/g, '');
+                    // Also collapse multiple spaces
+                    clean = clean.replace(/  +/g, ' ');
+                    if (clean !== orig) {
+                        var pos = this.selectionStart - (orig.length - clean.length);
+                        this.value = clean;
+                        this.setSelectionRange(Math.max(0,pos), Math.max(0,pos));
+                        this.style.borderColor = '#ff453a';
+                        if (nHint) nHint.style.display = 'block';
+                        clearTimeout(this._nt);
+                        this._nt = setTimeout(() => {
+                            nEl.style.borderColor = '';
+                            if (nHint) nHint.style.display = 'none';
+                        }, 1800);
+                    } else {
+                        this.style.borderColor = clean.trim().length >= 2 ? '#30d158' : '';
+                        if (nHint) nHint.style.display = 'none';
+                    }
+                });
+            }
+
+            // Auto-shrink name input font
+            if (nEl) {
+                nEl.addEventListener('input', function() {
+                    // Reset then shrink
+                    this.style.fontSize = '16px';
+                    var maxW = this.offsetWidth - 32;
+                    // Measure text width using canvas
+                    var canvas = window._nameCanvas || (window._nameCanvas = document.createElement('canvas'));
+                    var ctx = canvas.getContext('2d');
+                    var fs = 16;
+                    ctx.font = fs + 'px Amiri, Arial';
+                    while (ctx.measureText(this.value).width > maxW && fs > 9) {
+                        fs -= 0.5;
+                        ctx.font = fs + 'px Amiri, Arial';
+                    }
+                    this.style.fontSize = fs + 'px';
+                }, false);
+            }
+
+            var pEl   = document.getElementById('visitorPhone');
+            var pHint = document.getElementById('phoneHint');
+            if (pEl) {
+                pEl.addEventListener('input', function(){
+                    // Strip everything except digits
+                    var orig = this.value;
+                    var digits = orig.replace(/[^0-9]/g, '');
+
+                    // Auto-fix: if user typed a digit that makes start wrong, trim it
+                    // Must start with 0 — if first digit is not 0, remove it
+                    while (digits.length > 0 && digits[0] !== '0') {
+                        digits = digits.slice(1);
+                    }
+                    // Max 11 digits
+                    digits = digits.slice(0, 11);
+
+                    if (digits !== orig) {
+                        this.value = digits;
+                    }
+
+                    var v = digits;
+                    if (!pHint) return;
+
+                    if (v.length >= 3 && !/^01[0125]/.test(v)) {
+                        this.style.borderColor = '#ff453a';
+                        pHint.textContent = 'يجب أن يبدأ بـ 010 أو 011 أو 012 أو 015';
+                        pHint.style.display = 'block';
+                    } else if (v.length === 11) {
+                        if (/^01[0125][0-9]{8}$/.test(v)) {
+                            this.style.borderColor = '#30d158';
+                            pHint.style.display = 'none';
+                        } else {
+                            this.style.borderColor = '#ff453a';
+                            pHint.textContent = 'رقم غير صحيح';
+                            pHint.style.display = 'block';
+                        }
+                    } else {
+                        this.style.borderColor = '';
+                        if (v.length < 3) pHint.style.display = 'none';
+                    }
+                });
+            }
+        })();
+    </script>
+</body>
+</html>
