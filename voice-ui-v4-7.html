@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Voice UI</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #080608;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+  canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .btn-close {
+    position: fixed;
+    top: 28px;
+    right: 24px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    opacity: 0.45;
+    line-height: 0;
+    z-index: 30;
+    transition: opacity 0.2s;
+  }
+  .btn-close:hover { opacity: 1; }
+
+  /* زرار تكلم */
+  .btn-talk {
+    position: fixed;
+    bottom: 52px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 30;
+    background: rgba(180,0,0,0.15);
+    border: 1.5px solid rgba(255,40,40,0.4);
+    border-radius: 50px;
+    color: rgba(255,255,255,0.85);
+    font-size: 16px;
+    font-family: system-ui, sans-serif;
+    padding: 14px 40px;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: all 0.2s;
+    letter-spacing: 1px;
+  }
+  .btn-talk:hover {
+    background: rgba(200,0,0,0.3);
+    border-color: rgba(255,60,60,0.7);
+  }
+  .btn-talk.listening {
+    background: rgba(220,0,0,0.3);
+    border-color: rgba(255,60,60,0.9);
+    animation: pulse-btn 1s ease-in-out infinite;
+  }
+  @keyframes pulse-btn {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255,30,30,0.4); }
+    50%       { box-shadow: 0 0 0 12px rgba(255,30,30,0); }
+  }
+
+  /* النص اللي بيتكتب */
+  .transcript {
+    position: fixed;
+    bottom: 130px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 85%;
+    max-width: 400px;
+    text-align: center;
+    color: rgba(255,255,255,0.75);
+    font-size: 15px;
+    font-family: system-ui, sans-serif;
+    line-height: 1.6;
+    z-index: 30;
+    min-height: 50px;
+    text-shadow: 0 0 20px rgba(255,30,30,0.5);
+  }
+</style>
+</head>
+<body>
+
+<canvas id="c"></canvas>
+
+<button class="btn-close" id="btnClose">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+    <path d="M18 6L6 18M6 6l12 12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+  </svg>
+</button>
+
+<div class="transcript" id="transcript"></div>
+
+<button class="btn-talk" id="btnTalk">🎙 تكلم</button>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx    = canvas.getContext('2d');
+let W, H;
+
+function resize() {
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+function noise(x, y, t) {
+  const v = Math.sin(x * 1.7 + t) * Math.cos(y * 1.3 - t * 0.8)
+          + Math.sin(x * 0.9 - t * 1.2) * Math.cos(y * 2.1 + t * 0.5)
+          + Math.sin((x + y) * 1.1 + t * 0.7) * 0.5;
+  return v / 2.5;
+}
+
+let time = 0;
+let speak = 0, targetSpeak = 0;
+const LAYERS = 6;
+
+function draw() {
+  ctx.fillStyle = 'rgba(8,6,8,0.18)';
+  ctx.fillRect(0, 0, W, H);
+
+  speak += (targetSpeak - speak) * 0.06;
+  time  += 0.007 + speak * 0.012;
+
+  const cx = W / 2;
+  const cy = H / 2;
+
+  for (let layer = 0; layer < LAYERS; layer++) {
+    const t      = layer / LAYERS;
+    const offset = layer * 1.1;
+    const pts    = 180;
+    const baseR  = Math.min(W, H) * (0.22 + t * 0.38);
+    const speakR = baseR * (1 + speak * (0.3 - t * 0.15));
+    const alpha  = (0.55 - t * 0.38) * (1 + speak * 0.6);
+    const red    = Math.round(255 - t * 60);
+    const green  = Math.round(t * 8);
+
+    ctx.beginPath();
+    for (let i = 0; i <= pts; i++) {
+      const angle = (i / pts) * Math.PI * 2;
+      const nx = Math.cos(angle) * 1.2 + offset;
+      const ny = Math.sin(angle) * 1.2 + offset;
+      const n  = noise(nx, ny, time + offset * 0.4);
+      const speakWave = speak * Math.sin(angle * 7 + time * 4 + offset) * 0.14 * (1 - t * 0.5);
+      const r = speakR * (1 + n * (0.18 + speak * 0.12) + speakWave);
+      const x = cx + Math.cos(angle) * r;
+      const y = cy + Math.sin(angle) * r;
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+
+    const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, speakR * 1.3);
+    grad.addColorStop(0,   `rgba(${red},${green},${green},${alpha * 1.4})`);
+    grad.addColorStop(0.5, `rgba(${red},${green},${green},${alpha * 0.7})`);
+    grad.addColorStop(1,   `rgba(${Math.round(red*0.4)},0,0,0)`);
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    ctx.strokeStyle = `rgba(255,${Math.round(30 - t*28)},${Math.round(20 - t*18)},${0.25 - t * 0.18})`;
+    ctx.lineWidth   = 1.2 - t * 0.8;
+    ctx.stroke();
+  }
+
+  const bgG = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, Math.max(W, H) * 0.75);
+  bgG.addColorStop(0,   `rgba(160,0,0,${0.04 + speak * 0.08})`);
+  bgG.addColorStop(0.5, `rgba(80,0,0,${0.02  + speak * 0.04})`);
+  bgG.addColorStop(1,   'rgba(0,0,0,0)');
+  ctx.fillStyle = bgG;
+  ctx.fillRect(0, 0, W, H);
+
+  requestAnimationFrame(draw);
+}
+draw();
+
+// ── Web Speech API ──
+const btn        = document.getElementById('btnTalk');
+const transcriptEl = document.getElementById('transcript');
+let recognition  = null;
+let listening    = false;
+let synthesis    = window.speechSynthesis;
+
+// اختار أحسن صوت عربي أو إنجليزي
+function getBestVoice(lang) {
+  const voices = synthesis.getVoices();
+  return voices.find(v => v.lang.startsWith(lang) && v.localService)
+      || voices.find(v => v.lang.startsWith(lang))
+      || voices[0];
+}
+
+function speak_text(text) {
+  synthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.voice = getBestVoice('ar') || getBestVoice('en');
+  utt.lang  = 'ar-EG';
+  utt.rate  = 1.0;
+  utt.pitch = 1.0;
+
+  utt.onstart = () => { targetSpeak = 0.8; };
+  utt.onend   = () => { targetSpeak = 0; };
+
+  synthesis.speak(utt);
+}
+
+// إجابات بسيطة
+function getReply(text) {
+  const t = text.toLowerCase();
+  if (t.includes('مرحب') || t.includes('أهلا') || t.includes('هاي') || t.includes('السلام'))
+    return 'أهلاً وسهلاً! كيف أقدر أساعدك؟';
+  if (t.includes('اسمك') || t.includes('مين انت') || t.includes('من أنت'))
+    return 'أنا مساعدك الذكي، هنا عشان أساعدك!';
+  if (t.includes('كيف حالك') || t.includes('عامل ايه'))
+    return 'بخير الحمد لله! وأنت؟';
+  if (t.includes('شكر'))
+    return 'العفو! في أي وقت.';
+  if (t.includes('وقت') || t.includes('الساعة'))
+    return `الساعة دلوقتي ${new Date().toLocaleTimeString('ar-EG')}`;
+  if (t.includes('تاريخ') || t.includes('النهارده'))
+    return `النهارده ${new Date().toLocaleDateString('ar-EG')}`;
+  return 'سمعتك! ممكن تقول أكتر؟';
+}
+
+function startListening() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) {
+    transcriptEl.textContent = 'المتصفح ده مش بيدعم التعرف على الصوت';
+    return;
+  }
+
+  recognition = new SR();
+  recognition.lang = 'ar-EG';
+  recognition.continuous = false;
+  recognition.interimResults = true;
+
+  recognition.onstart = () => {
+    listening = true;
+    btn.textContent = '⏹ وقف';
+    btn.classList.add('listening');
+    targetSpeak = 0.3;
+    transcriptEl.textContent = '...بسمعك';
+  };
+
+  recognition.onresult = (e) => {
+    const interim = Array.from(e.results).map(r => r[0].transcript).join('');
+    transcriptEl.textContent = interim;
+    if (e.results[e.results.length - 1].isFinal) {
+      const final = e.results[e.results.length - 1][0].transcript;
+      transcriptEl.textContent = final;
+      targetSpeak = 0;
+      setTimeout(() => {
+        const reply = getReply(final);
+        transcriptEl.textContent = reply;
+        speak_text(reply);
+      }, 400);
+    }
+  };
+
+  recognition.onerror = () => {
+    transcriptEl.textContent = 'في مشكلة في الميكروفون';
+    stopListening();
+  };
+
+  recognition.onend = () => { stopListening(); };
+
+  recognition.start();
+}
+
+function stopListening() {
+  listening = false;
+  btn.textContent = '🎙 تكلم';
+  btn.classList.remove('listening');
+  targetSpeak = 0;
+  if (recognition) recognition.stop();
+}
+
+btn.addEventListener('click', () => {
+  if (listening) stopListening();
+  else startListening();
+});
+
+// تحميل الأصوات
+speechSynthesis.onvoiceschanged = () => { getBestVoice('ar'); };
+
+document.getElementById('btnClose').addEventListener('click', () => {
+  synthesis.cancel();
+  document.body.style.display = 'none';
+});
+</script>
+</body>
+</html>
